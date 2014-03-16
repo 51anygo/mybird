@@ -35,9 +35,9 @@ SGPlayMusic* SGPlayMusic::sharePlayMusic()
 
 void SGPlayMusic::playerMusicByType(const char* musicName)
 {
-	SimpleAudioEngine::sharedEngine()->preloadBackgroundMusic(
+	CocosDenshion::SimpleAudioEngine::sharedEngine()->preloadBackgroundMusic(
 		CCFileUtils::sharedFileUtils()->fullPathForFilename(musicName).c_str());
-	SimpleAudioEngine::sharedEngine()->playBackgroundMusic(
+	CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic(
 		CCFileUtils::sharedFileUtils()->fullPathForFilename(musicName).c_str(),true);
 }
 
@@ -66,8 +66,10 @@ void SGPlayMusic::pauseMusic()
 
 void SGPlayMusic::playEffectByType(bool isLoop, const char *effectName)
 {
-	SimpleAudioEngine::sharedEngine()->preloadEffect(CCFileUtils::sharedFileUtils()->fullPathForFilename(effectName).c_str());
-    SimpleAudioEngine::sharedEngine()->playEffect(effectName, isLoop);
+	//CocosDenshion::SimpleAudioEngine::sharedEngine()->preloadEffect(
+	//	CCFileUtils::sharedFileUtils()->fullPathForFilename(effectName).c_str());
+    //CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect(effectName, isLoop);
+	CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect(effectName);
 }
 
 void SGPlayMusic::stopEffect()

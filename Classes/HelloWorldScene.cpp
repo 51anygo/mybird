@@ -174,6 +174,7 @@ void HelloWorld::addBackGround() {
     
 }
 
+
 //增加柱子容器
 void HelloWorld::addBarContainer() {
     mBarContainer = CCSprite::create();
@@ -230,14 +231,16 @@ void HelloWorld::addBar(float dt){
 }
 
 void HelloWorld::update(float dt){
-   //重力响应
-   mWorld->Step(dt, 8, 3); // 8和3为官方推荐数据
+    //重力响应
+    mWorld->Step(dt, 8, 3); // 8和3为官方推荐数据
     
 
 	m_pBackGround1->setPositionX(m_pBackGround1->getPositionX() - 1);    // 每次update都向左移动1点  
     m_pBackGround2->setPositionX(m_pBackGround2->getPositionX() - 1);  
     CCRect rcBounding1 = m_pBackGround1->boundingBox();  
     CCRect rcBounding2 = m_pBackGround2->boundingBox();  
+	CCLOG("rcBounding1 MinX:%d MinY:%d MaxX:%d MaxY:%d", rcBounding1.getMinX()
+		, rcBounding1.getMinY(), rcBounding1.getMaxX(), rcBounding1.getMaxY());
     if (rcBounding1.getMaxX() <= 0)    // 如果完全消失在屏幕上，就移动精灵1到精灵3的后面  
     {  
         m_pBackGround1->setPositionX(rcBounding1.size.width * 3 / 2);  
@@ -303,7 +306,8 @@ void HelloWorld::BeginContact(b2Contact *contact){
 }
 
 void HelloWorld::ccTouchesBegan(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent){
-	MUSIC_PLAY(MUSIC_JUMP);
+	EFFECT_PLAY(true,MUSIC_JUMP);
+	//MUSIC_PLAY(MUSIC_JUMP);
 	//播放子弹射出去的声音
     //CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect(MUSIC_JUMP);
     mBird->getB2Body()->SetLinearVelocity(b2Vec2(0.0f, 5.0f));

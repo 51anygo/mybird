@@ -32,7 +32,7 @@
 #include "B2Sprite.h"
 
 #define RATIO 32.0f // 比例 48
-
+#define SPRITE_TAG_BAR 0x01
 class HelloWorld: public cocos2d::CCLayer,
 public b2ContactListener
 {
@@ -55,16 +55,21 @@ public:
     
     b2World     *mWorld;                // box2D world
     B2Sprite    *mBird;                 // bird的sprite
-    CCSize       mScreenSize;           // 屏幕尺寸
+    CCSize      mScreenSize;           // 屏幕尺寸
     CCSprite    *mBarContainer;         //
-    
+	B2Sprite    *m_pGround1;
+	B2Sprite    *m_pGround2;
+    CCSprite    *m_pBackGround1;
+	CCSprite    *m_pBackGround2;
     virtual void ccTouchesBegan(CCSet *pTouches, CCEvent *pEvent);
     virtual void BeginContact(b2Contact* contact);
     virtual void update(float dt);
     
 private:
     void addBird();
-    void addGround();
+    void addGround1();
+	void addGround2();
+	void addBackGround();
     void initWorld();
     void addBar(float dt);
     void addBarContainer();

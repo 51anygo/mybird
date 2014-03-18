@@ -68,9 +68,10 @@ bool HelloWorld::init()
     addBird();
     addBarContainer();
     setTouchEnabled(true);
-    
-    scheduleOnce(schedule_selector(HelloWorld::startGame), 5);
-    
+    myflag=0;
+    scheduleOnce(schedule_selector(HelloWorld::startGame), 1);
+	//创建动画
+	initAction();
     return true;
 }
 
@@ -85,8 +86,36 @@ void HelloWorld::stopGame(){
 }
 
 void HelloWorld::initWorld(){
-    mWorld = new b2World(b2Vec2(0, -10));
+    mWorld = new b2World(b2Vec2(0, -20));
     mWorld->SetContactListener(this);
+}
+
+
+void HelloWorld::initAction()
+{
+	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("bird.plist");
+    CCArray *animFrames = CCArray::create();
+    for (int i = 1; i < 4; i++)
+    {
+        CCString *name = CCString::createWithFormat("bird%d.png",i);
+        CCSpriteFrame *frame = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(name->getCString());
+		if(i == 1)
+		{
+			CCSprite *pSprite = CCSprite::createWithSpriteFrame(frame);
+			this->addChild(pSprite);
+		}
+        animFrames->addObject(frame);
+    }    
+    CCAnimation *animation = CCAnimation::createWithSpriteFrames(animFrames, 0.1);
+	CCAnimate* pAnimate = CCAnimate::create(animation);
+	CCActionInterval* seq = (CCActionInterval *)(CCSequence::create(pAnimate, NULL));    // 创建顺序执行action
+	mBird->runAction(CCRepeatForever::create(seq));
+	/*
+
+	CCAnimation *pAnimation = CCAnimation::createWithSpriteFrames(pAniFrame, 0.05f);    // 0.05f是指经过50毫秒就要切换下一张png图
+	CCAnimate* pAnimate = CCAnimate::create(pAnimation);
+	CCActionInterval* seq = (CCActionInterval *)(CCSequence::create(pAnimate, NULL));    // 创建顺序执行action
+	pSprite->runAction(CCRepeatForever::create(seq));*/
 }
 
 void HelloWorld::addBird(){
@@ -110,6 +139,7 @@ void HelloWorld::addBird(){
     mBird->setPTMRatio(RATIO);
     mBird->setB2Body(birdBody);
     addChild(mBird,4);
+	
 }
 
 
@@ -233,8 +263,20 @@ void HelloWorld::addBar(float dt){
 void HelloWorld::update(float dt){
     //重力响应
     mWorld->Step(dt, 8, 3); // 8和3为官方推荐数据
-    
-
+    if (myangle++<20)
+    {
+		mBird->setRotation(myangle);
+    }
+	else
+	{
+		if(mBird->getRotation() > -91)
+			mBird->setRotation(mBird->getRotation()-2);
+	}
+	if(myflag==1)
+	{
+		mBird->setRotation(-90);
+		return;
+	}
 	m_pBackGround1->setPositionX(m_pBackGround1->getPositionX() - 1);    // 每次update都向左移动1点  
     m_pBackGround2->setPositionX(m_pBackGround2->getPositionX() - 1);  
     CCRect rcBounding1 = m_pBackGround1->boundingBox();  
@@ -298,8 +340,21 @@ void HelloWorld::update(float dt){
 }
 
 void HelloWorld::BeginContact(b2Contact *contact){
-    if(contact->GetFixtureA()->GetBody()->GetUserData() == mBird ||
+    if(contact->GetFixtureA()->GetBody()->GetUserData() == m_pGround1 ||
+		contact->GetFixtureB()->GetBody()->GetUserData() == m_pGround1 ||
+		contact->GetFixtureA()->GetBody()->GetUserData() == m_pGround2 ||
+		contact->GetFixtureB()->GetBody()->GetUserData() == m_pGround2 )
+	{
+		
+		CCMessageBox("Game Over!", "Game Over!");
+		stopGame();
+		
+	}
+		if(contact->GetFixtureA()->GetBody()->GetUserData() == mBird ||
        contact->GetFixtureB()->GetBody()->GetUserData() == mBird){
+
+		mBird->getB2Body()->SetLinearVelocity(b2Vec2(0, -15));
+		myflag=1;
         //stopGame();
        // CCMessageBox("Game Over!", "Game Over!");
     }
@@ -310,7 +365,10 @@ void HelloWorld::ccTouchesBegan(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEve
 	//MUSIC_PLAY(MUSIC_JUMP);
 	//播放子弹射出去的声音
     //CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect(MUSIC_JUMP);
-    mBird->getB2Body()->SetLinearVelocity(b2Vec2(0.0f, 5.0f));
+    mBird->getB2Body()->SetLinearVelocity(b2Vec2(0.0f, 10.0f));
+	mBird->setRotation(0);
+	myangle=0;
+	
 }
 
 void HelloWorld::menuCloseCallback(CCObject* pSender)

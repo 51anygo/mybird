@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MyFlappyBird", "MyFlappyBird.vcxproj", "{76A39BB2-9B84-4C65-98A5-654D86B86F2A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MyFlappyBird", "MyFlappyBird.vcxproj", "{2F520714-9F46-471E-A7D1-F577B3A36ED7}"
 	ProjectSection(ProjectDependencies) = postProject
 		{21B2C324-891F-48EA-AD1A-5AE13DE12E28} = {21B2C324-891F-48EA-AD1A-5AE13DE12E28}
 		{98A51BA8-FC3A-415B-AC8F-8C7BD464E93E} = {98A51BA8-FC3A-415B-AC8F-8C7BD464E93E}
@@ -35,10 +35,10 @@ Global
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{76A39BB2-9B84-4C65-98A5-654D86B86F2A}.Debug|Win32.ActiveCfg = Debug|Win32
-		{76A39BB2-9B84-4C65-98A5-654D86B86F2A}.Debug|Win32.Build.0 = Debug|Win32
-		{76A39BB2-9B84-4C65-98A5-654D86B86F2A}.Release|Win32.ActiveCfg = Release|Win32
-		{76A39BB2-9B84-4C65-98A5-654D86B86F2A}.Release|Win32.Build.0 = Release|Win32
+		{2F520714-9F46-471E-A7D1-F577B3A36ED7}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2F520714-9F46-471E-A7D1-F577B3A36ED7}.Debug|Win32.Build.0 = Debug|Win32
+		{2F520714-9F46-471E-A7D1-F577B3A36ED7}.Release|Win32.ActiveCfg = Release|Win32
+		{2F520714-9F46-471E-A7D1-F577B3A36ED7}.Release|Win32.Build.0 = Release|Win32
 		{98A51BA8-FC3A-415B-AC8F-8C7BD464E93E}.Debug|Win32.ActiveCfg = Debug|Win32
 		{98A51BA8-FC3A-415B-AC8F-8C7BD464E93E}.Debug|Win32.Build.0 = Debug|Win32
 		{98A51BA8-FC3A-415B-AC8F-8C7BD464E93E}.Release|Win32.ActiveCfg = Release|Win32

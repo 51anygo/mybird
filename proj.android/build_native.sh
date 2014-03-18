@@ -1,7 +1,7 @@
 APPNAME="MyFlappyBird"
 
 # options
-
+ 
 buildexternalsfromsource=
 
 usage(){

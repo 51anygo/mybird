@@ -18,7 +18,7 @@
 #define MUSIC_NORMAL  "music/narmal.mp3"    //正常战斗音乐
 #define MUSIC_BOSS    "music/boss.mp3"      //boss战音乐
 #define MUSIC_SCENE   "music/scene.mp3"     //场景音乐
-#define MUSIC_JUMP    "../sounds/sfx_point.wav"     //跳跃音乐
+#define MUSIC_JUMP    "sfx_point.wav"     //跳跃音乐
 #define MUSIC_TEST    "music/祁隆、庄心妍 - 一万个舍不得.mp3"
 
 

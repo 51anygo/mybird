@@ -12,9 +12,9 @@ bool NumberSprite::myInit(float width, float lenght)
 {
     s_width     =   width;
     s_lenght    =   lenght;
-
-
+	return true;
 }
+
 NumberSprite *NumberSprite::CreateNumberSprite(CCTexture2D *pTexture, float width, float lenght)
 {
     NumberSprite *pobSprite = new NumberSprite();

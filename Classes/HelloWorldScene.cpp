@@ -23,7 +23,7 @@
  */
 
 #include "HelloWorldScene.h"
-
+#include "ShowNumberNode.h"
 #include "SGPlayMusic.h"
 USING_NS_CC;
 //clone Flappy Bird
@@ -67,6 +67,8 @@ bool HelloWorld::init()
 	addGround2();
     addBird();
     addBarContainer();
+	//计分板
+	addNumberNode();
     setTouchEnabled(true);
     myflag=0;
     scheduleOnce(schedule_selector(HelloWorld::startGame), 1);
@@ -89,8 +91,28 @@ void HelloWorld::initWorld(){
     mWorld = new b2World(b2Vec2(0, -20));
     mWorld->SetContactListener(this);
 }
+//http://blog.csdn.net/farsa/article/details/9430155
+void HelloWorld::addNumberNode()  
+{  
+	testnum=1;
+    ShowNumberNode * snn = ShowNumberNode::CreateShowNumberNode("menu_num.png", 923, 22, 30 );  
+    snn->f_ShowNumber(testnum);  
+    snn->setPosition(ccp(160,350));  
+    this->addChild(snn,5,0);  
+    schedule(schedule_selector(HelloWorld::logic), 2.0f);  
+      
+}  
 
+void HelloWorld::logic(float dt)
+{
+    ShowNumberNode * snn = (ShowNumberNode *)this->getChildByTag(0);
+    snn->f_ShowNumber(testnum );
+    testnum = testnum +1;
+    
+    
+}
 
+//number png http://i.pku.edu.cn/trac/bazinga/changeset/117/
 void HelloWorld::initAction()
 {
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("bird.plist");
@@ -221,6 +243,7 @@ void HelloWorld::addBar(float dt){
     
     b2BodyDef downBarBodyDef;
     downBarBodyDef.type = b2_kinematicBody;
+	//x轴屏幕右方外两像素的位置,y轴是柱子一半
     downBarBodyDef.position = b2Vec2(mScreenSize.width/RATIO+2,
                                      downBarSize.height/RATIO/2+offset);
     downBarBodyDef.linearVelocity = b2Vec2(speed, 0);
@@ -245,7 +268,7 @@ void HelloWorld::addBar(float dt){
     b2BodyDef upBarBodyDef;
     upBarBodyDef.type = b2_kinematicBody;
     upBarBodyDef.position = b2Vec2(mScreenSize.width/RATIO+2,
-                                   downBarSize.height/RATIO+offset+2+upBarSize.height/2/RATIO);
+                                   downBarSize.height/RATIO+offset+3+upBarSize.height/2/RATIO);
     upBarBodyDef.linearVelocity = b2Vec2(speed, 0);
     b2Body *upBarDody = mWorld->CreateBody(&upBarBodyDef);
     

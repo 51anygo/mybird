@@ -54,6 +54,7 @@ public:
     ////////////////////////////////////////////////////
     int myflag;
 	int myangle;
+	int testnum;
     b2World     *mWorld;                // box2D world
     B2Sprite    *mBird;                 // bird的sprite
     CCSize      mScreenSize;           // 屏幕尺寸
@@ -68,6 +69,8 @@ public:
     
 private:
 	void initAction();
+	void logic(float dt);
+	void addNumberNode();
     void addBird();
     void addGround1();
 	void addGround2();

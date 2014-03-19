@@ -24,6 +24,12 @@
     <ClCompile Include="..\Classes\SGPlayMusic.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\NumberSprite.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ShowNumberNode.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -37,6 +43,12 @@
     </ClInclude>
     <ClInclude Include="resource.h" />
     <ClInclude Include="..\Classes\SGPlayMusic.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\NumberSprite.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ShowNumberNode.h">
       <Filter>Classes</Filter>
     </ClInclude>
   </ItemGroup>

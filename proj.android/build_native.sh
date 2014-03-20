@@ -52,7 +52,7 @@ if [ -d "$APP_ANDROID_ROOT"/assets ]; then
 fi
 
 mkdir "$APP_ANDROID_ROOT"/assets
-
+#cp -rf "$COCOSJAVALIB_ROOT"/src "$APP_DIR"/proj.android  
 # copy resources
 for file in "$APP_ROOT"/Resources/*
 do

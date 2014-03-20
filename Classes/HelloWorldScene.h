@@ -55,6 +55,7 @@ public:
     int myflag;
 	int myangle;
 	int testnum;
+	map<CCSprite *,int> mapbar;
     b2World     *mWorld;                // box2D world
     B2Sprite    *mBird;                 // bird的sprite
     CCSize      mScreenSize;           // 屏幕尺寸

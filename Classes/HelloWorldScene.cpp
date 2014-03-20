@@ -30,6 +30,10 @@ USING_NS_CC;
 //http://comandobueiro.com.br/flappy-bird-clone-com-appcelerator-e-lanica.html
 //http://lanica.co/flappy-clone/
 
+#define gUpVelocity 13
+#define gDownVelocity -26
+#define gBardis 3.5
+
 CCScene* HelloWorld::scene()
 {
     // 'scene' is an autorelease object
@@ -88,18 +92,18 @@ void HelloWorld::stopGame(){
 }
 
 void HelloWorld::initWorld(){
-    mWorld = new b2World(b2Vec2(0, -20));
+    mWorld = new b2World(b2Vec2(0, gDownVelocity));
     mWorld->SetContactListener(this);
 }
 //http://blog.csdn.net/farsa/article/details/9430155
 void HelloWorld::addNumberNode()  
 {  
-	testnum=1;
+	testnum=0;
     ShowNumberNode * snn = ShowNumberNode::CreateShowNumberNode("menu_num.png", 923, 22, 30 );  
     snn->f_ShowNumber(testnum);  
     snn->setPosition(ccp(160,350));  
     this->addChild(snn,5,0);  
-    schedule(schedule_selector(HelloWorld::logic), 2.0f);  
+    //schedule(schedule_selector(HelloWorld::logic), 2.0f);  
       
 }  
 
@@ -153,9 +157,10 @@ void HelloWorld::addBird(){
     CCSize birdSize = mBird->getContentSize();
     b2PolygonShape birdShape;
     birdShape.SetAsBox(birdSize.width/2.0f/RATIO, birdSize.height/2.0f/RATIO); // 半宽，半高
+	
     b2FixtureDef birdFixtureDef;
     birdFixtureDef.shape = &birdShape;
-    
+    birdFixtureDef.filter.maskBits = 0x0006;
     birdBody->CreateFixture(&birdFixtureDef);
     
     mBird->setPTMRatio(RATIO);
@@ -179,6 +184,7 @@ void HelloWorld::addGround1() {
     groundShape.SetAsBox(groundSize.width/2.0f/RATIO, groundSize.height/2.0f/RATIO);
     b2FixtureDef groundFixtureDef;
     groundFixtureDef.shape = &groundShape;
+	groundFixtureDef.filter.categoryBits = 0x0002;
     groundBody->CreateFixture(&groundFixtureDef);
     
     m_pGround1->setB2Body(groundBody);
@@ -202,6 +208,7 @@ void HelloWorld::addGround2() {
     groundShape.SetAsBox(groundSize.width/2.0f/RATIO, groundSize.height/2.0f/RATIO);
     b2FixtureDef groundFixtureDef;
     groundFixtureDef.shape = &groundShape;
+	groundFixtureDef.filter.categoryBits = 0x0002;
     groundBody->CreateFixture(&groundFixtureDef);
     
     m_pGround2->setB2Body(groundBody);
@@ -235,7 +242,7 @@ void HelloWorld::addBarContainer() {
 
 //容器中放柱子
 void HelloWorld::addBar(float dt){
-    float offset = -rand()%2;
+    float offset = -rand()%3;
     float speed = 0;
     // 下面的柱子
     B2Sprite *downBar = B2Sprite::create("down_bar.png");
@@ -254,12 +261,13 @@ void HelloWorld::addBar(float dt){
                           downBarSize.height/2/RATIO);
     b2FixtureDef downBarFixtureDef;
     downBarFixtureDef.shape = &downBarShape;
+	downBarFixtureDef.filter.categoryBits = 0x0004;
     downBarBody->CreateFixture(&downBarFixtureDef);
     
     downBar->setB2Body(downBarBody);
     downBar->setPTMRatio(RATIO);
     mBarContainer-> addChild(downBar,1,SPRITE_TAG_BAR);
-
+	mapbar.insert(make_pair(downBar,0));
     
     //上面的柱子
     B2Sprite *upBar = B2Sprite::create("up_bar.png");
@@ -268,7 +276,7 @@ void HelloWorld::addBar(float dt){
     b2BodyDef upBarBodyDef;
     upBarBodyDef.type = b2_kinematicBody;
     upBarBodyDef.position = b2Vec2(mScreenSize.width/RATIO+2,
-                                   downBarSize.height/RATIO+offset+3+upBarSize.height/2/RATIO);
+                                   downBarSize.height/RATIO+offset+gBardis+upBarSize.height/2/RATIO);
     upBarBodyDef.linearVelocity = b2Vec2(speed, 0);
     b2Body *upBarDody = mWorld->CreateBody(&upBarBodyDef);
     
@@ -276,8 +284,8 @@ void HelloWorld::addBar(float dt){
     upBarShape.SetAsBox(upBarSize.width/2/RATIO, upBarSize.height/2/RATIO);
     b2FixtureDef upBarFixtureDef;
     upBarFixtureDef.shape = &upBarShape;
+	upBarFixtureDef.filter.categoryBits = 0x0004;
     upBarDody->CreateFixture(&upBarFixtureDef);
-    
     upBar->setB2Body(upBarDody);
     upBar->setPTMRatio(RATIO);
     mBarContainer->addChild(upBar,1,SPRITE_TAG_BAR);
@@ -286,7 +294,7 @@ void HelloWorld::addBar(float dt){
 void HelloWorld::update(float dt){
     //重力响应
     mWorld->Step(dt, 8, 3); // 8和3为官方推荐数据
-    if (myangle++<20)
+    if (myangle++<25)
     {
 		mBird->setRotation(myangle);
     }
@@ -304,8 +312,8 @@ void HelloWorld::update(float dt){
     m_pBackGround2->setPositionX(m_pBackGround2->getPositionX() - 1);  
     CCRect rcBounding1 = m_pBackGround1->boundingBox();  
     CCRect rcBounding2 = m_pBackGround2->boundingBox();  
-	CCLOG("rcBounding1 MinX:%d MinY:%d MaxX:%d MaxY:%d", rcBounding1.getMinX()
-		, rcBounding1.getMinY(), rcBounding1.getMaxX(), rcBounding1.getMaxY());
+	//CCLOG("rcBounding1 MinX:%d MinY:%d MaxX:%d MaxY:%d", rcBounding1.getMinX()
+		//, rcBounding1.getMinY(), rcBounding1.getMaxX(), rcBounding1.getMaxY());
     if (rcBounding1.getMaxX() <= 0)    // 如果完全消失在屏幕上，就移动精灵1到精灵3的后面  
     {  
         m_pBackGround1->setPositionX(rcBounding1.size.width * 3 / 2);  
@@ -331,13 +339,24 @@ void HelloWorld::update(float dt){
     }
     CCSprite *s;
     std::vector<b2Body *>toDestroy;
+	map<CCSprite *,int>::iterator itbar;
     for(b2Body *b = mWorld->GetBodyList(); b != NULL; b = b->GetNext()){
             s = (CCSprite *)b->GetUserData();
-			if(s != NULL && s->getTag()==SPRITE_TAG_BAR){	
+			if(s != NULL && s->getTag()==SPRITE_TAG_BAR){
+				 itbar=mapbar.find(s);
+				 if(itbar!=mapbar.end() && itbar->second==0 && itbar->first->boundingBox().getMinX() <= this->mBird->boundingBox().getMaxX())
+				 {
+					 ShowNumberNode * snn = (ShowNumberNode *)this->getChildByTag(0);
+					 snn->f_ShowNumber(++testnum);
+					 itbar->second=1;
+					 mapbar.erase(itbar);
+				 }
+				 //CCLOG("bird x:%f guan x:%f ", mBird->getPositionX(),s->getPositionX());
+			
 				s->setPositionX(s->getPositionX() - 1);
 				if(s->getPositionX() < -20){
 					toDestroy.push_back(b);
-					s->removeFromParent();
+					s->removeFromParent();					
 					mWorld->DestroyBody(b);
 				    b = mWorld->GetBodyList();
 			}
@@ -376,8 +395,11 @@ void HelloWorld::BeginContact(b2Contact *contact){
 		if(contact->GetFixtureA()->GetBody()->GetUserData() == mBird ||
        contact->GetFixtureB()->GetBody()->GetUserData() == mBird){
 
-		mBird->getB2Body()->SetLinearVelocity(b2Vec2(0, -15));
+		mBird->getB2Body()->SetLinearVelocity(b2Vec2(0, gUpVelocity));
 		myflag=1;
+		b2Filter myfilter;
+		myfilter.maskBits=0x0002;
+		mBird->getB2Body()->GetFixtureList()->SetFilterData(myfilter);
         //stopGame();
        // CCMessageBox("Game Over!", "Game Over!");
     }

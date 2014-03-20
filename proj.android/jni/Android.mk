@@ -7,6 +7,8 @@ LOCAL_MODULE := cocos2dcpp_shared
 LOCAL_MODULE_FILENAME := libcocos2dcpp
 
 LOCAL_SRC_FILES := hellocpp/main.cpp \
+                   ../../Classes/ShowNumberNode.cpp \
+                   ../../Classes/NumberSprite.cpp \
                    ../../Classes/SGPlayMusic.cpp \
                    ../../Classes/AppDelegate.cpp \
                    ../../Classes/B2Sprite.cpp \

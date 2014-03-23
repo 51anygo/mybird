@@ -39,11 +39,33 @@ bool AppDelegate::applicationDidFinishLaunching() {
     // initialize director
     CCDirector* pDirector = CCDirector::sharedDirector();
     CCEGLView* pEGLView = CCEGLView::sharedOpenGLView();
-
+	//获取屏幕大小
+	
     pDirector->setOpenGLView(pEGLView);
 	
+	CCSize screenSize =CCDirector::sharedDirector()->getWinSize();
+	pDirector->setContentScaleFactor(480/screenSize.height);
+	/*
+	if (screenSize.height == 320)
+	{
+		CCFileUtils::sharedFileUtils()->setSearchPaths("hd");
+	}
+	else if (screenSize.height == 640)
+	{
+	}
+	else if (screenSize.height == 768)
+	{
+	}
+	else if (screenSize.height == 1536)
+	{
+	}
+	else if (screenSize.width == 568)
+	{
+	}
+	*/
     // 设置屏幕分辨  
-	pEGLView->setDesignResolutionSize(320.0f, 480.0f, kResolutionShowAll);
+	//pEGLView->setDesignResolutionSize(320, 480.0f, kResolutionShowAll);
+	pEGLView->setDesignResolutionSize(screenSize.width, screenSize.height, kResolutionShowAll);
     
     // turn on display FPS
     pDirector->setDisplayStats(true);

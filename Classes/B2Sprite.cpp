@@ -51,9 +51,10 @@
 #include "Box2D/Box2D.h"
 
 B2Sprite::B2Sprite()
-: m_bIgnoreBodyRotation(false)
+: CCSprite(),
+m_bIgnoreBodyRotation(false)
 , m_pB2Body(NULL)
-, m_fPTMRatio(0.0f)
+, m_fPTMRatio(0.0f) 
 {}
 
 B2Sprite* B2Sprite::create()

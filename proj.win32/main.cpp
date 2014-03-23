@@ -16,6 +16,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
     AppDelegate app;
     CCEGLView* eglView = CCEGLView::sharedOpenGLView();
     eglView->setViewName("MyFlappyBird");
-    eglView->setFrameSize(1280, 768);
+    eglView->setFrameSize(1280/2, 768/2);
+	//eglView->setFrameSize(320, 480);
     return CCApplication::sharedApplication()->run();
 }

@@ -63,7 +63,7 @@ void ShowNumberNode::f_addSprite()
 // ĞŞ¸ÄÏÔÊ¾Êı×Ö
 void ShowNumberNode::f_ShowNumber(int number)
 {
-   
+    // s_NumberMax=number;
     if (number < 0 || number > s_NumberMax)
         return;
 

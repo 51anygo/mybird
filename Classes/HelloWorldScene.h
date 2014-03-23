@@ -33,24 +33,6 @@
 
 #define RATIO 32.0f // 比例 48
 #define SPRITE_TAG_BAR 0x01
-#define SPRITE_TAG_SCORE 0x02
-#define SPRITE_TAG_GROUND 0x03
-#define SPRITE_TAG_CHAR   0x04
-#define GGROUNDNUM 5
-#define GBACKGROUNDNUM 3
-#define MOVESPEED 2
-#define gUpVelocity 13
-#define gDownVelocity -26
-#define gBardis 3
-#define gBirdX  1/2
-#define gBirdY  1/2
-
-enum RUNSTAT{
-	GETREAD,
-	RUNNING,
-	GAMEOVER
-};
-
 class HelloWorld: public cocos2d::CCLayer,
 public b2ContactListener
 {
@@ -70,38 +52,24 @@ public:
     ////////////////////////////////////////////////////
     // 下面添加自己的代码
     ////////////////////////////////////////////////////
-    int myflag;
-	int myangle;
-	int testnum;
-	map<CCSprite *,int> mapbar;
+    
     b2World     *mWorld;                // box2D world
     B2Sprite    *mBird;                 // bird的sprite
     CCSize      mScreenSize;           // 屏幕尺寸
-	float       mfac;
     CCSprite    *mBarContainer;         //
-	vector<B2Sprite*> m_pGroundVec;
-    CCSprite    *m_pBackGround[GBACKGROUNDNUM];
-	CCSprite    *m_pScore,*m_pRate,*m_pStart,*m_pTop,*m_pFlappyBird,*m_pAddGameOver;
-	int          m_igroundnum;
-	int          m_ilastground;
-	RUNSTAT      m_istatus; //0准备 1开始 2结束
+	B2Sprite    *m_pGround1;
+	B2Sprite    *m_pGround2;
+    CCSprite    *m_pBackGround1;
+	CCSprite    *m_pBackGround2;
     virtual void ccTouchesBegan(CCSet *pTouches, CCEvent *pEvent);
     virtual void BeginContact(b2Contact* contact);
     virtual void update(float dt);
     
 private:
-	void initAction();
-	void logic(float dt);
-	void addNumberNode();
     void addBird();
-	void addScore();
-	void addGameOver();
-	void addRate();
-	void addStart();
-	void addFlappyBird();
-	void addTop();
-    int addGround(int index);
-	void addBackGround(int index);
+    void addGround1();
+	void addGround2();
+	void addBackGround();
     void initWorld();
     void addBar(float dt);
     void addBarContainer();

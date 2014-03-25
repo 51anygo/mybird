@@ -85,12 +85,18 @@ bool HelloWorld::init()
 	addRate();
 	addFlappyBird();
 	addBird();
+	addScore();
+	addGameOver();
+	
+	m_pScore->setVisible(false);
+	m_pGameOver->setVisible(false);
+
 	addBarContainer();
 	//计分板
 	addNumberNode();
 	setTouchEnabled(true);
 	myflag=0;
-	m_istatus=GETREAD;
+	m_istatus=GOSTART;
 	//scheduleOnce(schedule_selector(HelloWorld::startGame), 1);
 	this->scheduleUpdate();
 	//创建动画
@@ -98,19 +104,49 @@ bool HelloWorld::init()
 	return true;
 }
 
-void HelloWorld::startGame(float dt){
+void HelloWorld::goReady(){
 	m_pStart->setVisible(false);
 	m_pTop->setVisible(false);
 	m_pRate->setVisible(false);
 	m_pFlappyBird->setVisible(false);
+	m_pScore->setVisible(false);
+	m_pGameOver->setVisible(false);
+	addHand();
+	addLeftTap();
+	addRightTap();
+	addUp();
+	addGBird();
+	addReady();
+	float fupx=m_pLeftTap->boundingBox().getMinX();
+	float fupy=m_pUp->getPositionY();
+	mBird->setPosition(ccp(fupx,fupy));
+  
+}
+
+
+void HelloWorld::startGame(float dt){
+	//scheduleUpdate();
+	//schedule(schedule_selector(HelloWorld::addBar), 2);
+	m_pUp->setVisible(false);
+	m_pHand->setVisible(false);
+	m_pLeftTap->setVisible(false);
+	m_pRightTap->setVisible(false);
+	m_pGBird->setVisible(false);
+	m_pReady->setVisible(false);
 	m_istatus=RUNNING;
 	//scheduleUpdate();
-	schedule(schedule_selector(HelloWorld::addBar), 2);
+	//schedule(schedule_selector(HelloWorld::addBar), 2);
+	//goReady();
 }
 
 void HelloWorld::stopGame(){
 	unscheduleUpdate();
 	unschedule(schedule_selector(HelloWorld::addBar));
+	m_pScore->setVisible(true);
+	m_pGameOver->setVisible(true);
+	m_pStart->setVisible(true);
+	m_pTop->setVisible(true);
+	m_istatus=GAMEOVER;
 }
 
 void HelloWorld::initWorld(){
@@ -176,7 +212,7 @@ void HelloWorld::addStart() {
 	float fStartHeight=rcBounding.size.height/2.0f;
 	//m_pStart->setPosition(ccp(this->mScreenSize.width/2.0f/RATIO-(fStartWidth/2.0f), 
 	//	groundSize.height/2.0f/RATIO+(fStartHeight/2.0f)));    // 设置在屏幕中间  
-	float xpos=mScreenSize.width/2.0f-fStartWidth;
+	float xpos=mScreenSize.width/2.0f-fStartWidth-10.f;
 	float ypos=m_pGroundVec[0]->boundingBox().getMaxY()+fStartHeight;
 	//xpos-=rcBounding.size.width/2.;
 	m_pStart->setPosition(ccp(xpos,  ypos));    // 设置在屏幕中间  
@@ -232,13 +268,104 @@ void HelloWorld::addTop() {
 }
 
 void HelloWorld::addGameOver() {
+	m_pGameOver = CCSprite::create("gameover.png");     
+	CCRect rcBounding = m_pGameOver->boundingBox();
+	float fGameOverHeight=rcBounding.size.height/2.0f;
+	float xpos=mScreenSize.width/2;
+	float ypos=m_pScore->boundingBox().getMaxY()+fGameOverHeight+10;
 
-	m_pAddGameOver = CCSprite::create("GameOver.png");      
-	CCRect rcBounding = m_pAddGameOver->boundingBox();  
-	m_pAddGameOver->setPosition(ccp(rcBounding.size.width / 2, rcBounding.size.height / 2));    // 设置在屏幕中间  
-	this->addChild(m_pAddGameOver, 1);    // CHILD_ORDER_BACKGROUND精灵的层级，这里是 = 1  
+	m_pGameOver->setPosition(ccp(xpos,  ypos));    // 设置在屏幕中间  
+	this->addChild(m_pGameOver, SPRITE_TAG_OVER);  
 
 }
+
+
+void HelloWorld::addScore() {
+	m_pScore= CCSprite::create("score.png");     
+	CCRect rcBounding = m_pScore->boundingBox();
+	float fScoreHeight=rcBounding.size.height/2.0f;
+	float xpos=mScreenSize.width/2;
+	float ypos=m_pStart->boundingBox().getMaxY()+fScoreHeight+50;
+
+	m_pScore->setPosition(ccp(xpos,  ypos));    // 设置在屏幕中间  
+	this->addChild(m_pScore, SPRITE_TAG_OVER);  
+
+}
+
+
+
+void HelloWorld::addHand() {
+	m_pHand= CCSprite::create("hand.png");     
+	CCRect rcBounding = m_pHand->boundingBox();
+	float fHandHeight=rcBounding.size.height/2.0f;
+	float xpos=mScreenSize.width/2;
+	float ypos=mScreenSize.height/3+fHandHeight;
+
+	m_pHand->setPosition(ccp(xpos,  ypos));    // 设置在屏幕中间  
+	this->addChild(m_pHand, SPRITE_TAG_OVER);  
+
+}
+void HelloWorld::addReady() {
+	m_pReady = CCSprite::create("ready.png");     
+	CCRect rcBounding = m_pReady->boundingBox();
+	float fHeight=rcBounding.size.height/2.0f;
+	float xpos=mScreenSize.width/2;
+	float ypos=m_pGBird->boundingBox().getMaxY()+fHeight+20.f;
+
+	m_pReady->setPosition(ccp(xpos,  ypos));    // 设置在屏幕中间  
+	this->addChild(m_pReady, SPRITE_TAG_OVER);  
+
+}
+
+void HelloWorld::addGBird() {
+	m_pGBird = CCSprite::create("gbird.png");     
+	CCRect rcBounding = m_pGBird->boundingBox();
+	float fHeight=rcBounding.size.height/2.0f;
+	float xpos=mScreenSize.width/2;
+	float ypos=m_pUp->boundingBox().getMaxY()+fHeight+20.f;
+
+	m_pGBird->setPosition(ccp(xpos,  ypos));    // 设置在屏幕中间  
+	this->addChild(m_pGBird, SPRITE_TAG_OVER);  
+
+}
+void HelloWorld::addUp() {
+	m_pUp= CCSprite::create("up.png");     
+	CCRect rcBounding = m_pUp->boundingBox();
+	float fHeight=rcBounding.size.height/2.0f;
+	float xpos=mScreenSize.width/2;
+	float ypos=m_pHand->boundingBox().getMaxY()+fHeight+30.f;
+
+	m_pUp->setPosition(ccp(xpos,  ypos));    // 设置在屏幕中间  
+	this->addChild(m_pUp, SPRITE_TAG_OVER);  
+
+}
+
+void HelloWorld::addLeftTap() {
+	m_pLeftTap= CCSprite::create("lefttap.png");     
+	CCRect rcBounding = m_pLeftTap->boundingBox();
+	float fwidth=rcBounding.size.width/2.0f;
+	float fHeight=rcBounding.size.height/2.0f;
+	float xpos=mScreenSize.width/2.0f-fwidth-20.f;
+	float ypos=m_pHand->boundingBox().getMaxY()+fHeight;
+
+	m_pLeftTap->setPosition(ccp(xpos,  ypos));    // 设置在屏幕中间   
+	this->addChild(m_pLeftTap, SPRITE_TAG_OVER);  
+
+}
+
+void HelloWorld::addRightTap() {
+	m_pRightTap = CCSprite::create("righttap.png");     
+	CCRect rcBounding = m_pRightTap->boundingBox();
+	float fwidth=rcBounding.size.width/2.0f;
+	float fHeight=rcBounding.size.height/2.0f;
+	float xpos=mScreenSize.width/2.0f+fwidth+20.f;
+	float ypos=m_pHand->boundingBox().getMaxY()+fHeight;
+
+	m_pRightTap->setPosition(ccp(xpos,  ypos));    // 设置在屏幕中间  
+	this->addChild(m_pRightTap, SPRITE_TAG_OVER);  
+
+}
+
 
 void HelloWorld::addBird(){
 	mBird = B2Sprite::create("bird.png");
@@ -392,7 +519,7 @@ void HelloWorld::update(float dt){
 		}
 		
 	}
-	if(m_istatus==GETREAD ){
+	if(m_istatus==GETREADY || m_istatus==GOSTART ){
 		return;
 	}
 	//重力响应
@@ -501,13 +628,23 @@ void HelloWorld::ccTouchesBegan(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEve
     CCPoint click2 = pTouch->getLocation();  
     CCLog("ccTouchesBegan,%d,%f,%f",++flag,click2.x,click2.y); 
 	if(this->m_istatus!=RUNNING){
+		if(m_istatus==GETREADY)
+		{
+			this->startGame(0);
+		}
 		CCPoint touchPoint = pTouch->getLocationInView();
 		touchPoint = CCDirector::sharedDirector()->convertToGL(touchPoint);
 		CCRect rect = m_pStart->boundingBox();
 		//在判断你点击的这个点touchPoint 是否在图片按钮矩形里面rect ;
 	   if(rect.containsPoint(touchPoint))
 	   {
-		   this->startGame(0);
+		 
+		   
+		   if(m_istatus==GOSTART)
+		   {
+			this->goReady();
+			m_istatus=GETREADY;
+		   }
 	   }
 			//为true就进来，说明点中在图片按钮矩形里面
 			//CCScene* scen = HelloWorld::scene();

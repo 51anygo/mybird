@@ -36,6 +36,7 @@
 #define SPRITE_TAG_SCORE 0x02
 #define SPRITE_TAG_GROUND 0x03
 #define SPRITE_TAG_CHAR   0x04
+#define SPRITE_TAG_OVER   0x05
 #define GGROUNDNUM 5
 #define GBACKGROUNDNUM 3
 #define MOVESPEED 2
@@ -46,7 +47,8 @@
 #define gBirdY  1/2
 
 enum RUNSTAT{
-	GETREAD,
+	GOSTART,
+	GETREADY,
 	RUNNING,
 	GAMEOVER
 };
@@ -81,7 +83,8 @@ public:
     CCSprite    *mBarContainer;         //
 	vector<B2Sprite*> m_pGroundVec;
     CCSprite    *m_pBackGround[GBACKGROUNDNUM];
-	CCSprite    *m_pScore,*m_pRate,*m_pStart,*m_pTop,*m_pFlappyBird,*m_pAddGameOver;
+	CCSprite    *m_pScore,*m_pRate,*m_pStart,*m_pTop,*m_pFlappyBird,*m_pGameOver;
+	CCSprite    *m_pHand,*m_pUp,*m_pLeftTap,*m_pRightTap,*m_pReady,*m_pGBird;
 	int          m_igroundnum;
 	int          m_ilastground;
 	RUNSTAT      m_istatus; //0准备 1开始 2结束
@@ -100,6 +103,13 @@ private:
 	void addStart();
 	void addFlappyBird();
 	void addTop();
+	void addHand();
+	void addReady();
+	void addUp();
+	void addLeftTap();
+	void addRightTap();
+	void addGBird();
+	void goReady();
     int addGround(int index);
 	void addBackGround(int index);
     void initWorld();

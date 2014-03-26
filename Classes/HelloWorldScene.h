@@ -53,6 +53,8 @@ enum RUNSTAT{
 	GAMEOVER
 };
 
+
+
 class HelloWorld: public cocos2d::CCLayer,
 public b2ContactListener
 {
@@ -75,6 +77,14 @@ public:
     int myflag;
 	int myangle;
 	int testnum;
+	float gameoverX;
+	float gameoverY;
+	float scoreX;
+	float scoreY;
+	float startX;
+	float startY;
+	float topX;
+	float topY;
 	map<CCSprite *,int> mapbar;
     b2World     *mWorld;                // box2D world
     B2Sprite    *mBird;                 // bird的sprite
@@ -91,6 +101,7 @@ public:
     virtual void ccTouchesBegan(CCSet *pTouches, CCEvent *pEvent);
     virtual void BeginContact(b2Contact* contact);
     virtual void update(float dt);
+
     
 private:
 	void initAction();
@@ -117,6 +128,7 @@ private:
     void addBarContainer();
     void startGame(float dt);
     void stopGame();
+	
     
 };
 

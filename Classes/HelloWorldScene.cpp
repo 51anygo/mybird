@@ -82,21 +82,22 @@ bool HelloWorld::init()
 		(m_pGroundVec[m_ilastground])->boundingBox().size.width);
 	addStart();
 	addTop();
-	addRate();
-	addFlappyBird();
+	//addRate();
+	//addFlappyBird();
+	
 	addBird();
 	addScore();
 	addGameOver();
 	
 	m_pScore->setVisible(false);
 	m_pGameOver->setVisible(false);
-
+	this->goReady();
 	addBarContainer();
 	//计分板
 	addNumberNode();
 	setTouchEnabled(true);
 	myflag=0;
-	m_istatus=GOSTART;
+	m_istatus=GETREADY;
 	//scheduleOnce(schedule_selector(HelloWorld::startGame), 1);
 	this->scheduleUpdate();
 	//创建动画
@@ -107,8 +108,8 @@ bool HelloWorld::init()
 void HelloWorld::goReady(){
 	m_pStart->setVisible(false);
 	m_pTop->setVisible(false);
-	m_pRate->setVisible(false);
-	m_pFlappyBird->setVisible(false);
+	//m_pRate->setVisible(false);
+	//m_pFlappyBird->setVisible(false);
 	m_pScore->setVisible(false);
 	m_pGameOver->setVisible(false);
 	addHand();
@@ -142,9 +143,28 @@ void HelloWorld::startGame(float dt){
 void HelloWorld::stopGame(){
 	unscheduleUpdate();
 	unschedule(schedule_selector(HelloWorld::addBar));
-	m_pScore->setVisible(true);
+	m_pGameOver->setVisible(false);
+	m_pGameOver->setPosition(ccp(gameoverX,gameoverY));
+	m_pGameOver->setVisible(false);
+	CCActionInterval*  actionFade= CCFadeIn::create(1);
+	//CCActionInterval*  actionFadeBack= actionFade->reverse();
+	//m_pGameOver->runAction(CCSequence::create(actionFade,actionFadeBack,NULL));
+	m_pGameOver->runAction(actionFade);
 	m_pGameOver->setVisible(true);
+
+	m_pScore->setPosition(ccp(scoreX,0));
+	CCActionInterval* actionTo = CCMoveBy::create(0.5, ccp(0, scoreY));
+	m_pScore->runAction(actionTo);
+	m_pScore->setVisible(true);
+
+	m_pStart->setPosition(ccp(startX,0));
+	actionTo = CCMoveBy::create(0.5, ccp(0, startY));
+	m_pStart->runAction(actionTo);
 	m_pStart->setVisible(true);
+
+	m_pTop->setPosition(ccp(topX,0));
+	actionTo = CCMoveBy::create(0.5, ccp(0, topY));
+	m_pTop->runAction(actionTo);
 	m_pTop->setVisible(true);
 	m_istatus=GAMEOVER;
 }
@@ -212,10 +232,10 @@ void HelloWorld::addStart() {
 	float fStartHeight=rcBounding.size.height/2.0f;
 	//m_pStart->setPosition(ccp(this->mScreenSize.width/2.0f/RATIO-(fStartWidth/2.0f), 
 	//	groundSize.height/2.0f/RATIO+(fStartHeight/2.0f)));    // 设置在屏幕中间  
-	float xpos=mScreenSize.width/2.0f-fStartWidth-10.f;
-	float ypos=m_pGroundVec[0]->boundingBox().getMaxY()+fStartHeight;
+	startX=mScreenSize.width/2.0f-fStartWidth-10.f;
+	startY=m_pGroundVec[0]->boundingBox().getMaxY()+fStartHeight;
 	//xpos-=rcBounding.size.width/2.;
-	m_pStart->setPosition(ccp(xpos,  ypos));    // 设置在屏幕中间  
+	m_pStart->setPosition(ccp(startX,  startY));    // 设置在屏幕中间  
 	this->addChild(m_pStart,SPRITE_TAG_CHAR);    // CHILD_ORDER_BACKGROUND精灵的层级，这里是 = 1  
 
 }
@@ -259,10 +279,10 @@ void HelloWorld::addTop() {
 	float fTopHeight=rcBounding.size.height/2.0f;
 	//m_pStart->setPosition(ccp(this->mScreenSize.width/2.0f/RATIO-(fStartWidth/2.0f), 
 	//	groundSize.height/2.0f/RATIO+(fStartHeight/2.0f)));    // 设置在屏幕中间  
-	float xpos=mScreenSize.width/2.0f+fTopWidth+10;
-	float ypos=m_pGroundVec[0]->boundingBox().getMaxY()+fTopHeight;
+	topX=mScreenSize.width/2.0f+fTopWidth+10;
+	topY=m_pGroundVec[0]->boundingBox().getMaxY()+fTopHeight;
 	//xpos-=rcBounding.size.width/2.;
-	m_pTop->setPosition(ccp(xpos,  ypos));    // 设置在屏幕中间  
+	m_pTop->setPosition(ccp(topX,  topY));    // 设置在屏幕中间  
 	this->addChild(m_pTop, SPRITE_TAG_CHAR);    // CHILD_ORDER_BACKGROUND精灵的层级，这里是 = 1  
 
 }
@@ -271,10 +291,10 @@ void HelloWorld::addGameOver() {
 	m_pGameOver = CCSprite::create("gameover.png");     
 	CCRect rcBounding = m_pGameOver->boundingBox();
 	float fGameOverHeight=rcBounding.size.height/2.0f;
-	float xpos=mScreenSize.width/2;
-	float ypos=m_pScore->boundingBox().getMaxY()+fGameOverHeight+10;
+	gameoverX=mScreenSize.width/2;
+	gameoverY=m_pScore->boundingBox().getMaxY()+fGameOverHeight+10;
 
-	m_pGameOver->setPosition(ccp(xpos,  ypos));    // 设置在屏幕中间  
+	m_pGameOver->setPosition(ccp(gameoverX,  gameoverY));    // 设置在屏幕中间  
 	this->addChild(m_pGameOver, SPRITE_TAG_OVER);  
 
 }
@@ -284,10 +304,10 @@ void HelloWorld::addScore() {
 	m_pScore= CCSprite::create("score.png");     
 	CCRect rcBounding = m_pScore->boundingBox();
 	float fScoreHeight=rcBounding.size.height/2.0f;
-	float xpos=mScreenSize.width/2;
-	float ypos=m_pStart->boundingBox().getMaxY()+fScoreHeight+50;
+	scoreX=mScreenSize.width/2;
+	scoreY=m_pStart->boundingBox().getMaxY()+fScoreHeight+50;
 
-	m_pScore->setPosition(ccp(xpos,  ypos));    // 设置在屏幕中间  
+	m_pScore->setPosition(ccp(scoreX,  scoreY));    // 设置在屏幕中间  
 	this->addChild(m_pScore, SPRITE_TAG_OVER);  
 
 }
@@ -605,7 +625,8 @@ void HelloWorld::BeginContact(b2Contact *contact){
 	if(p->getTag()==SPRITE_TAG_GROUND)
 	{
 
-		CCMessageBox("Game Over!", "Game Over!");
+		//CCMessageBox("Game Over!", "Game Over!");
+		mBird->setVisible(false);
 		stopGame();
 
 	}
@@ -640,10 +661,13 @@ void HelloWorld::ccTouchesBegan(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEve
 	   {
 		 
 		   
-		   if(m_istatus==GOSTART)
+		   if(m_istatus==GAMEOVER)
 		   {
-			this->goReady();
-			m_istatus=GETREADY;
+			//this->goReady();
+			//m_istatus=GETREADY;
+			   CCScene *pScene = HelloWorld::scene();
+			   CCDirector::sharedDirector()->replaceScene(CCTransitionFade::create(1,pScene));
+
 		   }
 	   }
 			//为true就进来，说明点中在图片按钮矩形里面

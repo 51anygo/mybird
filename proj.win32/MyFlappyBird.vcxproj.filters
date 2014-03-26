@@ -30,6 +30,9 @@
     <ClCompile Include="..\Classes\ShowNumberNode.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\StartScence.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -49,6 +52,9 @@
       <Filter>Classes</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\ShowNumberNode.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\StartScence.h">
       <Filter>Classes</Filter>
     </ClInclude>
   </ItemGroup>

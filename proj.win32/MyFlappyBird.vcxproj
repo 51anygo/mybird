@@ -134,6 +134,7 @@ xcopy /Y /Q "$(ProjectDir)..\..\..\external\libwebsockets\win32\lib\*.*" "$(OutD
     <ClCompile Include="..\Classes\HelloWorldScene.cpp" />
     <ClCompile Include="..\Classes\NumberSprite.cpp" />
     <ClCompile Include="..\Classes\SGPlayMusic.cpp" />
+    <ClCompile Include="..\Classes\StartScence.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -142,6 +143,7 @@ xcopy /Y /Q "$(ProjectDir)..\..\..\external\libwebsockets\win32\lib\*.*" "$(OutD
     <ClInclude Include="..\Classes\HelloWorldScene.h" />
     <ClInclude Include="..\Classes\NumberSprite.h" />
     <ClInclude Include="..\Classes\SGPlayMusic.h" />
+    <ClInclude Include="..\Classes\StartScence.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>

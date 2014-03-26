@@ -24,6 +24,7 @@
 
 #include "AppDelegate.h"
 #include "HelloWorldScene.h"
+#include "StartScence.h"
 
 USING_NS_CC;
 
@@ -46,22 +47,11 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	CCSize screenSize =CCDirector::sharedDirector()->getWinSize();
 	pDirector->setContentScaleFactor(480/screenSize.height);
 	/*
-	if (screenSize.height == 320)
+	if (screenSize.height > 768)
 	{
 		CCFileUtils::sharedFileUtils()->setSearchPaths("hd");
 	}
-	else if (screenSize.height == 640)
-	{
-	}
-	else if (screenSize.height == 768)
-	{
-	}
-	else if (screenSize.height == 1536)
-	{
-	}
-	else if (screenSize.width == 568)
-	{
-	}
+	
 	*/
     // ÉèÖÃÆÁÄ»·Ö±æ  
 	//pEGLView->setDesignResolutionSize(320, 480.0f, kResolutionShowAll);
@@ -74,10 +64,12 @@ bool AppDelegate::applicationDidFinishLaunching() {
     pDirector->setAnimationInterval(1.0 / 60);
 
     // create a scene. it's an autorelease object
-    CCScene *pScene = HelloWorld::scene();
+	// create a scene. it's an autorelease object
+	CCScene *pScene = Start::scene();
+	//CCScene *pScene = HelloWorld::scene();
 
-    // run
-    pDirector->runWithScene(pScene);
+	// run
+	pDirector->runWithScene(pScene);
 
     return true;
 }

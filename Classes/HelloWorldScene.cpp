@@ -126,8 +126,7 @@ void HelloWorld::goReady(){
 
 
 void HelloWorld::startGame(float dt){
-	//scheduleUpdate();
-	//schedule(schedule_selector(HelloWorld::addBar), 2);
+
 	m_pUp->setVisible(false);
 	m_pHand->setVisible(false);
 	m_pLeftTap->setVisible(false);
@@ -136,7 +135,7 @@ void HelloWorld::startGame(float dt){
 	m_pReady->setVisible(false);
 	m_istatus=RUNNING;
 	//scheduleUpdate();
-	//schedule(schedule_selector(HelloWorld::addBar), 2);
+	schedule(schedule_selector(HelloWorld::addBar), 2);
 	//goReady();
 }
 
@@ -167,6 +166,7 @@ void HelloWorld::stopGame(){
 	m_pTop->runAction(actionTo);
 	m_pTop->setVisible(true);
 	m_istatus=GAMEOVER;
+	addScoreNum(this->testnum);
 }
 
 void HelloWorld::initWorld(){
@@ -185,6 +185,19 @@ void HelloWorld::addNumberNode()
 
 }  
 
+
+void HelloWorld::addScoreNum(int num)  
+{  
+	ShowNumberNode * snn = ShowNumberNode::CreateShowNumberNode("menu_num_white.png", 923, 9/mfac, 18/mfac  );  
+
+	float xpos=m_pScore->boundingBox().getMaxX()-m_pScore->boundingBox().getMinX()-45;
+	float ypos=m_pScore->boundingBox().getMaxY()-m_pScore->boundingBox().getMinY()-45;
+	snn->f_ShowNumber(num);  
+	snn->setPosition(ccp(xpos,ypos));  
+	m_pScore->addChild(snn,5,0);  
+	//schedule(schedule_selector(HelloWorld::logic), 2.0f);  
+
+}  
 void HelloWorld::logic(float dt)
 {
 	ShowNumberNode * snn = (ShowNumberNode *)this->getChildByTag(0);

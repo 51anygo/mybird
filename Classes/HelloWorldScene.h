@@ -107,6 +107,7 @@ private:
 	void initAction();
 	void logic(float dt);
 	void addNumberNode();
+	void addScoreNum(int num);
     void addBird();
 	void addScore();
 	void addGameOver();

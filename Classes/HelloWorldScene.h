@@ -30,6 +30,9 @@
 #include "cocos2d.h"
 #include "Box2D/Box2D.h"
 #include "B2Sprite.h"
+#include "CCShake.h"
+#include "ShowNumberNode.h"
+#include "CCFileUtils.h"
 
 #define RATIO 32.0f // 比例 48
 #define SPRITE_TAG_BAR 0x01
@@ -42,7 +45,7 @@
 #define MOVESPEED 2
 #define gUpVelocity 13
 #define gDownVelocity -26
-#define gBardis 3
+#define gBardis 3.6
 #define gBirdX  1/2
 #define gBirdY  1/2
 
@@ -74,6 +77,7 @@ public:
     ////////////////////////////////////////////////////
     // 下面添加自己的代码
     ////////////////////////////////////////////////////
+	CCSize mgroundSize;
     int myflag;
 	int myangle;
 	int testnum;
@@ -85,6 +89,7 @@ public:
 	float startY;
 	float topX;
 	float topY;
+	int myscore;
 	map<CCSprite *,int> mapbar;
     b2World     *mWorld;                // box2D world
     B2Sprite    *mBird;                 // bird的sprite
@@ -95,6 +100,7 @@ public:
     CCSprite    *m_pBackGround[GBACKGROUNDNUM];
 	CCSprite    *m_pScore,*m_pRate,*m_pStart,*m_pTop,*m_pFlappyBird,*m_pGameOver;
 	CCSprite    *m_pHand,*m_pUp,*m_pLeftTap,*m_pRightTap,*m_pReady,*m_pGBird;
+	int			m_bestscore;
 	int          m_igroundnum;
 	int          m_ilastground;
 	RUNSTAT      m_istatus; //0准备 1开始 2结束
@@ -102,12 +108,13 @@ public:
     virtual void BeginContact(b2Contact* contact);
     virtual void update(float dt);
 
-    
+    void ScoreSchedule(float dt);
 private:
+	ShowNumberNode * msnn;
 	void initAction();
 	void logic(float dt);
 	void addNumberNode();
-	void addScoreNum(int num);
+	//void addScoreNum(int num);
     void addBird();
 	void addScore();
 	void addGameOver();
@@ -129,6 +136,9 @@ private:
     void addBarContainer();
     void startGame(float dt);
     void stopGame();
+	void addGold();
+	void addSilver();
+	void addBestScore();
 	
     
 };

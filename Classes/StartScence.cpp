@@ -66,7 +66,7 @@ bool Start::init()
 	CCRect rcBounding = m_pFlappyBird->boundingBox();
 	float fFlappyBirdHeight=rcBounding.size.height/2.0f;
 	float xpos=mScreenSize.width/2;
-	float ypos=mScreenSize.height/2+fFlappyBirdHeight+30;
+	float ypos=mScreenSize.height*3/4+20;
 
 	m_pFlappyBird->setPosition(ccp(xpos,  ypos));    // 设置在屏幕中间  
 	this->addChild(m_pFlappyBird);  
@@ -84,7 +84,7 @@ bool Start::init()
 	initAction();
 	scheduleUpdate();
 	
-	CCActionInterval*  actionTo = CCMoveBy::create(0.5, ccp(0, 15));
+	CCActionInterval*  actionTo = CCMoveBy::create(0.5, ccp(0, 10));
 	CCActionInterval*  actionByBack = actionTo->reverse();
 
 	tbBird->runAction(CCRepeatForever::create(CCSequence::create( actionTo,actionByBack,NULL)));

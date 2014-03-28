@@ -13,6 +13,7 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
                    ../../Classes/AppDelegate.cpp \
                    ../../Classes/B2Sprite.cpp \
                    ../../Classes/CCFileUtils.cpp \
+                   ../../Classes/CCShake.cpp \
                    ../../Classes/StartScence.cpp \
                    ../../Classes/HelloWorldScene.cpp
 

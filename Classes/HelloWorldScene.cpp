@@ -25,7 +25,7 @@ THE SOFTWARE.
 #include "HelloWorldScene.h"
 
 #include "SGPlayMusic.h"
-
+#include <stdlib.h> 
 USING_NS_CC;
 //clone Flappy Bird
 //http://comandobueiro.com.br/flappy-bird-clone-com-appcelerator-e-lanica.html
@@ -743,7 +743,8 @@ void HelloWorld::BeginContact(b2Contact *contact){
 			{
 				m_bestscore = testnum;
 				char str[10];
-				itoa(testnum,str,10);
+				char   temp[256];   
+				sprintf(str,"%d",testnum); 
 				TDInvFileUtils::saveFile(str,"score.abc");
 			}
 			else
@@ -756,7 +757,7 @@ void HelloWorld::BeginContact(b2Contact *contact){
 		{
 			m_bestscore = testnum;
 			char str[10];
-			itoa(testnum,str,10);
+			sprintf(str,"%d",testnum); 
 			TDInvFileUtils::saveFile(str,"score.abc");
 		}
 		

@@ -12,6 +12,8 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
                    ../../Classes/SGPlayMusic.cpp \
                    ../../Classes/AppDelegate.cpp \
                    ../../Classes/B2Sprite.cpp \
+                   ../../Classes/CCFileUtils.cpp \
+                   ../../Classes/StartScence.cpp \
                    ../../Classes/HelloWorldScene.cpp
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes

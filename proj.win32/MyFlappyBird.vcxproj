@@ -128,6 +128,8 @@ xcopy /Y /Q "$(ProjectDir)..\..\..\external\libwebsockets\win32\lib\*.*" "$(OutD
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Classes\CCFileUtils.cpp" />
+    <ClCompile Include="..\Classes\CCShake.cpp" />
     <ClCompile Include="..\Classes\ShowNumberNode.cpp" />
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
     <ClCompile Include="..\Classes\B2Sprite.cpp" />

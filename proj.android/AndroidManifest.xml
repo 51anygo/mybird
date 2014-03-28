@@ -10,9 +10,10 @@
 
     <application android:label="@string/app_name"
         android:icon="@drawable/icon">
-
+               <!--  landscape  portrait-->
         <activity android:name=".MyFlappyBird"
                   android:label="@string/app_name"
+  
                   android:screenOrientation="portrait"
                   android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
                   android:configChanges="orientation">

@@ -33,7 +33,7 @@ USING_NS_CC;
 //图片去底
 //http://www.2gei.com/bgremover
 
-
+float gBardis ;
 
 
 CCScene* HelloWorld::scene()
@@ -67,7 +67,9 @@ bool HelloWorld::init()
 	////////////////////////////////////////////////////
 
 	mScreenSize = CCDirector::sharedDirector()->getWinSize();
+	gBardis = mScreenSize.height/4.0f;
 	mfac=CCDirector::sharedDirector()->getContentScaleFactor();
+	mfax = 320/mScreenSize.width;
 	initWorld();	
 	for (int i = 0; i<GBACKGROUNDNUM; i++)
 	{
@@ -137,18 +139,18 @@ void HelloWorld::startGame(float dt){
 	m_istatus=RUNNING;
 	myscore=-1;
 	//scheduleUpdate();
-	schedule(schedule_selector(HelloWorld::addBar), 2);
+	schedule(schedule_selector(HelloWorld::addBar),gAddBarTime);
 	//goReady();
 }
 
 void HelloWorld::stopGame(){
 
 	msnn = ShowNumberNode::CreateShowNumberNode("menu_num.png", 923, 22/mfac, 30/mfac  ); 
-	float xpos=m_pScore->boundingBox().getMaxX()-m_pScore->boundingBox().getMinX()-45;
-	float ypos=m_pScore->boundingBox().getMaxY()-m_pScore->boundingBox().getMinY()-45;
+	float xpos=m_pScore->boundingBox().getMaxX()-m_pScore->boundingBox().getMinX()-45/mfac;
+	float ypos=m_pScore->boundingBox().getMaxY()-m_pScore->boundingBox().getMinY()-45/mfac;
 	if (testnum>=10)
 	{
-		xpos = 192;
+		xpos = 192/mfac;
 	}
 	msnn->setPosition(ccp(xpos,ypos));  
 	m_pScore->addChild(msnn,5,0);  
@@ -161,12 +163,10 @@ void HelloWorld::stopGame(){
 	unschedule(schedule_selector(HelloWorld::addBar));
 	m_pGameOver->setVisible(false);
 	m_pGameOver->setPosition(ccp(gameoverX,gameoverY));
-	m_pGameOver->setVisible(false);
 	CCActionInterval*  actionFade= CCFadeIn::create(1);
 	m_pGameOver->setVisible(true);
 	m_pScore->setVisible(true);
-	m_pStart->setVisible(true);
-	m_pTop->setVisible(true);
+
 	//CCActionInterval*  actionFadeBack= actionFade->reverse();
 	//m_pGameOver->runAction(CCSequence::create(actionFade,actionFadeBack,NULL));
 	//m_pGameOver->runAction(actionFade);
@@ -191,7 +191,7 @@ void HelloWorld::stopGame(){
 	m_pTop->setPosition(ccp(topX,0));
 	actionTo = CCMoveBy::create(0.5, ccp(0, topY));
 	m_pTop->runAction(actionTo);*/
-	m_pTop->setVisible(true);
+	//m_pTop->setVisible(true);
 	m_istatus=GAMEOVER;
 	if (testnum>=5)
 	{
@@ -204,6 +204,22 @@ void HelloWorld::stopGame(){
 	addBestScore();
 	//addScoreNum(this->testnum);
 }
+
+
+void HelloWorld::addBestScore()  
+{  
+	ShowNumberNode *snn = ShowNumberNode::CreateShowNumberNode("menu_num.png", 923, 22/mfac, 30/mfac  ); 
+	snn->f_ShowNumber(m_bestscore); 
+	if (m_bestscore>=10)
+	{
+		snn->setPosition(ccp(192/mfac,30/mfac));
+	}
+	else
+		snn->setPosition(ccp(184/mfac,30/mfac));  
+	m_pScore->addChild(snn,5,0);    
+	//schedule(schedule_selector(HelloWorld::logic), 2.0f);  
+
+}  
 
 void HelloWorld::initWorld(){
 	mWorld = new b2World(b2Vec2(0, gDownVelocity));
@@ -224,7 +240,7 @@ void HelloWorld::addNumberNode()
 
 void HelloWorld::addGold() {
 	CCSprite *m_gold= CCSprite::create("gold.jpg");     
-	m_gold->setPosition(ccp(49,51));  
+	m_gold->setPosition(ccp(49/mfac,51/mfac));  
 	m_pScore->addChild(m_gold,5,0);  
 	
 	
@@ -234,24 +250,11 @@ void HelloWorld::addGold() {
 
 void HelloWorld::addSilver() {
 	CCSprite *m_silver= CCSprite::create("silver.jpg");     
-	m_silver->setPosition(ccp(49,51));  
+	m_silver->setPosition(ccp(49/mfac,51/mfac));  
 	m_pScore->addChild(m_silver,5,0); 
 }
 
-void HelloWorld::addBestScore()  
-{  
-	ShowNumberNode *snn = ShowNumberNode::CreateShowNumberNode("menu_num.png", 923, 22/mfac, 30/mfac  ); 
-	snn->f_ShowNumber(m_bestscore); 
-	if (m_bestscore>=10)
-	{
-		snn->setPosition(ccp(192,30));
-	}
-	else
-		snn->setPosition(ccp(184,30));  
-	m_pScore->addChild(snn,5,0);    
-	//schedule(schedule_selector(HelloWorld::logic), 2.0f);  
 
-}  
 
 
 void HelloWorld::ScoreSchedule(float dt)  
@@ -268,6 +271,8 @@ void HelloWorld::ScoreSchedule(float dt)
 	else
 	{
 		unschedule(schedule_selector(HelloWorld::ScoreSchedule));
+		m_pStart->setVisible(true);
+		m_pTop->setVisible(true);
 	}
 	//snn->setPosition(ccp(xpos,ypos));  
 	//m_pScore->addChild(snn,5,0);  
@@ -381,7 +386,7 @@ void HelloWorld::addGameOver() {
 	CCRect rcBounding = m_pGameOver->boundingBox();
 	float fGameOverHeight=rcBounding.size.height/2.0f;
 	gameoverX=mScreenSize.width/2;
-	gameoverY=mScreenSize.height*3/4+25;
+	gameoverY=mScreenSize.height*3/4+25/mfac;
 
 	m_pGameOver->setPosition(ccp(gameoverX,  gameoverY));    // 设置在屏幕中间  
 	this->addChild(m_pGameOver, SPRITE_TAG_OVER);  
@@ -394,7 +399,7 @@ void HelloWorld::addScore() {
 	CCRect rcBounding = m_pScore->boundingBox();
 	float fScoreHeight=rcBounding.size.height/2.0f;
 	scoreX=mScreenSize.width/2;
-	scoreY=startY+fScoreHeight+50;
+	scoreY=startY+fScoreHeight+50/mfac;
 
 	m_pScore->setPosition(ccp(scoreX,  scoreY));    // 设置在屏幕中间  
 	this->addChild(m_pScore, SPRITE_TAG_OVER);  
@@ -433,7 +438,7 @@ void HelloWorld::addGBird() {
 	CCRect rcBounding = m_pGBird->boundingBox();
 	float fHeight=rcBounding.size.height/2.0f;
 	float xpos=mScreenSize.width/2;
-	float ypos=m_pUp->boundingBox().getMaxY()+fHeight+20.f;
+	float ypos=mScreenSize.height/2;
 
 	m_pGBird->setPosition(ccp(xpos,  ypos));    // 设置在屏幕中间  
 	this->addChild(m_pGBird, SPRITE_TAG_OVER);  
@@ -559,7 +564,7 @@ void HelloWorld::addBarContainer() {
 
 //容器中放柱子
 void HelloWorld::addBar(float dt){
-	float offset = -rand()%6;
+	float offset = -rand()%6/mfac;
 	float speed = 0;
 	// 下面的柱子
 	B2Sprite *downBar = B2Sprite::create("down_bar.png");
@@ -595,7 +600,7 @@ void HelloWorld::addBar(float dt){
 	b2BodyDef upBarBodyDef;
 	upBarBodyDef.type = b2_kinematicBody;
 	upBarBodyDef.position = b2Vec2(mScreenSize.width/RATIO+2,
-		downBarSize.height/RATIO+offset+gBardis+upBarSize.height/2/RATIO);
+		downBarSize.height/RATIO+offset+gBardis/RATIO+upBarSize.height/2/RATIO);
 	upBarBodyDef.linearVelocity = b2Vec2(speed, 0);
 	b2Body *upBarDody = mWorld->CreateBody(&upBarBodyDef);
 	b2PolygonShape upBarShape;
@@ -616,7 +621,7 @@ void HelloWorld::update(float dt){
 		int lastgroud=-1;
 		for (int i=0; i<m_pGroundVec.size(); i++)
 		{
-			m_pGroundVec[i]->setPositionX(m_pGroundVec[i]->getPositionX() - MOVESPEED);
+			m_pGroundVec[i]->setPositionX(m_pGroundVec[i]->getPositionX() - MOVESPEED/mfax);
 			CCRect rcGroundBounding = m_pGroundVec[i]->boundingBox(); 
 			if (rcGroundBounding.getMaxX()<=0)
 			{
@@ -647,7 +652,7 @@ void HelloWorld::update(float dt){
 	else
 	{
 		if(mBird->getRotation() > -91)
-			mBird->setRotation(mBird->getRotation()-2);
+			mBird->setRotation(mBird->getRotation()-2.5);
 	}
 	if(myflag==1)
 	{
@@ -688,8 +693,8 @@ void HelloWorld::update(float dt){
 			}
 			//CCLOG("bird x:%f guan x:%f ", mBird->getPositionX(),s->getPositionX());
 
-			s->setPositionX(s->getPositionX() - MOVESPEED);
-			if(s->getPositionX() < -20){
+			s->setPositionX(s->getPositionX() - MOVESPEED/mfax);
+			if(s->getPositionX() < -20/mfac){
 				s->setVisible(false);
 				toDestroy.push_back(b);
 				//s->removeFromParent();					
@@ -766,7 +771,7 @@ void HelloWorld::BeginContact(b2Contact *contact){
 //#else   
 		 
 //#endif  
-		
+		//Sleep(1000);
 		stopGame();
 
 	}
@@ -827,7 +832,7 @@ void HelloWorld::ccTouchesBegan(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEve
 	//MUSIC_PLAY(MUSIC_JUMP);
 	//播放子弹射出去的声音
 	//CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect(MUSIC_JUMP);
-	mBird->getB2Body()->SetLinearVelocity(b2Vec2(0.0f, 10.0f));
+	mBird->getB2Body()->SetLinearVelocity(b2Vec2(0.0f, gUpVelocity/mfac));
 	mBird->setRotation(0);
 	myangle=0;
 

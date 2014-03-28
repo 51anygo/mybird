@@ -43,9 +43,10 @@
 #define GGROUNDNUM 5
 #define GBACKGROUNDNUM 3
 #define MOVESPEED 2
-#define gUpVelocity 13
-#define gDownVelocity -26
-#define gBardis 3.6
+#define gDownVelocity -18
+#define gUpVelocity 8
+#define gAddBarTime 2
+
 #define gBirdX  1/2
 #define gBirdY  1/2
 
@@ -95,6 +96,7 @@ public:
     B2Sprite    *mBird;                 // bird的sprite
     CCSize      mScreenSize;           // 屏幕尺寸
 	float       mfac;
+	float		mfax;
     CCSprite    *mBarContainer;         //
 	vector<B2Sprite*> m_pGroundVec;
     CCSprite    *m_pBackGround[GBACKGROUNDNUM];

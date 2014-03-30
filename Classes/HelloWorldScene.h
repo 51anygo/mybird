@@ -58,7 +58,11 @@ enum RUNSTAT{
 	GAMEOVER
 };
 
-
+typedef struct VECPOINT{
+   
+    float x;
+    float y;
+}VPOINT;
 
 class HelloWorld: public cocos2d::CCLayer,
 public b2ContactListener

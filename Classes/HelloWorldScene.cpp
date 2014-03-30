@@ -32,7 +32,7 @@ USING_NS_CC;
 //http://lanica.co/flappy-clone/
 //图片去底
 //http://www.2gei.com/bgremover
-
+//android key good@bird
 float gBardis ;
 
 
@@ -111,7 +111,7 @@ bool HelloWorld::init()
 	this->scheduleUpdate();
 	//创建动画
 	initAction();
-
+	myangle=0;
 	return true;
 }
 
@@ -497,8 +497,9 @@ void HelloWorld::addRightTap() {
 	this->addChild(m_pRightTap, SPRITE_TAG_OVER);  
 
 }
-
-
+//喵汪大战 http://www.netfoucs.com/article/iamlazybone/59841.html
+//不规则碰撞
+//http://codingnow.cn/cocos2d-x/1424.html
 void HelloWorld::addBird(){
 	mBird = B2Sprite::create("bird.png");
 
@@ -511,17 +512,35 @@ void HelloWorld::addBird(){
 
 	// 碰撞
 	CCSize birdSize = mBird->getContentSize();
+	 int num = 8;
+  //顶点数组在windows使用PointHelper制作。
+	VPOINT birdVec[]= {	
+		{-17.300120544433593, -1.5165861129760743},
+		{-4.952079391479492, -11.931890869140625},
+		{13.301547241210937, -9.999153900146485},
+		{16.844898986816407, -3.0198259353637695},
+		{9.11395034790039, 10.401958465576172},
+		{-3.770962142944336, 12.442070007324219},
+		{-11.39453582763672, 8.361846923828125},
+		{-15.260009765625, 4.4963733673095705}
+	};
+	b2Vec2* pVert= new b2Vec2[num] ;
+	for(int i=0;i<num;i++)
+	{
+		pVert[i]=b2Vec2(birdVec[i].x/mfax / RATIO, birdVec[i].y/mfac / RATIO);
+	}
 	b2PolygonShape birdShape;
-	birdShape.SetAsBox(birdSize.width/2.0f/RATIO, birdSize.height/2.0f/RATIO); // 半宽，半高
-
+	//birdShape.SetAsBox(birdSize.width/2.0f/RATIO, birdSize.height/2.0f/RATIO); // 半宽，半高
+	birdShape.Set(pVert, num);
 	b2FixtureDef birdFixtureDef;
 	birdFixtureDef.shape = &birdShape;
 	birdFixtureDef.filter.maskBits = 0x0006;
 	birdBody->CreateFixture(&birdFixtureDef);
-
 	mBird->setPTMRatio(RATIO);
 	mBird->setB2Body(birdBody);
+	//mBird->setAnchorPoint(ccp(pVert[3].x/mfax/ RATIO,pVert[3].y/mfac / RATIO));
 	addChild(mBird,4);
+	delete []pVert;
 
 }
 //1 2 4 6
@@ -651,8 +670,8 @@ void HelloWorld::update(float dt){
 			moveposx+=m_pGroundVec[lastgroud]->getContentSize().width/2.;
 			m_pGroundVec[lastgroud]->setPositionX(moveposx);
 			m_ilastground=lastgroud;
-			CCLOG("win x:%f,Ground x:%f,mfac:%f,index=%d ",this->mScreenSize.width,
-				moveposx,mfac,m_ilastground);
+			//CCLOG("win x:%f,Ground x:%f,mfac:%f,index=%d ",this->mScreenSize.width,
+			//	moveposx,mfac,m_ilastground);
 		}
 		
 	}
@@ -661,15 +680,25 @@ void HelloWorld::update(float dt){
 	}
 	//重力响应
 	mWorld->Step(dt, 8, 3); // 8和3为官方推荐数据
-	if (myangle++<25)
+	myangle+=1.0f;
+	if (myangle<25)
 	{
+
 		mBird->setRotation(myangle);
 	}
 	else
 	{
+		 if (mBird->getRotation() < 10.f && mBird->getRotation() > -85.f)
+		{
+			mBird->setRotation(mBird->getRotation()-6.50f);
+		}
+
 		if(mBird->getRotation() > -91)
-			mBird->setRotation(mBird->getRotation()-2.5);
+			mBird->setRotation(mBird->getRotation()-2.5f);
 	}
+	
+
+	CCLOG("bird angle:%0.2f,myangle:%0.2f ",mBird->getRotation(),myangle);
 	if(myflag==1)
 	{
 		mBird->setRotation(-90);

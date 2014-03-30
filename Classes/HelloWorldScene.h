@@ -38,14 +38,15 @@
 #define SPRITE_TAG_BAR 0x01
 #define SPRITE_TAG_SCORE 0x02
 #define SPRITE_TAG_GROUND 0x03
-#define SPRITE_TAG_CHAR   0x04
-#define SPRITE_TAG_OVER   0x05
+#define SPRITE_TAG_BIRD   0x04
+#define SPRITE_TAG_CHAR   0x06
+#define SPRITE_TAG_OVER   0x07
 #define GGROUNDNUM 5
 #define GBACKGROUNDNUM 3
 #define MOVESPEED 2
-#define gDownVelocity -18
-#define gUpVelocity 8
-#define gAddBarTime 2
+#define gDownVelocity -35
+#define gUpVelocity 10
+#define gAddBarTime 1.5
 
 #define gBirdX  1/2
 #define gBirdY  1/2
@@ -91,10 +92,13 @@ public:
 	float topX;
 	float topY;
 	int myscore;
+	bool m_bhitbar;
+	float		m_addbartime;
 	map<CCSprite *,int> mapbar;
     b2World     *mWorld;                // box2D world
     B2Sprite    *mBird;                 // bird的sprite
     CCSize      mScreenSize;           // 屏幕尺寸
+	float       mFPS;
 	float       mfac;
 	float		mfax;
     CCSprite    *mBarContainer;         //

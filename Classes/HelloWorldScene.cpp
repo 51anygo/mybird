@@ -60,6 +60,7 @@ bool HelloWorld::init()
 	{
 		return false;
 	}
+	EFFECT_PLAY(true,MUSIC_SWOOSHING);
 	//播放背景音乐
 	// CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic(MUSIC_JUMP, true);
 	////////////////////////////////////////////////////
@@ -67,9 +68,14 @@ bool HelloWorld::init()
 	////////////////////////////////////////////////////
 
 	mScreenSize = CCDirector::sharedDirector()->getWinSize();
-	gBardis = mScreenSize.height/4.0f;
+	mFPS=CCDirector::sharedDirector()->getAnimationInterval();
+	
+
 	mfac=CCDirector::sharedDirector()->getContentScaleFactor();
-	mfax = 320/mScreenSize.width;
+	mfax = 320.f/mScreenSize.width;
+	//gBardis = 5.f*gUpVelocity/mfac;
+	gBardis = mScreenSize.height*2.f/9.0f;
+	m_addbartime=mScreenSize.width*mFPS*mfax*1.f/2.f/MOVESPEED;
 	initWorld();	
 	for (int i = 0; i<GBACKGROUNDNUM; i++)
 	{
@@ -96,15 +102,16 @@ bool HelloWorld::init()
 	m_pGameOver->setVisible(false);
 	this->goReady();
 	addBarContainer();
-	//计分板
-	addNumberNode();
+
 	setTouchEnabled(true);
 	myflag=0;
 	m_istatus=GETREADY;
+	m_bhitbar=false;
 	//scheduleOnce(schedule_selector(HelloWorld::startGame), 1);
 	this->scheduleUpdate();
 	//创建动画
 	initAction();
+
 	return true;
 }
 
@@ -121,8 +128,10 @@ void HelloWorld::goReady(){
 	addUp();
 	addGBird();
 	addReady();
+	//计分板
+	addNumberNode();
 	float fupx=m_pLeftTap->boundingBox().getMinX();
-	float fupy=m_pUp->getPositionY();
+	float fupy=m_pUp->boundingBox().getMaxY();
 	mBird->setPosition(ccp(fupx,fupy));
   
 }
@@ -136,10 +145,14 @@ void HelloWorld::startGame(float dt){
 	m_pRightTap->setVisible(false);
 	m_pGBird->setVisible(false);
 	m_pReady->setVisible(false);
+
 	m_istatus=RUNNING;
 	myscore=-1;
+
 	//scheduleUpdate();
-	schedule(schedule_selector(HelloWorld::addBar),gAddBarTime);
+	//schedule(schedule_selector(HelloWorld::addBar),gAddBarTime*1.0/mfac);
+	//每半个屏就放一对柱子
+	schedule(schedule_selector(HelloWorld::addBar),this->m_addbartime);
 	//goReady();
 }
 
@@ -154,7 +167,7 @@ void HelloWorld::stopGame(){
 	}
 	msnn->setPosition(ccp(xpos,ypos));  
 	m_pScore->addChild(msnn,5,0);  
-	mBird->setVisible(false);
+	//mBird->setVisible(false);
 	ShowNumberNode * snn = (ShowNumberNode *)this->getChildByTag(0);
 	snn->setVisible(false);
 	schedule(schedule_selector(HelloWorld::ScoreSchedule),0.05);
@@ -222,7 +235,7 @@ void HelloWorld::addBestScore()
 }  
 
 void HelloWorld::initWorld(){
-	mWorld = new b2World(b2Vec2(0, gDownVelocity));
+	mWorld = new b2World(b2Vec2(0, gDownVelocity*1.0/mfac));
 	mWorld->SetContactListener(this);
 }
 //http://blog.csdn.net/farsa/article/details/9430155
@@ -231,7 +244,10 @@ void HelloWorld::addNumberNode()
 	testnum=0;
 	ShowNumberNode *snn = ShowNumberNode::CreateShowNumberNode("menu_num.png", 923, 22/mfac, 30/mfac  ); 
 	snn->f_ShowNumber(testnum);  
-	snn->setPosition(ccp(mScreenSize.width/2,mScreenSize.height-50));  
+	float xpos=mScreenSize.width/2.0f;
+	float ypos=m_pReady->boundingBox().getMaxY()+20.f/mfax;
+	//float ypos=mScreenSize.height*5/7.0f;
+	snn->setPosition(ccp(xpos,ypos));  
 	this->addChild(snn,5,0);  
 	//schedule(schedule_selector(HelloWorld::logic), 2.0f);  
 
@@ -241,7 +257,7 @@ void HelloWorld::addNumberNode()
 void HelloWorld::addGold() {
 	CCSprite *m_gold= CCSprite::create("gold.jpg");     
 	m_gold->setPosition(ccp(49/mfac,51/mfac));  
-	m_pScore->addChild(m_gold,5,0);  
+	m_pScore->addChild(m_gold,SPRITE_TAG_BIRD,0);  
 	
 	
 
@@ -386,7 +402,7 @@ void HelloWorld::addGameOver() {
 	CCRect rcBounding = m_pGameOver->boundingBox();
 	float fGameOverHeight=rcBounding.size.height/2.0f;
 	gameoverX=mScreenSize.width/2;
-	gameoverY=mScreenSize.height*3/4+25/mfac;
+	gameoverY=mScreenSize.height*3/4+25.f/mfac;
 
 	m_pGameOver->setPosition(ccp(gameoverX,  gameoverY));    // 设置在屏幕中间  
 	this->addChild(m_pGameOver, SPRITE_TAG_OVER);  
@@ -426,7 +442,7 @@ void HelloWorld::addReady() {
 	CCRect rcBounding = m_pReady->boundingBox();
 	float fHeight=rcBounding.size.height/2.0f;
 	float xpos=mScreenSize.width/2;
-	float ypos=mScreenSize.height*3/4+20;
+	float ypos=mScreenSize.height*3/4+20.f/mfac;
 
 	m_pReady->setPosition(ccp(xpos,  ypos));    // 设置在屏幕中间  
 	this->addChild(m_pReady, SPRITE_TAG_OVER);  
@@ -438,7 +454,7 @@ void HelloWorld::addGBird() {
 	CCRect rcBounding = m_pGBird->boundingBox();
 	float fHeight=rcBounding.size.height/2.0f;
 	float xpos=mScreenSize.width/2;
-	float ypos=mScreenSize.height/2;
+	float ypos=m_pUp->boundingBox().getMaxY()+fHeight+20.f/mfac;
 
 	m_pGBird->setPosition(ccp(xpos,  ypos));    // 设置在屏幕中间  
 	this->addChild(m_pGBird, SPRITE_TAG_OVER);  
@@ -449,7 +465,7 @@ void HelloWorld::addUp() {
 	CCRect rcBounding = m_pUp->boundingBox();
 	float fHeight=rcBounding.size.height/2.0f;
 	float xpos=mScreenSize.width/2;
-	float ypos=m_pHand->boundingBox().getMaxY()+fHeight+30.f;
+	float ypos=m_pHand->boundingBox().getMaxY()+fHeight+30.f/mfac;
 
 	m_pUp->setPosition(ccp(xpos,  ypos));    // 设置在屏幕中间  
 	this->addChild(m_pUp, SPRITE_TAG_OVER);  
@@ -461,7 +477,7 @@ void HelloWorld::addLeftTap() {
 	CCRect rcBounding = m_pLeftTap->boundingBox();
 	float fwidth=rcBounding.size.width/2.0f;
 	float fHeight=rcBounding.size.height/2.0f;
-	float xpos=mScreenSize.width/2.0f-fwidth-20.f;
+	float xpos=mScreenSize.width/2.0f-fwidth-20.f/mfac;
 	float ypos=m_pHand->boundingBox().getMaxY()+fHeight;
 
 	m_pLeftTap->setPosition(ccp(xpos,  ypos));    // 设置在屏幕中间   
@@ -474,7 +490,7 @@ void HelloWorld::addRightTap() {
 	CCRect rcBounding = m_pRightTap->boundingBox();
 	float fwidth=rcBounding.size.width/2.0f;
 	float fHeight=rcBounding.size.height/2.0f;
-	float xpos=mScreenSize.width/2.0f+fwidth+20.f;
+	float xpos=mScreenSize.width/2.0f+fwidth+20.f/mfac;
 	float ypos=m_pHand->boundingBox().getMaxY()+fHeight;
 
 	m_pRightTap->setPosition(ccp(xpos,  ypos));    // 设置在屏幕中间  
@@ -659,6 +675,11 @@ void HelloWorld::update(float dt){
 		mBird->setRotation(-90);
 		return;
 	}
+	//禁止小鸟越过屏幕高度
+	if(mBird->getPositionY()>mScreenSize.height)
+	{
+		mBird->setPositionY(mScreenSize.height);
+	}
 	/*for (int i=0; i<gbackgroundNum; i++)
 	{
 	m_pBackGround[i]->setPositionX(m_pBackGround[i]->getPositionX() - 1); 
@@ -690,6 +711,7 @@ void HelloWorld::update(float dt){
 				snn->f_ShowNumber(++testnum);
 				itbar->second=1;
 				mapbar.erase(itbar);
+				EFFECT_PLAY(true,MUSIC_POINT);
 			}
 			//CCLOG("bird x:%f guan x:%f ", mBird->getPositionX(),s->getPositionX());
 
@@ -772,7 +794,16 @@ void HelloWorld::BeginContact(b2Contact *contact){
 		 
 //#endif  
 		//Sleep(1000);
+		if(!m_bhitbar)
+		{
+			EFFECT_PLAY(true,MUSIC_HIT);
+		}
+		else
+		{
+			EFFECT_PLAY(true,MUSIC_DIE);
+		}
 		stopGame();
+
 
 	}
 	if(p == mBird || p == mBird){
@@ -782,6 +813,8 @@ void HelloWorld::BeginContact(b2Contact *contact){
 		myfilter.maskBits=0x0002;
 		mBird->getB2Body()->GetFixtureList()->SetFilterData(myfilter);
 		m_istatus=GAMEOVER;
+		m_bhitbar=true;
+		EFFECT_PLAY(true,MUSIC_HIT);
 		//stopGame();
 		// CCMessageBox("Game Over!", "Game Over!");
 	}
@@ -828,7 +861,7 @@ void HelloWorld::ccTouchesBegan(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEve
 	{
 		return;
 	}
-	EFFECT_PLAY(true,MUSIC_JUMP);
+	EFFECT_PLAY(true,MUSIC_WING);
 	//MUSIC_PLAY(MUSIC_JUMP);
 	//播放子弹射出去的声音
 	//CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect(MUSIC_JUMP);

@@ -137,10 +137,10 @@ void Start::update(float dt){
 	{
 		pGround[i]->setPositionX(pGround[i]->getPositionX() - 3);
 		CCRect rcGroundBounding = pGround[i]->boundingBox(); 
-		if (rcGroundBounding.getMaxX()<=0)
+		if (rcGroundBounding.getMaxX()<=-1)
 		{
 			int groundsize = pGround[i]->getContentSize().width;
-			pGround[i]->setPositionX(groundsize/2 + (ggroundNum-1)*groundsize);
+			pGround[i]->setPositionX(mScreenSize.width+groundsize);
 		}
 	}
 

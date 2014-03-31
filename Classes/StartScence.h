@@ -53,7 +53,7 @@ public:
 	void tbtopCallback(CCObject * pSender);
 
 private:
-
+	CCSize mScreenSize;
 	CCSprite *tbBird;
 	CCSprite *pGround[ggroundNum];
 };

@@ -171,7 +171,7 @@ void HelloWorld::stopGame(){
 	ShowNumberNode * snn = (ShowNumberNode *)this->getChildByTag(0);
 	snn->setVisible(false);
 	//schedule(schedule_selector(HelloWorld::ScoreSchedule),0.05);
-
+	mBird->stopAllActions();
 	unscheduleUpdate();
 	unschedule(schedule_selector(HelloWorld::addBar));
 	m_pGameOver->setVisible(false);
@@ -187,10 +187,12 @@ void HelloWorld::stopGame(){
 	//m_pGameOver->setVisible(true);
 	//动画效果 http://www.cocos2dev.com/?p=72
 	scheduleOnce(schedule_selector(HelloWorld::MoveGameOver), 1);	
+	
+	//scheduleOnce(schedule_selector(HelloWorld::MoveStart), 2.5);
+	//scheduleOnce(schedule_selector(HelloWorld::MoveTop), 2.5);
+	scheduleOnce(schedule_selector(HelloWorld::MoveScoreAdd), 1);
 	scheduleOnce(schedule_selector(HelloWorld::MoveScore), 2);
-	scheduleOnce(schedule_selector(HelloWorld::MoveStart), 2.5);
-	scheduleOnce(schedule_selector(HelloWorld::MoveTop), 2.5);
-	scheduleOnce(schedule_selector(HelloWorld::MoveScoreAdd), 3.5);
+	
 	m_istatus=GAMEOVER;
 	
 	//addScoreNum(this->testnum);
@@ -212,6 +214,7 @@ void HelloWorld::MoveGameOver(float dt)
 	//http://5.quanpao.com/?p=274
 	CCActionInterval* actionShake=CCRepeat::create((CCActionInterval*)action,2);
 	m_pGameOver->stopAllActions();
+	EFFECT_PLAY(true,MUSIC_SWOOSHING);
 	m_pGameOver->runAction(actionShake);
 
 	/*CCBSequence *seq = getSequence(nSeqId);
@@ -225,26 +228,30 @@ void HelloWorld::MoveGameOver(float dt)
 
 void HelloWorld::MoveScoreAdd(float dt)  
 {  
-	schedule(schedule_selector(HelloWorld::ScoreSchedule),0.05);
-	if (testnum>=5)
+	
+	addBestScore();
+	if (testnum>=15)
 	{
 		addGold();
 	}
-	else if (testnum>=3)
+	else if (testnum>=10)
 	{
 		addSilver();
 	}
-	addBestScore();
+	
 }
 
 void HelloWorld::MoveScore(float dt)  
 {  
+	schedule(schedule_selector(HelloWorld::ScoreSchedule),0.1);
 	msnn->f_ShowNumber(0);
 	float fmovetime=0.2;
 	m_pScore->setPosition(ccp(scoreX,0));
 	CCActionInterval* actionTo = CCMoveTo::create(fmovetime, ccp(scoreX, scoreY));
+	EFFECT_PLAY(true,MUSIC_SWOOSHING);
 	m_pScore->runAction(actionTo);
 	m_pScore->setVisible(true);
+	
 }
 
 void HelloWorld::MoveStart(float dt)  
@@ -334,9 +341,12 @@ void HelloWorld::ScoreSchedule(float dt)
 	}
 	else
 	{
+		scheduleOnce(schedule_selector(HelloWorld::MoveStart), 0.5);
+		scheduleOnce(schedule_selector(HelloWorld::MoveTop), 0.5);
 		unschedule(schedule_selector(HelloWorld::ScoreSchedule));
-		m_pStart->setVisible(true);
-		m_pTop->setVisible(true);
+		
+		//m_pStart->setVisible(true);
+		//m_pTop->setVisible(true);
 	}
 	//snn->setPosition(ccp(xpos,ypos));  
 	//m_pScore->addChild(snn,5,0);  
@@ -828,7 +838,7 @@ void HelloWorld::BeginContact(b2Contact *contact){
 
 		//CCMessageBox("Game Over!", "Game Over!");
 		//mBird->setVisible(false);
-		this->runAction(CCShake::create(0.5,0.5));
+		this->runAction(CCShake::create(1,2));
 
 		//std::string fullPath;
 //#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)  

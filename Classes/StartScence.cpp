@@ -21,7 +21,7 @@ CCScene* Start::scene()
 // on "init" you need to initialize your instance
 bool Start::init()
 {
-	CCSize mScreenSize = CCDirector::sharedDirector()->getWinSize();
+	mScreenSize = CCDirector::sharedDirector()->getWinSize();
 
 	for (int i = 0; i<gbackgroundNum; i++)
 	{
@@ -140,7 +140,7 @@ void Start::update(float dt){
 		if (rcGroundBounding.getMaxX()<=0)
 		{
 			int groundsize = pGround[i]->getContentSize().width;
-			pGround[i]->setPositionX(groundsize/2 + (ggroundNum-1)*groundsize-5);
+			pGround[i]->setPositionX(groundsize/2 + (ggroundNum-1)*groundsize);
 		}
 	}
 

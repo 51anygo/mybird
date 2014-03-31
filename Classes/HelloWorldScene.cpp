@@ -927,7 +927,7 @@ void HelloWorld::ccTouchesBegan(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEve
 	   {
 		 
 		   
-		   if(m_istatus==GAMEOVER)
+		   if(m_istatus==GAMEOVER && m_pStart->isVisible())
 		   {
 			//this->goReady();
 			//m_istatus=GETREADY;

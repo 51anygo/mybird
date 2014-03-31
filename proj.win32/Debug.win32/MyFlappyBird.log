@@ -1,35 +1,27 @@
-﻿生成启动时间为 2014/3/31 13:15:38。
-     1>项目“D:\workspace\game\cocos2d-x-2.2.2\cocos2d-x-2.2.2\projects\mybird\proj.win32\MyFlappyBird.vcxproj”在节点 2 上(Build 个目标)。
-     1>ClCompile:
-         D:\Program Files\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I"D:\workspace\game\cocos2d-x-2.2.2\cocos2d-x-2.2.2\projects\mybird\proj.win32\..\..\..\external\\" /I"D:\workspace\game\cocos2d-x-2.2.2\cocos2d-x-2.2.2\projects\mybird\proj.win32\..\..\..\cocos2dx" /I"D:\workspace\game\cocos2d-x-2.2.2\cocos2d-x-2.2.2\projects\mybird\proj.win32\..\..\..\cocos2dx\include" /I"D:\workspace\game\cocos2d-x-2.2.2\cocos2d-x-2.2.2\projects\mybird\proj.win32\..\..\..\cocos2dx\kazmath\include" /I"D:\workspace\game\cocos2d-x-2.2.2\cocos2d-x-2.2.2\projects\mybird\proj.win32\..\..\..\cocos2dx\platform\win32" /I"D:\workspace\game\cocos2d-x-2.2.2\cocos2d-x-2.2.2\projects\mybird\proj.win32\..\..\..\cocos2dx\platform\third_party\win32" /I"D:\workspace\game\cocos2d-x-2.2.2\cocos2d-x-2.2.2\projects\mybird\proj.win32\..\..\..\cocos2dx\platform\third_party\win32\OGLES" /I"D:\workspace\game\cocos2d-x-2.2.2\cocos2d-x-2.2.2\projects\mybird\proj.win32\..\..\..\external\chipmunk\include\chipmunk" /I"D:\workspace\game\cocos2d-x-2.2.2\cocos2d-x-2.2.2\projects\mybird\proj.win32\..\..\..\CocosDenshion\include" /I"D:\workspace\game\cocos2d-x-2.2.2\cocos2d-x-2.2.2\projects\mybird\proj.win32\..\..\..\extensions" /I..\Classes /I.. /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _USE_MATH_DEFINES /D GL_GLEXT_PROTOTYPES /D CC_ENABLE_CHIPMUNK_INTEGRATION=1 /D COCOS2D_DEBUG=1 /D _CRT_SECURE_NO_WARNINGS /D _SCL_SECURE_NO_WARNINGS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug.win32\\" /Fd"Debug.win32\vc110.pdb" /Gd /TP /wd4267 /wd4251 /wd4244 /analyze- /errorReport:prompt ..\Classes\StartScence.cpp
-         StartScence.cpp
-     1>d:\workspace\game\cocos2d-x-2.2.2\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-     1>d:\workspace\game\cocos2d-x-2.2.2\cocos2d-x-2.2.2\projects\mybird\classes\startscence.cpp(127): warning C4305: “参数”: 从“double”到“float”截断
+﻿生成启动时间为 2014/3/31 14:49:32。
+     1>项目“D:\workspace\game\cocos2d-x-2.2\projects\mybird\proj.win32\MyFlappyBird.vcxproj”在节点 2 上(build 个目标)。
+     1>InitializeBuildStatus:
+         正在创建“Debug.win32\MyFlappyBird.unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+       ClCompile:
+         所有输出均为最新。
+       ResourceCompile:
+         所有输出均为最新。
+       ManifestResourceCompile:
+         所有输出均为最新。
        PreLinkEvent:
-         if not exist "D:\workspace\game\cocos2d-x-2.2.2\cocos2d-x-2.2.2\Debug.win32\" mkdir "D:\workspace\game\cocos2d-x-2.2.2\cocos2d-x-2.2.2\Debug.win32\"
-         xcopy /Y /Q "D:\workspace\game\cocos2d-x-2.2.2\cocos2d-x-2.2.2\projects\mybird\proj.win32\..\..\..\external\libwebsockets\win32\lib\*.*" "D:\workspace\game\cocos2d-x-2.2.2\cocos2d-x-2.2.2\Debug.win32\"
+         if not exist "D:\workspace\game\cocos2d-x-2.2\projects\MyBird\proj.win32\Debug.win32\" mkdir "D:\workspace\game\cocos2d-x-2.2\projects\MyBird\proj.win32\Debug.win32\"
+         xcopy /Y /Q "D:\workspace\game\cocos2d-x-2.2\projects\mybird\proj.win32\..\..\..\external\libwebsockets\win32\lib\*.*" "D:\workspace\game\cocos2d-x-2.2\projects\MyBird\proj.win32\Debug.win32\"
          :VCEnd
          复制了 2 个文件
        Link:
-         D:\Program Files\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\workspace\game\cocos2d-x-2.2.2\cocos2d-x-2.2.2\Debug.win32\MyFlappyBird.exe" /INCREMENTAL /NOLOGO /LIBPATH:"D:\workspace\game\cocos2d-x-2.2.2\cocos2d-x-2.2.2\Debug.win32\\" libExtensions.lib libcocos2d.lib libCocosDenshion.lib opengl32.lib glew32.lib libBox2d.lib libchipmunk.lib libcurl_imp.lib pthreadVCE2.lib websockets.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\workspace\game\cocos2d-x-2.2.2\cocos2d-x-2.2.2\Debug.win32\MyFlappyBird.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\workspace\game\cocos2d-x-2.2.2\cocos2d-x-2.2.2\Debug.win32\MyFlappyBird.lib" /MACHINE:X86 /SAFESEH Debug.win32\MyFlappyBird.res
-         Debug.win32\CCFileUtils.obj
-         Debug.win32\CCShake.obj
-         Debug.win32\ShowNumberNode.obj
-         Debug.win32\AppDelegate.obj
-         Debug.win32\B2Sprite.obj
-         Debug.win32\HelloWorldScene.obj
-         Debug.win32\NumberSprite.obj
-         Debug.win32\SGPlayMusic.obj
-         Debug.win32\StartScence.obj
-         Debug.win32\main.obj
-         "D:\workspace\game\cocos2d-x-2.2.2\cocos2d-x-2.2.2\Debug.win32\libcocos2d.lib"
-         "D:\workspace\game\cocos2d-x-2.2.2\cocos2d-x-2.2.2\Debug.win32\libCocosDenshion.lib"
-         "D:\workspace\game\cocos2d-x-2.2.2\cocos2d-x-2.2.2\Debug.win32\libExtensions.lib"
-         "D:\workspace\game\cocos2d-x-2.2.2\cocos2d-x-2.2.2\Debug.win32\libBox2D.lib"
-         "D:\workspace\game\cocos2d-x-2.2.2\cocos2d-x-2.2.2\Debug.win32\libchipmunk.lib"
-         MyFlappyBird.vcxproj -> D:\workspace\game\cocos2d-x-2.2.2\cocos2d-x-2.2.2\Debug.win32\MyFlappyBird.exe
-     1>已完成生成项目“D:\workspace\game\cocos2d-x-2.2.2\cocos2d-x-2.2.2\projects\mybird\proj.win32\MyFlappyBird.vcxproj”(Build 个目标)的操作。
+         所有输出均为最新。
+       Manifest:
+         所有输出均为最新。
+       FinalizeBuildStatus:
+         正在删除文件“Debug.win32\MyFlappyBird.unsuccessfulbuild”。
+         正在对“Debug.win32\MyFlappyBird.lastbuildstate”执行 Touch 任务。
+     1>已完成生成项目“D:\workspace\game\cocos2d-x-2.2\projects\mybird\proj.win32\MyFlappyBird.vcxproj”(build 个目标)的操作。
 
 生成成功。
 
-已用时间 00:00:06.26
+已用时间 00:00:00.24

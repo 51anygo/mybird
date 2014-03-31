@@ -74,7 +74,7 @@ bool HelloWorld::init()
 	mfac=CCDirector::sharedDirector()->getContentScaleFactor();
 	mfax = 320.f/mScreenSize.width;
 	//gBardis = 5.f*gUpVelocity/mfac;
-	gBardis = mScreenSize.height*2.f/9.0f;
+	gBardis = mScreenSize.height*2.f/9.0f-5;
 	m_addbartime=mScreenSize.width*mFPS*mfax*1.f/2.f/MOVESPEED;
 	initWorld();	
 	for (int i = 0; i<GBACKGROUNDNUM; i++)
@@ -591,6 +591,7 @@ void HelloWorld::addBird(){
 	//birdShape.SetAsBox(birdSize.width/2.0f/RATIO, birdSize.height/2.0f/RATIO); // 半宽，半高
 	birdShape.Set(pVert, num);
 	b2FixtureDef birdFixtureDef;
+	birdFixtureDef.restitution = 0;
 	birdFixtureDef.shape = &birdShape;
 	birdFixtureDef.filter.maskBits = 0x0006;
 	birdBody->CreateFixture(&birdFixtureDef);
@@ -675,6 +676,7 @@ void HelloWorld::addBar(float dt){
 	downBarShape.SetAsBox(downBarSize.width/2/RATIO,
 		downBarSize.height/2/RATIO);
 	b2FixtureDef downBarFixtureDef;
+	downBarFixtureDef.restitution = 0;
 	downBarFixtureDef.shape = &downBarShape;
 	downBarFixtureDef.filter.categoryBits = 0x0004;
 	downBarBody->CreateFixture(&downBarFixtureDef);
@@ -699,6 +701,7 @@ void HelloWorld::addBar(float dt){
 	b2PolygonShape upBarShape;
 	upBarShape.SetAsBox(upBarSize.width/2/RATIO, upBarSize.height/2/RATIO);
 	b2FixtureDef upBarFixtureDef;
+	upBarFixtureDef.restitution = 0;
 	upBarFixtureDef.shape = &upBarShape;
 	upBarFixtureDef.filter.categoryBits = 0x0004;
 	upBarDody->CreateFixture(&upBarFixtureDef);
@@ -746,7 +749,7 @@ void HelloWorld::update(float dt){
 	}
 	else
 	{
-		 if (mBird->getRotation() < 10.f && mBird->getRotation() > -85.f)
+		 if (mBird->getRotation() < 10.f/mfac && mBird->getRotation() > -85.f)
 		{
 			mBird->setRotation(mBird->getRotation()-6.50f);
 		}

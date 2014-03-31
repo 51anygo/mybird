@@ -111,7 +111,7 @@ bool HelloWorld::init()
 	this->scheduleUpdate();
 	//创建动画
 	initAction();
-	myangle=0;
+	myangle=0.f;
 	return true;
 }
 
@@ -170,42 +170,62 @@ void HelloWorld::stopGame(){
 	//mBird->setVisible(false);
 	ShowNumberNode * snn = (ShowNumberNode *)this->getChildByTag(0);
 	snn->setVisible(false);
-	schedule(schedule_selector(HelloWorld::ScoreSchedule),0.05);
+	//schedule(schedule_selector(HelloWorld::ScoreSchedule),0.05);
 
 	unscheduleUpdate();
 	unschedule(schedule_selector(HelloWorld::addBar));
 	m_pGameOver->setVisible(false);
-	m_pGameOver->setPosition(ccp(gameoverX,gameoverY));
-	CCActionInterval*  actionFade= CCFadeIn::create(1);
-	m_pGameOver->setVisible(true);
-	m_pScore->setVisible(true);
+	//m_pGameOver->setPosition(ccp(gameoverX,gameoverY));
+	//CCActionInterval*  actionFade= CCFadeIn::create(1);
+	//m_pGameOver->setVisible(true);
+	//m_pScore->setVisible(true);
 
 	//CCActionInterval*  actionFadeBack= actionFade->reverse();
 	//m_pGameOver->runAction(CCSequence::create(actionFade,actionFadeBack,NULL));
 	//m_pGameOver->runAction(actionFade);
-	/*
-	m_pGameOver->setVisible(true);
-
-	m_pStart->setPosition(ccp(startX,0));
-
-	m_pScore->setPosition(ccp(scoreX,0));
 	
-	CCActionInterval* actionTo = CCMoveBy::create(0.5, ccp(0, scoreY));
-	m_pScore->runAction(actionTo);
-	m_pScore->setVisible(true);
-	CCLOG("scoreY:%f,scoreRealY:%f",
-		scoreY,m_pScore->boundingBox().getMaxY());
-
-	m_pStart->setPosition(ccp(startX,0));
-	actionTo = CCMoveBy::create(0.5, ccp(0, startY));
-	m_pStart->runAction(actionTo);
-	m_pStart->setVisible(true);
-
-	m_pTop->setPosition(ccp(topX,0));
-	actionTo = CCMoveBy::create(0.5, ccp(0, topY));
-	m_pTop->runAction(actionTo);*/
-	//m_pTop->setVisible(true);
+	//m_pGameOver->setVisible(true);
+	//动画效果 http://www.cocos2dev.com/?p=72
+	scheduleOnce(schedule_selector(HelloWorld::MoveGameOver), 1);	
+	scheduleOnce(schedule_selector(HelloWorld::MoveScore), 2);
+	scheduleOnce(schedule_selector(HelloWorld::MoveStart), 2.5);
+	scheduleOnce(schedule_selector(HelloWorld::MoveTop), 2.5);
+	scheduleOnce(schedule_selector(HelloWorld::MoveScoreAdd), 3.5);
 	m_istatus=GAMEOVER;
+	
+	//addScoreNum(this->testnum);
+}
+
+void HelloWorld::MoveGameOver(float dt)  
+{ 
+	CCPoint pointBg=ccp(gameoverX,gameoverY);
+	m_pGameOver->setPosition(pointBg);
+	m_pGameOver->setVisible(true);
+	CCPoint pointL=pointBg;
+	CCPoint pointR=pointBg;
+	pointL.y-=3;
+	pointR.y+=3;
+	CCMoveTo* moveLeft=CCMoveTo::create(0.08, pointL);
+	CCMoveTo* moveRight=CCMoveTo::create(0.08, pointR);
+	CCFiniteTimeAction* action= CCSequence::create(moveLeft,moveRight,NULL);
+	//永久重复运动CCRepeatForever和指定次数的重复动作CCRepeat
+	//http://5.quanpao.com/?p=274
+	CCActionInterval* actionShake=CCRepeat::create((CCActionInterval*)action,2);
+	m_pGameOver->stopAllActions();
+	m_pGameOver->runAction(actionShake);
+
+	/*CCBSequence *seq = getSequence(nSeqId);
+    CCAction *completeAction = CCSequence::createWithTwoActions(
+		CCDelayTime::create(seq->getDuration() + fTweenDuration),
+		CCCallFunc::create(this, callfunc_selector(CCBAnimationManager::sequenceCompleted)));
+    mRootNode->runAction(completeAction);*/
+
+}
+
+
+void HelloWorld::MoveScoreAdd(float dt)  
+{  
+	schedule(schedule_selector(HelloWorld::ScoreSchedule),0.05);
 	if (testnum>=5)
 	{
 		addGold();
@@ -215,7 +235,35 @@ void HelloWorld::stopGame(){
 		addSilver();
 	}
 	addBestScore();
-	//addScoreNum(this->testnum);
+}
+
+void HelloWorld::MoveScore(float dt)  
+{  
+	msnn->f_ShowNumber(0);
+	float fmovetime=0.2;
+	m_pScore->setPosition(ccp(scoreX,0));
+	CCActionInterval* actionTo = CCMoveTo::create(fmovetime, ccp(scoreX, scoreY));
+	m_pScore->runAction(actionTo);
+	m_pScore->setVisible(true);
+}
+
+void HelloWorld::MoveStart(float dt)  
+{  
+	float fmovetime=0.2;
+	m_pStart->setPosition(ccp(startX,0));
+	CCActionInterval* actionTo = CCMoveTo::create(fmovetime, ccp(startX, startY));
+	m_pStart->runAction(actionTo);
+	m_pStart->setVisible(true);
+}
+
+
+void HelloWorld::MoveTop(float dt)  
+{  
+	float fmovetime=0.2;
+	m_pTop->setPosition(ccp(topX,0));
+	CCActionInterval* actionTo = CCMoveTo::create(fmovetime, ccp(topX, topY));
+	m_pTop->runAction(actionTo);
+	m_pTop->setVisible(true);
 }
 
 
@@ -698,7 +746,7 @@ void HelloWorld::update(float dt){
 	}
 	
 
-	CCLOG("bird angle:%0.2f,myangle:%0.2f ",mBird->getRotation(),myangle);
+	//CCLOG("bird angle:%0.2f,myangle:%0.2f ",mBird->getRotation(),myangle);
 	if(myflag==1)
 	{
 		mBird->setRotation(-90);

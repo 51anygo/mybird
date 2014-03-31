@@ -125,6 +125,11 @@ private:
 	void logic(float dt);
 	void addNumberNode();
 	//void addScoreNum(int num);
+	void MoveScore(float dt);
+	void MoveStart(float dt);
+	void MoveTop(float dt);
+	void MoveScoreAdd(float dt);
+	void MoveGameOver(float dt);
     void addBird();
 	void addScore();
 	void addGameOver();

@@ -21,7 +21,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-
+//add weixin friend
+//http://blog.umeng.com/index.php/2013/09/android-cocos2d-x%E6%B8%B8%E6%88%8F%E5%A6%82%E4%BD%95%E9%9B%86%E6%88%90%E5%8F%8B%E7%9B%9F%E7%A4%BE%E4%BC%9A%E5%8C%96%E7%BB%84%E4%BB%B6%E5%88%86%E4%BA%AB%E5%8A%9F%E8%83%BD/
+//http://blog.csdn.net/cangely/article/details/19809139
 #include "HelloWorldScene.h"
 
 #include "SGPlayMusic.h"
@@ -310,7 +312,7 @@ void HelloWorld::addNumberNode()
 
 
 void HelloWorld::addGold() {
-	CCSprite *m_gold= CCSprite::create("gold.jpg");     
+	CCSprite *m_gold= CCSprite::create("gold.png");     
 	m_gold->setPosition(ccp(49/mfac,51/mfac));  
 	m_pScore->addChild(m_gold,SPRITE_TAG_BIRD,0);  
 	
@@ -320,7 +322,7 @@ void HelloWorld::addGold() {
 
 
 void HelloWorld::addSilver() {
-	CCSprite *m_silver= CCSprite::create("silver.jpg");     
+	CCSprite *m_silver= CCSprite::create("silver.png");     
 	m_silver->setPosition(ccp(49/mfac,51/mfac));  
 	m_pScore->addChild(m_silver,5,0); 
 }

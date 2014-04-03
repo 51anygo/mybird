@@ -771,9 +771,9 @@ int HelloWorld::addGround(int index) {
 
 
 void HelloWorld::addBackGround(int index) {
-
+	string bkstr[]={"daybackground.png","nightbackground.png"};
 	// 设置背景,交替变换,全部相加要大于分辨率  
-	m_pBackGround[index] = CCSprite::create("daybackground.png");     
+	m_pBackGround[index] = CCSprite::create(bkstr[rand()%100%2].c_str());     
 	CCSize size = CCDirector::sharedDirector()->getWinSize();  
 	CCRect rcBounding = m_pBackGround[index]->boundingBox();  
 	m_pBackGround[index]->setPosition(ccp(rcBounding.size.width*(index*2+1) / 2, size.height / 2));    // 设置在屏幕中间  
@@ -875,20 +875,32 @@ void HelloWorld::update(float dt){
 	//重力响应
 	mWorld->Step(dt, 8, 3); // 8和3为官方推荐数据
 	myangle+=1.0f;
+	if(myangle>=25)
+	{
+		iFlyKeep++;
+		myangle=25;
+	}
 	if (myangle<25)
 	{
-
+		iFlyKeep=0;
 		mBird->setRotation(myangle);
 	}
-	else
+	CCLOG("bird iFlyKeep:%d,angle:%0.2f,myangle:%d",iFlyKeep,mBird->getRotation(),myangle);
+	if(iFlyKeep>30)
 	{
-		 if (mBird->getRotation() < 10.f/mfac && mBird->getRotation() > -85.f)
-		{
-			mBird->setRotation(mBird->getRotation()-6.50f);
-		}
+		 //if (mBird->getRotation() < 10.f/mfac && mBird->getRotation() > -85.f)
+		//{
+		//	mBird->setRotation(mBird->getRotation()-10.f);
+		//}
 
-		if(mBird->getRotation() > -91)
-			mBird->setRotation(mBird->getRotation()-2.5f);
+		if(mBird->getRotation()-10.f<-90.f){
+			mBird->setRotation(-90.f);
+		}
+		else{
+			mBird->setRotation(mBird->getRotation()-10.f);
+		}
+		//if(mBird->getRotation() > -91)
+			//mBird->setRotation(mBird->getRotation()-2.5f);
 	}
 	
 
@@ -1089,8 +1101,9 @@ void HelloWorld::ccTouchesBegan(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEve
 	//播放子弹射出去的声音
 	//CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect(MUSIC_JUMP);
 	mBird->getB2Body()->SetLinearVelocity(b2Vec2(0.0f, gUpVelocity/mfac));
-	mBird->setRotation(0);
-	myangle=0;
+	mBird->setRotation(25);
+	myangle=25;
+	iFlyKeep=0;
 
 }
 

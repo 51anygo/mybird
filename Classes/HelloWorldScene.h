@@ -87,6 +87,7 @@ public:
     int myflag;
 	int myangle;
 	int testnum;
+	int iFlyKeep;
 	float gameoverX;
 	float gameoverY;
 	float scoreX;

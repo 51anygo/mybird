@@ -27,6 +27,8 @@ THE SOFTWARE.
 #include "HelloWorldScene.h"
 
 #include "SGPlayMusic.h"
+
+
 #include <stdlib.h> 
 USING_NS_CC;
 //clone Flappy Bird
@@ -36,6 +38,105 @@ USING_NS_CC;
 //http://www.2gei.com/bgremover
 //android key good@bird
 float gBardis ;
+
+static CCString ScreenShoot()
+{
+	CCSize size = CCDirector::sharedDirector()->getWinSize();  
+	//定义一个屏幕大小的渲染纹理  
+	CCRenderTexture* pScreen = CCRenderTexture::create(size.width,size.height, kCCTexture2DPixelFormat_RGBA8888);  
+	//获得当前的场景指针  
+	CCScene* pCurScene = CCDirector::sharedDirector()->getRunningScene();  
+	//渲染纹理开始捕捉  
+	pScreen->begin();  
+	//当前场景参与绘制  
+	pCurScene->visit();  
+	//结束捕捉  
+	pScreen->end();  
+	char szfile[1024]={0};
+	//string   pathToSave = "/sdcard/download/";//
+	
+    string pathToSave = "ScreenShoot.png";
+	//sprintf(szfile,"%s%s",pathToSave.c_str(),"share.png");
+	//保存为png
+	if(pScreen->saveToFile(pathToSave.c_str(), kCCImageFormatPNG))
+	{
+		//CCMessageBox("saveToFile ok!", "saveToFile ok!");
+	}
+	pathToSave = CCFileUtils::sharedFileUtils()->getWritablePath()+pathToSave;
+	//保存为jpg
+	//pScreen->saveToFile("XXXXXX.jpg", kCCImageFormatJPEG);  
+ 	CC_SAFE_DELETE(pScreen); 
+
+	return pathToSave.c_str();
+}
+
+#if(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+#include <jni.h>
+#include "android/log.h"
+#include "platform/android/jni/JniHelper.h"
+#define  JAVA_PACKAGE_NAME "com/qgame/myflappybird/FlappyBird"
+extern "C"{
+	
+ void Share()
+ {
+	// CCMessageBox("function Share() in !", "function Share() in!");
+  bool hasMethod;
+  JniMethodInfo jni_methodInfo;
+  hasMethod = JniHelper::getStaticMethodInfo(jni_methodInfo, JAVA_PACKAGE_NAME, "Share", "()V");
+  if(hasMethod){
+	//CCMessageBox("function Share() was found!", "function Share() was found!");
+   // CCLog("function Share() was found");
+   if(jni_methodInfo.methodID){
+    jni_methodInfo.env->CallStaticVoidMethod(jni_methodInfo.classID,  jni_methodInfo.methodID);
+    //CCLog("function Share() was called");
+	//CCMessageBox("function Share() was called!", "function Share() was called!");
+   }
+  }else{
+   //CCLog("function Share() was not found");
+   //CCMessageBox("function Share() was not found!", "function Share() was not found!");
+  }
+ }
+
+ 
+ //不使用官方SDK,实现微信分享（发送到朋友，发送到朋友圈）
+ //java与c++传参数
+//http://wulin9005.blog.163.com/blog/static/13239748820132675949658/
+ //http://blog.sina.com.cn/s/blog_7018d38201013znr.html
+ void ShareWeixin()
+ {
+
+  bool hasMethod;
+  JniMethodInfo jni_methodInfo;
+  hasMethod = JniHelper::getStaticMethodInfo(jni_methodInfo, JAVA_PACKAGE_NAME, "shareTxtToTimeLine", "(Ljava/lang/String;)V");
+  if(hasMethod){
+	//CCMessageBox("function Share() was found!", "function Share() was found!");
+   // CCLog("function Share() was found");
+   if(jni_methodInfo.methodID){
+	 jstring stringargs = jni_methodInfo.env->NewStringUTF(ScreenShoot().getCString());   //将string转为jstring
+    jni_methodInfo.env->CallStaticVoidMethod(jni_methodInfo.classID,  jni_methodInfo.methodID,stringargs);
+    //CCLog("function Share() was called");
+	//CCMessageBox("function Share() was called!", "function Share() was called!");
+   }
+  }else{
+   //CCLog("function Share() was not found");
+   //CCMessageBox("function Share() was not found!", "function Share() was not found!");
+  }
+ }
+
+ void 	openUmengShareJni()
+	{
+		JniMethodInfo jni_methodInfo  ;
+			   //  获取UmengGameActivity的静态方法openShareBoard	
+		bool isHave = JniHelper::getStaticMethodInfo(jni_methodInfo,JAVA_PACKAGE_NAME, "openShareBoard", "()V");
+
+		if ( isHave )
+		{
+			 // 实际调用UmengGameActivity中打开umeng分享平台选择面板
+			 jni_methodInfo.env->CallStaticVoidMethod( jni_methodInfo .classID, jni_methodInfo.methodID );
+		}
+	}
+}
+#endif
 
 
 CCScene* HelloWorld::scene()
@@ -440,9 +541,33 @@ void HelloWorld::addRate() {
 
 }
 
+//  按钮的回调函数
+void HelloWorld::openUmengShare(CCObject * pSender)
+{
+	if(!m_pTop->isVisible())
+	{
+		return;
+	}
+	int i=0;
+	i++;
+#if(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+	//CCMessageBox("openUmengShare!", "openUmengShare!");
+	//return;
+    //  调用jni方法
+    //Share();
+	//ShareWeixin();
+	openUmengShareJni();
+#endif
+	//ScreenShoot();
+}
+
+
+
 void HelloWorld::addTop() {
 	CCSize groundSize = m_pGroundVec[0]->getContentSize();
 	m_pTop = CCSprite::create("top.png");     
+	//CCMenuItemImage *m_pTop = CCMenuItemImage::create("top.png", "top.png", this, menu_selector(HelloWorld::openUmengShare) );
+	m_pTop->setPosition(ccp(mScreenSize.width/4,groundSize.height + 10 + m_pTop->getContentSize().height/2));
 	CCRect rcBounding = m_pTop->boundingBox();
 	CCSize startSize = m_pTop->getContentSize();
 	float fTopWidth=rcBounding.size.width/2.0f;
@@ -454,6 +579,12 @@ void HelloWorld::addTop() {
 	//xpos-=rcBounding.size.width/2.;
 	m_pTop->setPosition(ccp(topX,  topY));    // 设置在屏幕中间  
 	this->addChild(m_pTop, SPRITE_TAG_CHAR);    // CHILD_ORDER_BACKGROUND精灵的层级，这里是 = 1  
+	CCMenuItemImage *pMenuItemTop = CCMenuItemImage::create("top.png", "top.png", this, menu_selector(HelloWorld::openUmengShare) );
+	pMenuItemTop->setPosition(ccp( m_pTop->getContentSize().width/2,  m_pTop->getContentSize().height/2));
+	CCMenu* pMenu1 =CCMenu::create(pMenuItemTop, NULL);
+
+    pMenu1->setPosition( CCPointZero );
+	m_pTop->addChild(pMenu1);
 
 }
 

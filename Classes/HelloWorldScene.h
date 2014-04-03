@@ -76,7 +76,7 @@ public:
     
     // a selector callback
     void menuCloseCallback(CCObject* pSender);
-    
+    void openUmengShare(CCObject * pSender);
     // implement the "static node()" method manually
     CREATE_FUNC(HelloWorld);
 

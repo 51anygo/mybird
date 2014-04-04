@@ -342,7 +342,7 @@ void HelloWorld::MoveScoreAdd(float dt)
 	{
 		addSilver();
 	}
-	//if(m_bnew)
+	if(m_bnew)
 	{
 		addNew();
 	}
@@ -741,6 +741,7 @@ void HelloWorld::addBird(){
 	birdFixtureDef.shape = &birdShape;
 	birdFixtureDef.filter.maskBits = 0x0006;
 	birdBody->CreateFixture(&birdFixtureDef);
+	
 	mBird->setPTMRatio(RATIO);
 	mBird->setB2Body(birdBody);
 	//mBird->setAnchorPoint(ccp(pVert[3].x/mfax/ RATIO,pVert[3].y/mfac / RATIO));
@@ -910,7 +911,7 @@ void HelloWorld::update(float dt){
 			mBird->setRotation(-90.f);
 		}
 		else{
-			mBird->setRotation(mBird->getRotation()-10.f);
+			mBird->setRotation(mBird->getRotation()-6.f);
 		}
 		//if(mBird->getRotation() > -91)
 			//mBird->setRotation(mBird->getRotation()-2.5f);

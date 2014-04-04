@@ -1001,7 +1001,7 @@ void HelloWorld::BeginContact(b2Contact *contact){
 
 		//CCMessageBox("Game Over!", "Game Over!");
 		//mBird->setVisible(false);
-		this->runAction(CCShake::create(1,2));
+		this->runAction(CCShake::create(1,5));
 
 		//std::string fullPath;
 //#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)  

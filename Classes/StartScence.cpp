@@ -63,6 +63,7 @@ bool Start::init()
 	addChild(pMenu2);
 
 	CCSprite *m_pFlappyBird = CCSprite::create("flappybird.png");     
+	//CCSprite *m_pFlappyBird = CCSprite::create("sprites.png",CCRectMake(0,680,180,55));     
 	CCRect rcBounding = m_pFlappyBird->boundingBox();
 	float fFlappyBirdHeight=rcBounding.size.height/2.0f;
 	float xpos=mScreenSize.width/2;

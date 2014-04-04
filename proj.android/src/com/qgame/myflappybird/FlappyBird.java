@@ -188,7 +188,7 @@ public class FlappyBird extends Cocos2dxActivity{
      *       调用友盟的openShare方法， 打开分享平台选择面板
      * @throws
      */
-    public static void openShareBoard() {
+    public static void openShareBoard(final String strfile) {
         mHandler = new Handler(Looper.getMainLooper());
         mHandler.postDelayed(new Runnable() {
         	
@@ -216,7 +216,8 @@ public class FlappyBird extends Cocos2dxActivity{
                     mController.setShareContent("我发现一款好游戏，分享给大家，跟我来PK吧，马上下载，www.51anygo.cn/bird.apk");             //设置分享图片, 参数2为图片的地址
                     //            mController.setShareMedia(new UMImage(this, "http://www.umeng.com/images/pic/banner_module_social.png"));
                     //设置分享图片，参数2为本地图片的资源引用
-                    mController.setShareMedia(new UMImage(mActivity, R.drawable.icon));
+                    String newpath=moveToTempPath(strfile);
+                    mController.setShareMedia(new UMImage(mActivity, newpath));
                     //设置分享图片，参数2为本地图片的路径(绝对路径)
                     //mController.setShareMedia(new UMImage(getActivity(), 
                    //BitmapFactory.decodeFile("/mnt/sdcard/icon.png")));
@@ -273,6 +274,56 @@ public class FlappyBird extends Cocos2dxActivity{
         startActivity(intent);
     }
     
+    public static  String moveToTempPath(final String strfile) {
+    	String newpath="";
+    	File file =new File(strfile);
+        if(file.exists()){
+        	 Time time = new Time("GMT+8");    
+			 time.setToNow();   
+			 int year = time.year;   
+			 int month = time.month;   
+			 int day = time.monthDay;   
+			 int minute = time.minute;   
+			 int hour = time.hour;   
+			 int sec = time.second;  
+		     String strfilename=""+year+month+day+minute+hour+sec+".png";
+        	 newpath=mTmpPath+strfilename;//"sc.png";
+        	 File newfile = new File(newpath);  
+        	 InputStream in = null;
+        	 FileOutputStream out = null;
+        	 try {
+	        	 in = new FileInputStream(file);
+				 out = new FileOutputStream(newfile);
+				 byte[] buffer = new byte[1024];
+				    int read;
+				    while((read = in.read(buffer)) != -1){
+				      out.write(buffer, 0, read);
+				    }
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+        	finally{
+        	   	try {
+        	   		if(out!=null){
+        	   			out.close();
+        	   		}
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+        	   	
+        	}
+        }
+        File newfile =new File(newpath);
+        if(newfile.exists()){
+        	return newpath;
+        }
+        return "";
+    }
  
     public static  void shareTxtToTimeLine(final String strfile) {
 	  mHandler = new Handler(Looper.getMainLooper());
@@ -286,53 +337,13 @@ public class FlappyBird extends Cocos2dxActivity{
 		        intent.setAction("android.intent.action.SEND");
 		        intent.setType("image/*");
 		        //File file =new File("/sdcard/download/ScreenShoot.png");
-		       	File file =new File(strfile);
-		        if(file.exists()){
-		        	 Time time = new Time("GMT+8");    
-					 time.setToNow();   
-					 int year = time.year;   
-					 int month = time.month;   
-					 int day = time.monthDay;   
-					 int minute = time.minute;   
-					 int hour = time.hour;   
-					 int sec = time.second;  
-					String strfilename=""+year+month+day+minute+hour+sec+".png";
-		        	String newpath=mTmpPath+strfilename;//"sc.png";
-		        	 File newfile = new File(newpath);  
-		        	 InputStream in = null;
-		        	 FileOutputStream out = null;
-		        	 try {
-			        	 in = new FileInputStream(file);
-						 out = new FileOutputStream(newfile);
-						 byte[] buffer = new byte[1024];
-						    int read;
-						    while((read = in.read(buffer)) != -1){
-						      out.write(buffer, 0, read);
-						    }
-					} catch (FileNotFoundException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} 
-		        	finally{
-		        	   	try {
-		        	   		if(out!=null){
-		        	   			out.close();
-		        	   		}
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-		        	   	
-		        	}
+		       	
 			        //intent.putExtra(Intent.EXTRA_TEXT,"13123123");
-					 
+		        	 String newpath=moveToTempPath(strfile);
 		        	 File newnewfile =new File(newpath); 
 		        	 intent.putExtra(Intent.EXTRA_TEXT,"我是文字");
 			         intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(newnewfile));
-		        }
+
 		        
 		        mActivity.startActivity(intent);
               }

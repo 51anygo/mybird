@@ -127,12 +127,13 @@ extern "C"{
 	{
 		JniMethodInfo jni_methodInfo  ;
 			   //  获取UmengGameActivity的静态方法openShareBoard	
-		bool isHave = JniHelper::getStaticMethodInfo(jni_methodInfo,JAVA_PACKAGE_NAME, "openShareBoard", "()V");
+		bool isHave = JniHelper::getStaticMethodInfo(jni_methodInfo,JAVA_PACKAGE_NAME, "openShareBoard", "(Ljava/lang/String;)V");
 
 		if ( isHave )
 		{
+			 jstring stringargs = jni_methodInfo.env->NewStringUTF(ScreenShoot().getCString());   //将string转为jstring
 			 // 实际调用UmengGameActivity中打开umeng分享平台选择面板
-			 jni_methodInfo.env->CallStaticVoidMethod( jni_methodInfo .classID, jni_methodInfo.methodID );
+			 jni_methodInfo.env->CallStaticVoidMethod( jni_methodInfo .classID, jni_methodInfo.methodID,stringargs);
 		}
 	}
 }
@@ -341,6 +342,10 @@ void HelloWorld::MoveScoreAdd(float dt)
 	{
 		addSilver();
 	}
+	//if(m_bnew)
+	{
+		addNew();
+	}
 	
 }
 
@@ -376,6 +381,13 @@ void HelloWorld::MoveTop(float dt)
 	m_pTop->setVisible(true);
 }
 
+void HelloWorld::addNew()  
+{  
+	CCSprite *m_new= CCSprite::create("new.png");     
+	m_new->setPosition(ccp(145/mfac,50/mfac));  
+	m_pScore->addChild(m_new,SPRITE_TAG_BIRD,0); 
+
+} 
 
 void HelloWorld::addBestScore()  
 {  
@@ -629,7 +641,8 @@ void HelloWorld::addHand() {
 
 }
 void HelloWorld::addReady() {
-	m_pReady = CCSprite::create("ready.png");     
+	m_pReady = CCSprite::create("ready.png"); 
+	//m_pReady = CCSprite::create("sprites.png",CCRectMake(330,642,186,56));     
 	CCRect rcBounding = m_pReady->boundingBox();
 	float fHeight=rcBounding.size.height/2.0f;
 	float xpos=mScreenSize.width/2;
@@ -983,6 +996,7 @@ void HelloWorld::BeginContact(b2Contact *contact){
 	B2Sprite *p = (B2Sprite *)contact->GetFixtureA()->GetBody()->GetUserData();
 	if(p->getTag()==SPRITE_TAG_GROUND)
 	{
+		//mBird->setRotation(-90.f);
 
 		//CCMessageBox("Game Over!", "Game Over!");
 		//mBird->setVisible(false);
@@ -995,6 +1009,7 @@ void HelloWorld::BeginContact(b2Contact *contact){
 		
 		//unsigned long size;
 		//unsigned char *str = CCFileUtils::sharedFileUtils()->getFileData(fullPath,"wt+",&size);
+		m_bnew=false;
 		string filedata;
 		filedata = TDInvFileUtils::getFileByName("score.abc");
 		int filescore = 0;
@@ -1003,6 +1018,7 @@ void HelloWorld::BeginContact(b2Contact *contact){
 			filescore = atoi(filedata.c_str());
 			if (filescore < testnum)
 			{
+				m_bnew=true;
 				m_bestscore = testnum;
 				char str[10];
 				char   temp[256];   

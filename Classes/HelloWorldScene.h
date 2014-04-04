@@ -98,6 +98,7 @@ public:
 	float topY;
 	int myscore;
 	bool m_bhitbar;
+	bool m_bnew;
 	float		m_addbartime;
 	map<CCSprite *,int> mapbar;
     b2World     *mWorld;                // box2D world
@@ -124,6 +125,7 @@ private:
 	ShowNumberNode * msnn;
 	void initAction();
 	void logic(float dt);
+	void addNew();
 	void addNumberNode();
 	//void addScoreNum(int num);
 	void MoveScore(float dt);

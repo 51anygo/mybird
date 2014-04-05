@@ -10,6 +10,12 @@
 
     <application android:label="@string/app_name"
         android:icon="@drawable/icon">
+		<!-- ###################百度使用的Activity###################### -->
+		<meta-data android:name="BaiduMobAd_APP_ID" android:value="c5774731" /> 
+		<meta-data android:name="BaiduMobAd_APP_SEC" android:value="c5774731" />
+		<activity android:name="com.baidu.mobads.AppActivity" 
+		    android:configChanges="keyboard|keyboardHidden|orientation" />
+		<!-- ###################百度使用的Activity###################### -->
                <!--  landscape  portrait-->
         <activity android:name="com.qgame.myflappybird.FlappyBird"
                   android:label="@string/app_name"

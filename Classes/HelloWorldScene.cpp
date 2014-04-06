@@ -27,7 +27,12 @@ THE SOFTWARE.
 #include "HelloWorldScene.h"
 
 #include "SGPlayMusic.h"
-
+// git排除目录
+// .gitignore 里添加两行 
+// /libs/* 
+// !/libs/armeabi 
+// /libs/armeabi/* 
+// !libs/armeabi/libjnigraphics.so 
 
 #include <stdlib.h> 
 USING_NS_CC;

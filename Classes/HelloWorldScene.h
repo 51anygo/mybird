@@ -31,6 +31,7 @@
 #include "Box2D/Box2D.h"
 #include "B2Sprite.h"
 #include "CCShake.h"
+
 #include "ShowNumberNode.h"
 #include "CCFileUtils.h"
 
@@ -100,6 +101,7 @@ public:
 	bool m_bhitbar;
 	bool m_bnew;
 	//float		m_addbartime;
+	CCParticleSystem* m_emitter;
 	list<CCSprite *> m_pDownBarVec;
     b2World     *mWorld;                // box2D world
     B2Sprite    *mBird;                 // bird的sprite

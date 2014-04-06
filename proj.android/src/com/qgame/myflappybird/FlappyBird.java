@@ -153,65 +153,66 @@ public class FlappyBird extends Cocos2dxActivity{
            if(!f.exists()){
                    f.mkdir();
            }
-           
-           AdView adView = new AdView(this);
-   			// 设置监听器
-   			adView.setListener(new AdViewListener() {
-   			public void onAdSwitch() {
-   				Log.w("", "onAdSwitch");
-   			}
-   			public void onAdShow(JSONObject info) {
-   				Log.w("", "onAdShow " + info.toString());
-   			}
-   			public void onAdReady(AdView adView) {
-   				Log.w("", "onAdReady " + adView);
-   			}
-   			public void onAdFailed(String reason) {
-   				Log.w("", "onAdFailed " + reason);
-   			}
-   			public void onAdClick(JSONObject info) {
-   				Log.w("", "onAdClick " + info.toString());
-   			}
-   			public void onVideoStart() {
-   				Log.w("", "onVideoStart");
-   			}
-   			public void onVideoFinish() {
-   				Log.w("", "onVideoFinish");
-   			}
-   			@Override
-   			public void onVideoClickAd() {
-   				Log.w("", "onVideoFinish");
-   			}
-   			@Override
-   			public void onVideoClickClose() {
-   				Log.w("", "onVideoFinish");
-   			}
-   			@Override
-   			public void onVideoClickReplay() {
-   				Log.w("", "onVideoFinish");
-   			}
-   			@Override
-   			public void onVideoError() {
-   				Log.w("", "onVideoFinish");
-   			}
-   		});
-   		//rlMain.addView(adView);
-   		//setContentView(rlMain);
-   			
-		FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(  
-        FrameLayout.LayoutParams.WRAP_CONTENT,  
-        FrameLayout.LayoutParams.WRAP_CONTENT);
-	
-        // 设置广告出现的位置(悬浮于顶部)  
-        params.topMargin = 0;  
-        params.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
-   			       
-        RelativeLayout layout = new RelativeLayout(this); 
-        layout.addView(adView);
-        addContentView(layout, params); 
+           if(true){
+	           AdView adView = new AdView(this);
+	   			// 设置监听器
+	   			adView.setListener(new AdViewListener() {
+	   			public void onAdSwitch() {
+	   				Log.w("", "onAdSwitch");
+	   			}
+	   			public void onAdShow(JSONObject info) {
+	   				Log.w("", "onAdShow " + info.toString());
+	   			}
+	   			public void onAdReady(AdView adView) {
+	   				Log.w("", "onAdReady " + adView);
+	   			}
+	   			public void onAdFailed(String reason) {
+	   				Log.w("", "onAdFailed " + reason);
+	   			}
+	   			public void onAdClick(JSONObject info) {
+	   				Log.w("", "onAdClick " + info.toString());
+	   			}
+	   			public void onVideoStart() {
+	   				Log.w("", "onVideoStart");
+	   			}
+	   			public void onVideoFinish() {
+	   				Log.w("", "onVideoFinish");
+	   			}
+	   			@Override
+	   			public void onVideoClickAd() {
+	   				Log.w("", "onVideoFinish");
+	   			}
+	   			@Override
+	   			public void onVideoClickClose() {
+	   				Log.w("", "onVideoFinish");
+	   			}
+	   			@Override
+	   			public void onVideoClickReplay() {
+	   				Log.w("", "onVideoFinish");
+	   			}
+	   			@Override
+	   			public void onVideoError() {
+	   				Log.w("", "onVideoFinish");
+	   			}
+	   		});
+	   		//rlMain.addView(adView);
+	   		//setContentView(rlMain);
+	   			
+			FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(  
+	        FrameLayout.LayoutParams.WRAP_CONTENT,  
+	        FrameLayout.LayoutParams.WRAP_CONTENT);
 		
-        IconsAd iconsAd=new IconsAd(this,new int[]{R.drawable.mp_icon, R.drawable.mp_close });
-		iconsAd.loadAd(this);   
+	        // 设置广告出现的位置(悬浮于顶部)  
+	        params.topMargin = 0;  
+	        params.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
+	   			       
+	        RelativeLayout layout = new RelativeLayout(this); 
+	        layout.addView(adView);
+	        addContentView(layout, params); 
+			
+	        IconsAd iconsAd=new IconsAd(this,new int[]{R.drawable.mp_icon, R.drawable.mp_close });
+			iconsAd.loadAd(this);   
+           }
 		/*
 		RelativeLayout rlMain=new RelativeLayout(this);
 		setContentView(iconsAd,params);

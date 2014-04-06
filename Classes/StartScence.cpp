@@ -42,7 +42,7 @@ bool Start::init()
 
 
 	tbBird = CCSprite::create("bird.png");
-	tbBird->setPosition(ccp(mScreenSize.width/2,mScreenSize.height/2));
+	tbBird->setPosition(ccp(mScreenSize.width/2,mScreenSize.height/2+10.));
 	addChild(tbBird,0);
 	initAction();
 	CCMenuItemImage *tbstart = CCMenuItemImage::create("start.png", "start.png", this, menu_selector(Start::tbstartCallback) );

@@ -25,7 +25,8 @@ THE SOFTWARE.
 //http://blog.umeng.com/index.php/2013/09/android-cocos2d-x%E6%B8%B8%E6%88%8F%E5%A6%82%E4%BD%95%E9%9B%86%E6%88%90%E5%8F%8B%E7%9B%9F%E7%A4%BE%E4%BC%9A%E5%8C%96%E7%BB%84%E4%BB%B6%E5%88%86%E4%BA%AB%E5%8A%9F%E8%83%BD/
 //http://blog.csdn.net/cangely/article/details/19809139
 #include "HelloWorldScene.h"
-
+//找字体
+//http://www.zhaozi.cn/html/fonts/china/mini/2008-06-26/21636.html
 #include "SGPlayMusic.h"
 // git排除目录
 // .gitignore 里添加两行 
@@ -59,8 +60,8 @@ static CCString ScreenShoot()
 	pScreen->end();  
 	char szfile[1024]={0};
 	//string   pathToSave = "/sdcard/download/";//
-	
-    string pathToSave = "ScreenShoot.png";
+
+	string pathToSave = "ScreenShoot.png";
 	//sprintf(szfile,"%s%s",pathToSave.c_str(),"share.png");
 	//保存为png
 	if(pScreen->saveToFile(pathToSave.c_str(), kCCImageFormatPNG))
@@ -70,7 +71,7 @@ static CCString ScreenShoot()
 	pathToSave = CCFileUtils::sharedFileUtils()->getWritablePath()+pathToSave;
 	//保存为jpg
 	//pScreen->saveToFile("XXXXXX.jpg", kCCImageFormatJPEG);  
- 	CC_SAFE_DELETE(pScreen); 
+	CC_SAFE_DELETE(pScreen); 
 
 	return pathToSave.c_str();
 }
@@ -81,64 +82,64 @@ static CCString ScreenShoot()
 #include "platform/android/jni/JniHelper.h"
 #define  JAVA_PACKAGE_NAME "com/qgame/myflappybird/FlappyBird"
 extern "C"{
-	
- void Share()
- {
-	// CCMessageBox("function Share() in !", "function Share() in!");
-  bool hasMethod;
-  JniMethodInfo jni_methodInfo;
-  hasMethod = JniHelper::getStaticMethodInfo(jni_methodInfo, JAVA_PACKAGE_NAME, "Share", "()V");
-  if(hasMethod){
-	//CCMessageBox("function Share() was found!", "function Share() was found!");
-   // CCLog("function Share() was found");
-   if(jni_methodInfo.methodID){
-    jni_methodInfo.env->CallStaticVoidMethod(jni_methodInfo.classID,  jni_methodInfo.methodID);
-    //CCLog("function Share() was called");
-	//CCMessageBox("function Share() was called!", "function Share() was called!");
-   }
-  }else{
-   //CCLog("function Share() was not found");
-   //CCMessageBox("function Share() was not found!", "function Share() was not found!");
-  }
- }
 
- 
- //不使用官方SDK,实现微信分享（发送到朋友，发送到朋友圈）
- //java与c++传参数
-//http://wulin9005.blog.163.com/blog/static/13239748820132675949658/
- //http://blog.sina.com.cn/s/blog_7018d38201013znr.html
- void ShareWeixin()
- {
+	void Share()
+	{
+		// CCMessageBox("function Share() in !", "function Share() in!");
+		bool hasMethod;
+		JniMethodInfo jni_methodInfo;
+		hasMethod = JniHelper::getStaticMethodInfo(jni_methodInfo, JAVA_PACKAGE_NAME, "Share", "()V");
+		if(hasMethod){
+			//CCMessageBox("function Share() was found!", "function Share() was found!");
+			// CCLog("function Share() was found");
+			if(jni_methodInfo.methodID){
+				jni_methodInfo.env->CallStaticVoidMethod(jni_methodInfo.classID,  jni_methodInfo.methodID);
+				//CCLog("function Share() was called");
+				//CCMessageBox("function Share() was called!", "function Share() was called!");
+			}
+		}else{
+			//CCLog("function Share() was not found");
+			//CCMessageBox("function Share() was not found!", "function Share() was not found!");
+		}
+	}
 
-  bool hasMethod;
-  JniMethodInfo jni_methodInfo;
-  hasMethod = JniHelper::getStaticMethodInfo(jni_methodInfo, JAVA_PACKAGE_NAME, "shareTxtToTimeLine", "(Ljava/lang/String;)V");
-  if(hasMethod){
-	//CCMessageBox("function Share() was found!", "function Share() was found!");
-   // CCLog("function Share() was found");
-   if(jni_methodInfo.methodID){
-	 jstring stringargs = jni_methodInfo.env->NewStringUTF(ScreenShoot().getCString());   //将string转为jstring
-    jni_methodInfo.env->CallStaticVoidMethod(jni_methodInfo.classID,  jni_methodInfo.methodID,stringargs);
-    //CCLog("function Share() was called");
-	//CCMessageBox("function Share() was called!", "function Share() was called!");
-   }
-  }else{
-   //CCLog("function Share() was not found");
-   //CCMessageBox("function Share() was not found!", "function Share() was not found!");
-  }
- }
 
- void 	openUmengShareJni()
+	//不使用官方SDK,实现微信分享（发送到朋友，发送到朋友圈）
+	//java与c++传参数
+	//http://wulin9005.blog.163.com/blog/static/13239748820132675949658/
+	//http://blog.sina.com.cn/s/blog_7018d38201013znr.html
+	void ShareWeixin()
+	{
+
+		bool hasMethod;
+		JniMethodInfo jni_methodInfo;
+		hasMethod = JniHelper::getStaticMethodInfo(jni_methodInfo, JAVA_PACKAGE_NAME, "shareTxtToTimeLine", "(Ljava/lang/String;)V");
+		if(hasMethod){
+			//CCMessageBox("function Share() was found!", "function Share() was found!");
+			// CCLog("function Share() was found");
+			if(jni_methodInfo.methodID){
+				jstring stringargs = jni_methodInfo.env->NewStringUTF(ScreenShoot().getCString());   //将string转为jstring
+				jni_methodInfo.env->CallStaticVoidMethod(jni_methodInfo.classID,  jni_methodInfo.methodID,stringargs);
+				//CCLog("function Share() was called");
+				//CCMessageBox("function Share() was called!", "function Share() was called!");
+			}
+		}else{
+			//CCLog("function Share() was not found");
+			//CCMessageBox("function Share() was not found!", "function Share() was not found!");
+		}
+	}
+
+	void 	openUmengShareJni()
 	{
 		JniMethodInfo jni_methodInfo  ;
-			   //  获取UmengGameActivity的静态方法openShareBoard	
+		//  获取UmengGameActivity的静态方法openShareBoard	
 		bool isHave = JniHelper::getStaticMethodInfo(jni_methodInfo,JAVA_PACKAGE_NAME, "openShareBoard", "(Ljava/lang/String;)V");
 
 		if ( isHave )
 		{
-			 jstring stringargs = jni_methodInfo.env->NewStringUTF(ScreenShoot().getCString());   //将string转为jstring
-			 // 实际调用UmengGameActivity中打开umeng分享平台选择面板
-			 jni_methodInfo.env->CallStaticVoidMethod( jni_methodInfo .classID, jni_methodInfo.methodID,stringargs);
+			jstring stringargs = jni_methodInfo.env->NewStringUTF(ScreenShoot().getCString());   //将string转为jstring
+			// 实际调用UmengGameActivity中打开umeng分享平台选择面板
+			jni_methodInfo.env->CallStaticVoidMethod( jni_methodInfo .classID, jni_methodInfo.methodID,stringargs);
 		}
 	}
 }
@@ -178,7 +179,7 @@ bool HelloWorld::init()
 
 	mScreenSize = CCDirector::sharedDirector()->getWinSize();
 	mFPS=CCDirector::sharedDirector()->getAnimationInterval();
-	
+
 
 	mfac=CCDirector::sharedDirector()->getContentScaleFactor();
 	mfax = 320.f/mScreenSize.width;
@@ -203,11 +204,11 @@ bool HelloWorld::init()
 	addTop();
 	//addRate();
 	//addFlappyBird();
-	
+
 	addBird();
 	addScore();
 	addGameOver();
-	
+
 	m_pScore->setVisible(false);
 	m_pGameOver->setVisible(false);
 	this->goReady();
@@ -243,7 +244,7 @@ void HelloWorld::goReady(){
 	float fupx=m_pLeftTap->boundingBox().getMinX();
 	float fupy=m_pUp->boundingBox().getMaxY();
 	mBird->setPosition(ccp(fupx,fupy));
-  
+
 }
 
 
@@ -294,18 +295,18 @@ void HelloWorld::stopGame(){
 	//CCActionInterval*  actionFadeBack= actionFade->reverse();
 	//m_pGameOver->runAction(CCSequence::create(actionFade,actionFadeBack,NULL));
 	//m_pGameOver->runAction(actionFade);
-	
+
 	//m_pGameOver->setVisible(true);
 	//动画效果 http://www.cocos2dev.com/?p=72
 	scheduleOnce(schedule_selector(HelloWorld::MoveGameOver), 1);	
-	
+
 	//scheduleOnce(schedule_selector(HelloWorld::MoveStart), 2.5);
 	//scheduleOnce(schedule_selector(HelloWorld::MoveTop), 2.5);
 	scheduleOnce(schedule_selector(HelloWorld::MoveScoreAdd), 1);
 	scheduleOnce(schedule_selector(HelloWorld::MoveScore), 2);
-	
+
 	m_istatus=GAMEOVER;
-	
+
 	//addScoreNum(this->testnum);
 }
 
@@ -329,18 +330,19 @@ void HelloWorld::MoveGameOver(float dt)
 	m_pGameOver->runAction(actionShake);
 
 	/*CCBSequence *seq = getSequence(nSeqId);
-    CCAction *completeAction = CCSequence::createWithTwoActions(
-		CCDelayTime::create(seq->getDuration() + fTweenDuration),
-		CCCallFunc::create(this, callfunc_selector(CCBAnimationManager::sequenceCompleted)));
-    mRootNode->runAction(completeAction);*/
+	CCAction *completeAction = CCSequence::createWithTwoActions(
+	CCDelayTime::create(seq->getDuration() + fTweenDuration),
+	CCCallFunc::create(this, callfunc_selector(CCBAnimationManager::sequenceCompleted)));
+	mRootNode->runAction(completeAction);*/
 
 }
 
 
 void HelloWorld::MoveScoreAdd(float dt)  
 {  
-	
+
 	addBestScore();
+	//addSilver();
 	if (testnum>=15)
 	{
 		addGold();
@@ -353,7 +355,14 @@ void HelloWorld::MoveScoreAdd(float dt)
 	{
 		addNew();
 	}
-	
+	if (testnum>=10)
+	{
+		m_emitter = CCParticleFlower::createWithTotalParticles(3);
+		m_emitter->retain();
+		m_pScore->addChild(m_emitter);
+		m_emitter->setTexture( CCTextureCache::sharedTextureCache()->addImage("stars.png") );
+		m_emitter->setPosition(ccp(49/mfac,51/mfac));
+	}
 }
 
 void HelloWorld::MoveScore(float dt)  
@@ -366,7 +375,7 @@ void HelloWorld::MoveScore(float dt)
 	EFFECT_PLAY(true,MUSIC_SWOOSHING);
 	m_pScore->runAction(actionTo);
 	m_pScore->setVisible(true);
-	
+
 }
 
 void HelloWorld::MoveStart(float dt)  
@@ -435,8 +444,8 @@ void HelloWorld::addGold() {
 	CCSprite *m_gold= CCSprite::create("gold.png");     
 	m_gold->setPosition(ccp(49/mfac,51/mfac));  
 	m_pScore->addChild(m_gold,SPRITE_TAG_BIRD,0);  
-	
-	
+
+
 
 }
 
@@ -444,6 +453,9 @@ void HelloWorld::addGold() {
 void HelloWorld::addSilver() {
 	CCSprite *m_silver= CCSprite::create("silver.png");     
 	m_silver->setPosition(ccp(49/mfac,51/mfac));  
+
+	CCActionInterval *blinkAction = CCBlink::create(10, 20); 
+	//m_silver->runAction(blinkAction); 
 	m_pScore->addChild(m_silver,5,0); 
 }
 
@@ -456,7 +468,7 @@ void HelloWorld::ScoreSchedule(float dt)
 
 	//float xpos=m_pScore->boundingBox().getMaxX()-m_pScore->boundingBox().getMinX()-45;
 	//float ypos=m_pScore->boundingBox().getMaxY()-m_pScore->boundingBox().getMinY()-45;
-	
+
 	if (++myscore<= testnum)
 	{
 		msnn->f_ShowNumber(myscore);
@@ -467,7 +479,7 @@ void HelloWorld::ScoreSchedule(float dt)
 		scheduleOnce(schedule_selector(HelloWorld::MoveTop), 0.5);
 		unschedule(schedule_selector(HelloWorld::ScoreSchedule));
 		scheduleOnce(schedule_selector(HelloWorld::addShare), 1);
-		
+
 		//m_pStart->setVisible(true);
 		//m_pTop->setVisible(true);
 	}
@@ -560,7 +572,7 @@ void HelloWorld::addShare(float dt) {
 	pMenuItemTop->setPosition(ccp( m_pShare->getContentSize().width/2,  m_pShare->getContentSize().height/2));
 	CCMenu* pMenu1 =CCMenu::create(pMenuItemTop, NULL);
 
-    pMenu1->setPosition( CCPointZero );
+	pMenu1->setPosition( CCPointZero );
 	m_pShare->addChild(pMenu1);
 }
 
@@ -606,8 +618,8 @@ void HelloWorld::openUmengShare(CCObject * pSender)
 #if(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 	//CCMessageBox("openUmengShare!", "openUmengShare!");
 	//return;
-    //  调用jni方法
-    //Share();
+	//  调用jni方法
+	//Share();
 	//ShareWeixin();
 	openUmengShareJni();
 #endif
@@ -752,8 +764,8 @@ void HelloWorld::addBird(){
 
 	// 碰撞
 	CCSize birdSize = mBird->getContentSize();
-	 int num = 8;
-  //顶点数组在windows使用PointHelper制作。
+	int num = 8;
+	//顶点数组在windows使用PointHelper制作。
 	VPOINT birdVec[]= {	
 		{-17.300120544433593, -1.5165861129760743},
 		{-4.952079391479492, -11.931890869140625},
@@ -777,7 +789,7 @@ void HelloWorld::addBird(){
 	birdFixtureDef.shape = &birdShape;
 	birdFixtureDef.filter.maskBits = 0x0006;
 	birdBody->CreateFixture(&birdFixtureDef);
-	
+
 	mBird->setPTMRatio(RATIO);
 	mBird->setB2Body(birdBody);
 	//mBird->setAnchorPoint(ccp(pVert[3].x/mfax/ RATIO,pVert[3].y/mfac / RATIO));
@@ -867,7 +879,7 @@ void HelloWorld::addBar(float dt){
 	downBar->setB2Body(downBarBody);
 	downBar->setPTMRatio(RATIO);
 	mBarContainer-> addChild(downBar,1,SPRITE_TAG_BAR);
-	
+
 
 	m_pDownBarVec.push_back(downBar);
 
@@ -891,8 +903,8 @@ void HelloWorld::addBar(float dt){
 	upBar->setB2Body(upBarDody);
 	upBar->setPTMRatio(RATIO);
 	mBarContainer->addChild(upBar,1,SPRITE_TAG_BAR);
-	
-	
+
+
 }
 
 void HelloWorld::update(float dt){
@@ -917,14 +929,14 @@ void HelloWorld::update(float dt){
 			//CCLOG("win x:%f,Ground x:%f,mfac:%f,index=%d ",this->mScreenSize.width,
 			//	moveposx,mfac,m_ilastground);
 		}
-		
+
 	}
 	if(m_istatus==GETREADY || m_istatus==GOSTART ){
 		return;
 	}
 	//最后一个柱子离屏幕右边大于固定距离时放出来
 	if(m_pDownBarVec.size()>0 && (mScreenSize.width-m_pDownBarVec.back()->getPositionX())
-		>mScreenSize.width*(0.38))
+	>mScreenSize.width*(0.38))
 	{
 		addBar(0);
 	}
@@ -944,7 +956,7 @@ void HelloWorld::update(float dt){
 	CCLOG("bird iFlyKeep:%d,angle:%0.2f,myangle:%d",iFlyKeep,mBird->getRotation(),myangle);
 	if(iFlyKeep>30)
 	{
-		 //if (mBird->getRotation() < 10.f/mfac && mBird->getRotation() > -85.f)
+		//if (mBird->getRotation() < 10.f/mfac && mBird->getRotation() > -85.f)
 		//{
 		//	mBird->setRotation(mBird->getRotation()-10.f);
 		//}
@@ -956,9 +968,9 @@ void HelloWorld::update(float dt){
 			mBird->setRotation(mBird->getRotation()-6.f);
 		}
 		//if(mBird->getRotation() > -91)
-			//mBird->setRotation(mBird->getRotation()-2.5f);
+		//mBird->setRotation(mBird->getRotation()-2.5f);
 	}
-	
+
 
 	//CCLOG("bird angle:%0.2f,myangle:%0.2f ",mBird->getRotation(),myangle);
 	if(myflag==1)
@@ -988,7 +1000,7 @@ void HelloWorld::update(float dt){
 	//, rcBounding1.getMinY(), rcBounding1.getMaxX(), rcBounding1.getMaxY());
 
 	//给小鸟计分
-	if(m_pDownBarVec.size()>0 && m_pDownBarVec.front()->boundingBox().getMinX() <= this->mBird->boundingBox().getMaxX())
+	if(m_pDownBarVec.size()>0 && m_pDownBarVec.front()->boundingBox().getMaxX() <= this->mBird->boundingBox().getMaxX())
 	{
 		ShowNumberNode * snn = (ShowNumberNode *)this->getChildByTag(0);
 		snn->f_ShowNumber(++testnum);
@@ -1002,7 +1014,7 @@ void HelloWorld::update(float dt){
 	for(b2Body *b = mWorld->GetBodyList(); b != NULL; b = b->GetNext()){
 		s = (CCSprite *)b->GetUserData();
 		if(s != NULL && s->getTag()==SPRITE_TAG_BAR){
-		
+
 			//CCLOG("bird x:%f guan x:%f ", mBird->getPositionX(),s->getPositionX());
 
 			s->setPositionX(s->getPositionX() - MOVESPEED/mfax);
@@ -1045,10 +1057,10 @@ void HelloWorld::BeginContact(b2Contact *contact){
 		this->runAction(CCShake::create(1,5));
 
 		//std::string fullPath;
-//#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)  
+		//#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)  
 		//fullPath = CCFileUtils::sharedFileUtils()->getWritablePath(); 
 		//fullPath += "score.abc";
-		
+
 		//unsigned long size;
 		//unsigned char *str = CCFileUtils::sharedFileUtils()->getFileData(fullPath,"wt+",&size);
 		m_bnew=false;
@@ -1080,12 +1092,12 @@ void HelloWorld::BeginContact(b2Contact *contact){
 			sprintf(str,"%d",testnum); 
 			TDInvFileUtils::saveFile(str,"score.abc");
 		}
-		
-		
-		
-//#else   
-		 
-//#endif  
+
+
+
+		//#else   
+
+		//#endif  
 		//Sleep(1000);
 		if(!m_bhitbar)
 		{
@@ -1115,11 +1127,11 @@ void HelloWorld::BeginContact(b2Contact *contact){
 
 void HelloWorld::ccTouchesBegan(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent){
 	CCLOG("win x:%f,Ground x:%f,mfac:%f,index=%d ",this->mScreenSize.width,
-				m_pGroundVec[m_ilastground]->boundingBox().getMaxX(),mfac,m_ilastground);
+		m_pGroundVec[m_ilastground]->boundingBox().getMaxX(),mfac,m_ilastground);
 	static int flag;       
-    CCTouch *pTouch = (CCTouch*)pTouches->anyObject();  
-    CCPoint click2 = pTouch->getLocation();  
-    CCLog("ccTouchesBegan,%d,%f,%f",++flag,click2.x,click2.y); 
+	CCTouch *pTouch = (CCTouch*)pTouches->anyObject();  
+	CCPoint click2 = pTouch->getLocation();  
+	CCLog("ccTouchesBegan,%d,%f,%f",++flag,click2.x,click2.y); 
 	if(this->m_istatus!=RUNNING){
 		if(m_istatus==GETREADY)
 		{
@@ -1129,26 +1141,26 @@ void HelloWorld::ccTouchesBegan(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEve
 		touchPoint = CCDirector::sharedDirector()->convertToGL(touchPoint);
 		CCRect rect = m_pStart->boundingBox();
 		//在判断你点击的这个点touchPoint 是否在图片按钮矩形里面rect ;
-	   if(rect.containsPoint(touchPoint))
-	   {
-		 
-		   
-		   if(m_istatus==GAMEOVER && m_pStart->isVisible())
-		   {
-			//this->goReady();
-			//m_istatus=GETREADY;
-			   //schedule(schedule_selector(HelloWorld::ScoreSchedule),0.05);
-			   
-			   CCScene *pScene = HelloWorld::scene();
-			   CCDirector::sharedDirector()->replaceScene(CCTransitionFade::create(1,pScene));
-			   
-			   return;
-		   }
-	   }
-			//为true就进来，说明点中在图片按钮矩形里面
-			//CCScene* scen = HelloWorld::scene();
-			//CCDirector::sharedDirector()->replaceScene(scen);
-		
+		if(rect.containsPoint(touchPoint))
+		{
+
+
+			if(m_istatus==GAMEOVER && m_pStart->isVisible())
+			{
+				//this->goReady();
+				//m_istatus=GETREADY;
+				//schedule(schedule_selector(HelloWorld::ScoreSchedule),0.05);
+
+				CCScene *pScene = HelloWorld::scene();
+				CCDirector::sharedDirector()->replaceScene(CCTransitionFade::create(1,pScene));
+
+				return;
+			}
+		}
+		//为true就进来，说明点中在图片按钮矩形里面
+		//CCScene* scen = HelloWorld::scene();
+		//CCDirector::sharedDirector()->replaceScene(scen);
+
 	}
 	if(m_istatus!=RUNNING)
 	{
@@ -1176,3 +1188,4 @@ void HelloWorld::menuCloseCallback(CCObject* pSender)
 #endif
 #endif
 }
+

@@ -179,7 +179,8 @@ bool HelloWorld::init()
 	mfax = 320.f/mScreenSize.width;
 	//gBardis = 5.f*gUpVelocity/mfac;
 	gBardis = mScreenSize.height*2.f/9.0f-5;
-	m_addbartime=mScreenSize.width*mFPS*mfax*1.f/2.f/MOVESPEED;
+	//m_addbartime=mScreenSize.width*mFPS*mfax*1.f/2.f/MOVESPEED-10;
+	//m_addbartime=3;
 	initWorld();	
 	for (int i = 0; i<GBACKGROUNDNUM; i++)
 	{
@@ -256,7 +257,8 @@ void HelloWorld::startGame(float dt){
 	//scheduleUpdate();
 	//schedule(schedule_selector(HelloWorld::addBar),gAddBarTime*1.0/mfac);
 	//每半个屏就放一对柱子
-	schedule(schedule_selector(HelloWorld::addBar),this->m_addbartime);
+	//schedule(schedule_selector(HelloWorld::addBar),this->m_addbartime);
+	scheduleOnce(schedule_selector(HelloWorld::addBar),3);
 	//goReady();
 }
 
@@ -415,7 +417,7 @@ void HelloWorld::addNumberNode()
 	ShowNumberNode *snn = ShowNumberNode::CreateShowNumberNode("menu_num.png", 923, 22/mfac, 30/mfac  ); 
 	snn->f_ShowNumber(testnum);  
 	float xpos=mScreenSize.width/2.0f;
-	float ypos=m_pReady->boundingBox().getMaxY()+20.f/mfax;
+	float ypos=m_pReady->boundingBox().getMaxY()+15.f/mfax;
 	//float ypos=mScreenSize.height*5/7.0f;
 	snn->setPosition(ccp(xpos,ypos));  
 	this->addChild(snn,5,0);  
@@ -459,6 +461,7 @@ void HelloWorld::ScoreSchedule(float dt)
 		scheduleOnce(schedule_selector(HelloWorld::MoveStart), 0.5);
 		scheduleOnce(schedule_selector(HelloWorld::MoveTop), 0.5);
 		unschedule(schedule_selector(HelloWorld::ScoreSchedule));
+		scheduleOnce(schedule_selector(HelloWorld::addShare), 1);
 		
 		//m_pStart->setVisible(true);
 		//m_pTop->setVisible(true);
@@ -521,6 +524,39 @@ void HelloWorld::addStart() {
 	m_pStart->setPosition(ccp(startX,  startY));    // 设置在屏幕中间  
 	this->addChild(m_pStart,SPRITE_TAG_CHAR);    // CHILD_ORDER_BACKGROUND精灵的层级，这里是 = 1  
 
+}
+
+void HelloWorld::addShare(float dt) {
+	m_pShare = CCSprite::create("share.png");     
+	CCRect rcBounding = m_pShare->boundingBox();
+	CCSize startSize = m_pShare->getContentSize();
+	float fWidth=rcBounding.size.width/2.0f;
+	float fHeight=rcBounding.size.height/2.0f;
+	//m_pStart->setPosition(ccp(this->mScreenSize.width/2.0f/RATIO-(fStartWidth/2.0f), 
+	//	groundSize.height/2.0f/RATIO+(fStartHeight/2.0f)));    // 设置在屏幕中间  
+	float shareX=this->mScreenSize.width/2.0f;
+	float shareY=m_pGroundVec[0]->getContentSize().height*3.f/4;
+	//xpos-=rcBounding.size.width/2.;
+	CCPoint pointBg=ccp(shareX,  shareY);
+	m_pShare->setPosition(pointBg);    // 设置在屏幕中间 
+	CCPoint pointL=pointBg;
+	CCPoint pointR=pointBg;
+	pointL.y-=3;
+	pointR.y+=3;
+	CCMoveTo* moveLeft=CCMoveTo::create(0.2, pointL);
+	CCMoveTo* moveRight=CCMoveTo::create(0.2, pointR);
+	CCFiniteTimeAction* action= CCSequence::create(moveLeft,moveRight,NULL);
+	CCActionInterval* actionShake=CCRepeatForever::create((CCActionInterval*)action);
+	m_pShare->stopAllActions();
+	EFFECT_PLAY(true,MUSIC_SWOOSHING);
+	m_pShare->runAction(actionShake);
+	this->addChild(m_pShare,SPRITE_TAG_CHAR);    // CHILD_ORDER_BACKGROUND精灵的层级，这里是 = 1  
+	CCMenuItemImage *pMenuItemTop = CCMenuItemImage::create("share.png", "share.png", this, menu_selector(HelloWorld::openUmengShare) );
+	pMenuItemTop->setPosition(ccp( m_pShare->getContentSize().width/2,  m_pShare->getContentSize().height/2));
+	CCMenu* pMenu1 =CCMenu::create(pMenuItemTop, NULL);
+
+    pMenu1->setPosition( CCPointZero );
+	m_pShare->addChild(pMenu1);
 }
 
 
@@ -591,12 +627,7 @@ void HelloWorld::addTop() {
 	//xpos-=rcBounding.size.width/2.;
 	m_pTop->setPosition(ccp(topX,  topY));    // 设置在屏幕中间  
 	this->addChild(m_pTop, SPRITE_TAG_CHAR);    // CHILD_ORDER_BACKGROUND精灵的层级，这里是 = 1  
-	CCMenuItemImage *pMenuItemTop = CCMenuItemImage::create("top.png", "top.png", this, menu_selector(HelloWorld::openUmengShare) );
-	pMenuItemTop->setPosition(ccp( m_pTop->getContentSize().width/2,  m_pTop->getContentSize().height/2));
-	CCMenu* pMenu1 =CCMenu::create(pMenuItemTop, NULL);
 
-    pMenu1->setPosition( CCPointZero );
-	m_pTop->addChild(pMenu1);
 
 }
 
@@ -833,7 +864,7 @@ void HelloWorld::addBar(float dt){
 	mBarContainer-> addChild(downBar,1,SPRITE_TAG_BAR);
 	
 
-	mapbar.insert(make_pair(downBar,0));
+	m_pDownBarVec.push_back(downBar);
 
 	//上面的柱子
 	B2Sprite *upBar = B2Sprite::create("up_bar.png");
@@ -885,6 +916,12 @@ void HelloWorld::update(float dt){
 	}
 	if(m_istatus==GETREADY || m_istatus==GOSTART ){
 		return;
+	}
+	//最后一个柱子离屏幕右边大于固定距离时放出来
+	if(m_pDownBarVec.size()>0 && (mScreenSize.width-m_pDownBarVec.back()->getPositionX())
+		>mScreenSize.width*(0.38))
+	{
+		addBar(0);
 	}
 	//重力响应
 	mWorld->Step(dt, 8, 3); // 8和3为官方推荐数据
@@ -945,7 +982,14 @@ void HelloWorld::update(float dt){
 	//CCLOG("rcBounding1 MinX:%d MinY:%d MaxX:%d MaxY:%d", rcBounding1.getMinX()
 	//, rcBounding1.getMinY(), rcBounding1.getMaxX(), rcBounding1.getMaxY());
 
-
+	//给小鸟计分
+	if(m_pDownBarVec.size()>0 && m_pDownBarVec.front()->boundingBox().getMinX() <= this->mBird->boundingBox().getMaxX())
+	{
+		ShowNumberNode * snn = (ShowNumberNode *)this->getChildByTag(0);
+		snn->f_ShowNumber(++testnum);
+		EFFECT_PLAY(true,MUSIC_POINT);
+		m_pDownBarVec.pop_front();
+	}
 
 	CCSprite *s;
 	std::vector<b2Body *>toDestroy;
@@ -953,15 +997,7 @@ void HelloWorld::update(float dt){
 	for(b2Body *b = mWorld->GetBodyList(); b != NULL; b = b->GetNext()){
 		s = (CCSprite *)b->GetUserData();
 		if(s != NULL && s->getTag()==SPRITE_TAG_BAR){
-			itbar=mapbar.find(s);
-			if(itbar!=mapbar.end() && itbar->second==0 && itbar->first->boundingBox().getMinX() <= this->mBird->boundingBox().getMaxX())
-			{
-				ShowNumberNode * snn = (ShowNumberNode *)this->getChildByTag(0);
-				snn->f_ShowNumber(++testnum);
-				itbar->second=1;
-				mapbar.erase(itbar);
-				EFFECT_PLAY(true,MUSIC_POINT);
-			}
+		
 			//CCLOG("bird x:%f guan x:%f ", mBird->getPositionX(),s->getPositionX());
 
 			s->setPositionX(s->getPositionX() - MOVESPEED/mfax);

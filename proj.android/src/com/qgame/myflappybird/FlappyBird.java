@@ -283,18 +283,31 @@ public class FlappyBird extends Cocos2dxActivity{
                      *   注意 ： 新浪平台支持SSO则需要把友盟提供的com.sina.sso拷进src里面，
                      *      需要将友盟提供的libs、res文件拷贝到您的工程对应的目录里面.
                      */
-                    mController.getConfig().setSsoHandler(new SinaSsoHandler());
+                    //mController.getConfig().setSsoHandler(new SinaSsoHandler());
                     mController.getConfig().setSsoHandler(new QZoneSsoHandler(mActivity));
                     mController.getConfig().setSsoHandler(new TencentWBSsoHandler());
+                    mController.getConfig().setPlatforms(SHARE_MEDIA.SINA,
+                            SHARE_MEDIA.TENCENT, SHARE_MEDIA.WEIXIN,
+                            SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QZONE,
+                            SHARE_MEDIA.QQ,
+                            SHARE_MEDIA.RENREN);
+
+                    mController.getConfig().removePlatform(SHARE_MEDIA.SMS,SHARE_MEDIA.DOUBAN,
+                           SHARE_MEDIA.EMAIL);
+                    String strtitle="风靡全球的酷炫小鸟游戏";
+                    //短网址 http://www.324324.cn/top/turl.html http://findme.jhost.cn/bird/index.html
+                    String strurl="http://url.cn/KzKcUd";
+                    String strcontent="我擦,小鸟又掉了,想砸手机,一起来玩吧! "+strurl;
                  // wx967daebe835fbeac是你在微信开发平台注册应用的AppID, 这里需要替换成你注册的AppID
                     String appID = "wx4f9303de03f14ad3";
                     // 微信图文分享必须设置一个url 
-                    String contentUrl = "http://www.umeng.com/social";
+                    String contentUrl = strurl;
+                    mController.getConfig().supportQQPlatform(mActivity, contentUrl);
                     // 添加微信平台，参数1为当前Activity, 参数2为用户申请的AppID, 参数3为点击分享内容跳转到的目标url
                     UMWXHandler wxHandler = mController.getConfig().supportWXPlatform(mActivity,appID, contentUrl);
                     //设置分享标题
-                    wxHandler.setWXTitle("友盟社会化组件很不错");
-                    mController.setShareContent("我发现一款好游戏，分享给大家，跟我来PK吧，马上下载，www.51anygo.cn/bird.apk");             //设置分享图片, 参数2为图片的地址
+                    wxHandler.setWXTitle(strtitle);
+                    mController.setShareContent(strcontent);             //设置分享图片, 参数2为图片的地址
                     //            mController.setShareMedia(new UMImage(this, "http://www.umeng.com/images/pic/banner_module_social.png"));
                     //设置分享图片，参数2为本地图片的资源引用
                     String newpath=moveToTempPath(strfile);
@@ -305,10 +318,10 @@ public class FlappyBird extends Cocos2dxActivity{
                    try{
                     // 支持微信朋友圈
                     UMWXHandler circleHandler = mController.getConfig().supportWXCirclePlatform(mActivity,appID, contentUrl) ;
-                    circleHandler.setCircleTitle("友盟社会化组件还不错...");             
+                    circleHandler.setCircleTitle(strcontent);             
                     CircleShareContent circleMedia = new CircleShareContent(new UMImage(mActivity,
-                    		R.drawable.icon));
-                    circleMedia.setShareContent("来自友盟社会化组件（SDK）让移动应用快速整合社交分享功能，朋友圈");
+                    		newpath));
+                    circleMedia.setShareContent(strcontent);
                     mController.setShareMedia(circleMedia);                  
 
 	                    SnsPostListener listener = new SnsPostListener(){

@@ -99,8 +99,8 @@ public:
 	int myscore;
 	bool m_bhitbar;
 	bool m_bnew;
-	float		m_addbartime;
-	map<CCSprite *,int> mapbar;
+	//float		m_addbartime;
+	list<CCSprite *> m_pDownBarVec;
     b2World     *mWorld;                // box2D world
     B2Sprite    *mBird;                 // bird的sprite
     CCSize      mScreenSize;           // 屏幕尺寸
@@ -110,7 +110,7 @@ public:
     CCSprite    *mBarContainer;         //
 	vector<B2Sprite*> m_pGroundVec;
     CCSprite    *m_pBackGround[GBACKGROUNDNUM];
-	CCSprite    *m_pScore,*m_pRate,*m_pStart,*m_pTop,*m_pFlappyBird,*m_pGameOver;
+	CCSprite    *m_pScore,*m_pRate,*m_pStart,*m_pTop,*m_pFlappyBird,*m_pGameOver,*m_pShare;
 	CCSprite    *m_pHand,*m_pUp,*m_pLeftTap,*m_pRightTap,*m_pReady,*m_pGBird;
 	int			m_bestscore;
 	int          m_igroundnum;
@@ -137,6 +137,7 @@ private:
 	void addScore();
 	void addGameOver();
 	void addRate();
+	void addShare(float dt);
 	void addStart();
 	void addFlappyBird();
 	void addTop();

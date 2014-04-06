@@ -37,14 +37,14 @@ bool Start::init()
 		pGround[i] = CCSprite::create("ground.png");
 		groundSize = pGround[i]->getContentSize();
 		pGround[i]->setPosition(ccp(groundSize.width*(i*2+1) / 2, groundSize.height / 2));    
-		this->addChild(pGround[i]);   
+		this->addChild(pGround[i],1);   
 	}
 
 
 	tbBird = CCSprite::create("bird.png");
 	tbBird->setPosition(ccp(mScreenSize.width/2,mScreenSize.height/2));
 	addChild(tbBird,0);
-
+	initAction();
 	CCMenuItemImage *tbstart = CCMenuItemImage::create("start.png", "start.png", this, menu_selector(Start::tbstartCallback) );
 	tbstart->setPosition(ccp(mScreenSize.width/4,groundSize.height + 10 + tbstart->getContentSize().height/2));
     CCMenu* pMenu1 =CCMenu::create(tbstart, NULL);
@@ -82,13 +82,13 @@ bool Start::init()
 	m_pRate->setPosition(ccp(xpos,  ypos));    // 设置在屏幕中间  
 	this->addChild(m_pRate);  
 
-	initAction();
+
 	scheduleUpdate();
 	
-	CCActionInterval*  actionTo = CCMoveBy::create(0.5, ccp(0, 10));
-	CCActionInterval*  actionByBack = actionTo->reverse();
+	//CCActionInterval*  actionTo = CCMoveBy::create(0.5, ccp(0, 10));
+	//CCActionInterval*  actionByBack = actionTo->reverse();
 
-	tbBird->runAction(CCRepeatForever::create(CCSequence::create( actionTo,actionByBack,NULL)));
+	//tbBird->runAction(CCRepeatForever::create(CCSequence::create( actionTo,actionByBack,NULL)));
 
 	
 	return true;

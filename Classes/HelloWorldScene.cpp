@@ -793,19 +793,19 @@ void HelloWorld::addBird(){
 	int num = 8;
 	//顶点数组在windows使用PointHelper制作。
 	VPOINT birdVec[]= {	
-		{-17.300120544433593, -1.5165861129760743},
-		{-4.952079391479492, -11.931890869140625},
-		{13.301547241210937, -9.999153900146485},
-		{16.844898986816407, -3.0198259353637695},
-		{9.11395034790039, 10.401958465576172},
-		{-3.770962142944336, 12.442070007324219},
-		{-11.39453582763672, 8.361846923828125},
-		{-15.260009765625, 4.4963733673095705}
+		{-14.442324829101562, -2.0309642791748046},
+		{-8.905843353271484, -8.238534545898437},
+		{1.6638025283813476, -9.07739486694336},
+		{11.226815795898437, -7.3996734619140625},
+		{14.750030517578125, -2.534280776977539},
+		{10.723499298095703, 5.518783187866211},
+		{4.348157119750977, 10.384175872802734},
+		{-8.905843353271484, 8.203137969970703}
 	};
 	b2Vec2* pVert= new b2Vec2[num] ;
 	for(int i=0;i<num;i++)
 	{
-		pVert[i]=b2Vec2(birdVec[i].x/mfax / RATIO, birdVec[i].y/mfac / RATIO);
+		pVert[i]=b2Vec2(birdVec[i].x / mfax / RATIO, birdVec[i].y / mfac / RATIO);
 	}
 	b2PolygonShape birdShape;
 	//birdShape.SetAsBox(birdSize.width/2.0f/RATIO, birdSize.height/2.0f/RATIO); // 半宽，半高
@@ -1072,10 +1072,24 @@ void HelloWorld::update(float dt){
 
 }
 
+//获取系统当前时间
+
+long millisecondNow()
+{
+
+	struct cc_timeval now;
+
+	CCTime::gettimeofdayCocos2d(&now, NULL);
+
+	return (now.tv_sec * 1000 + now.tv_usec / 1000);
+
+}
+
 void HelloWorld::BeginContact(b2Contact *contact){
 	B2Sprite *p = (B2Sprite *)contact->GetFixtureA()->GetBody()->GetUserData();
 	if(p->getTag()==SPRITE_TAG_GROUND)
 	{
+		CCDirector::sharedDirector()->getScheduler()->setTimeScale(1.f);
 		//mBird->setRotation(-90.f);
 
 		//CCMessageBox("Game Over!", "Game Over!");
@@ -1138,6 +1152,18 @@ void HelloWorld::BeginContact(b2Contact *contact){
 
 	}
 	if(p == mBird || p == mBird){
+		CCScheduler* pScheduler = CCDirector::sharedDirector()->getScheduler();
+		pScheduler->setTimeScale(0.f);//实现减速效果
+		//scheduleOnce(schedule_selector(HelloWorld::ResumeSpeed), 1);
+		long now=millisecondNow();
+		do{
+			if((millisecondNow()-now)>1000)
+			{
+				break;
+			}
+		}while(true);
+		CCDirector::sharedDirector()->getScheduler()->setTimeScale(1.f);
+		//CCDirector::sharedDirector()->getScheduler()->setTimeScale(0.2f);
 		//mBird->getB2Body()->SetLinearVelocity(b2Vec2(0, -5));
 		myflag=1;
 		b2Filter myfilter;
@@ -1151,6 +1177,11 @@ void HelloWorld::BeginContact(b2Contact *contact){
 	}
 }
 
+
+void HelloWorld::ResumeSpeed(float dt)
+{
+
+}
 void HelloWorld::ccTouchesBegan(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent){
 	CCLOG("win x:%f,Ground x:%f,mfac:%f,index=%d ",this->mScreenSize.width,
 		m_pGroundVec[m_ilastground]->boundingBox().getMaxX(),mfac,m_ilastground);

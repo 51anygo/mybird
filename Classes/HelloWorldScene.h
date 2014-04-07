@@ -140,6 +140,7 @@ private:
 	void MoveTop(float dt);
 	void MoveScoreAdd(float dt);
 	void MoveGameOver(float dt);
+	void ResumeSpeed(float dt);
     void addBird();
 	void addScore();
 	void addGameOver();

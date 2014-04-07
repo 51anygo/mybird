@@ -1,4 +1,4 @@
-﻿生成启动时间为 2014/4/7 18:12:56。
+﻿生成启动时间为 2014/4/8 7:04:19。
 项目“D:\workspace\game\cocos2d-x-2.2.2\projects\mybird\proj.win32\MyFlappyBird.vcxproj”在节点 2 上(build 个目标)。
 InitializeBuildStatus:
   正在创建“Debug.win32\MyFlappyBird.unsuccessfulbuild”，因为已指定“AlwaysCreate”。
@@ -7,29 +7,31 @@ ClCompile:
   HelloWorldScene.cpp
 d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.cpp : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
 d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.cpp(335): warning C4305: “参数”: 从“double”到“float”截断
-d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.cpp(336): warning C4305: “参数”: 从“double”到“float”截断
-d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.cpp(385): warning C4305: “初始化”: 从“double”到“float”截断
-d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.cpp(392): warning C4305: “参数”: 从“double”到“float”截断
-d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.cpp(397): warning C4305: “初始化”: 从“double”到“float”截断
-d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.cpp(407): warning C4305: “初始化”: 从“double”到“float”截断
-d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.cpp(531): warning C4305: “参数”: 从“double”到“float”截断
-d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.cpp(578): warning C4305: “参数”: 从“double”到“float”截断
-d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.cpp(579): warning C4305: “参数”: 从“double”到“float”截断
-d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.cpp(791): warning C4305: “初始化”: 从“double”到“float”截断
-d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.cpp(791): warning C4305: “初始化”: 从“double”到“float”截断
-d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.cpp(792): warning C4305: “初始化”: 从“double”到“float”截断
-d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.cpp(792): warning C4305: “初始化”: 从“double”到“float”截断
-d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.cpp(793): warning C4305: “初始化”: 从“double”到“float”截断
-d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.cpp(793): warning C4305: “初始化”: 从“double”到“float”截断
-d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.cpp(794): warning C4305: “初始化”: 从“double”到“float”截断
-d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.cpp(795): warning C4305: “初始化”: 从“double”到“float”截断
+d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.cpp(340): warning C4305: “参数”: 从“double”到“float”截断
+d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.cpp(341): warning C4305: “参数”: 从“double”到“float”截断
+d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.cpp(390): warning C4305: “初始化”: 从“double”到“float”截断
+d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.cpp(397): warning C4305: “参数”: 从“double”到“float”截断
+d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.cpp(402): warning C4305: “初始化”: 从“double”到“float”截断
+d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.cpp(412): warning C4305: “初始化”: 从“double”到“float”截断
+d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.cpp(536): warning C4305: “参数”: 从“double”到“float”截断
+d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.cpp(583): warning C4305: “参数”: 从“double”到“float”截断
+d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.cpp(584): warning C4305: “参数”: 从“double”到“float”截断
+d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.cpp(796): warning C4305: “初始化”: 从“double”到“float”截断
 d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.cpp(796): warning C4305: “初始化”: 从“double”到“float”截断
 d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.cpp(797): warning C4305: “初始化”: 从“double”到“float”截断
 d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.cpp(798): warning C4305: “初始化”: 从“double”到“float”截断
+d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.cpp(798): warning C4305: “初始化”: 从“double”到“float”截断
+d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.cpp(799): warning C4305: “初始化”: 从“double”到“float”截断
+d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.cpp(800): warning C4305: “初始化”: 从“double”到“float”截断
+d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.cpp(800): warning C4305: “初始化”: 从“double”到“float”截断
+d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.cpp(801): warning C4305: “初始化”: 从“double”到“float”截断
+d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.cpp(802): warning C4305: “初始化”: 从“double”到“float”截断
+d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.cpp(802): warning C4305: “初始化”: 从“double”到“float”截断
+d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.cpp(803): warning C4305: “初始化”: 从“double”到“float”截断
+d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.cpp(803): warning C4305: “初始化”: 从“double”到“float”截断
 d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.cpp(841): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.cpp(934): warning C4018: “<”: 有符号/无符号不匹配
-d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.cpp(1099): warning C4101: “temp”: 未引用的局部变量
+d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.cpp(939): warning C4018: “<”: 有符号/无符号不匹配
+d:\workspace\game\cocos2d-x-2.2.2\projects\mybird\classes\helloworldscene.cpp(1118): warning C4101: “temp”: 未引用的局部变量
 ResourceCompile:
   所有输出均为最新。
 ManifestResourceCompile:
@@ -70,4 +72,4 @@ FinalizeBuildStatus:
 
 生成成功。
 
-已用时间 00:00:39.70
+已用时间 00:00:37.99

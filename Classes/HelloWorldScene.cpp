@@ -34,7 +34,9 @@ THE SOFTWARE.
 // !/libs/armeabi 
 // /libs/armeabi/* 
 // !libs/armeabi/libjnigraphics.so 
-
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS) || (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+#include "MobClickCpp.h"
+#endif
 #include <stdlib.h> 
 USING_NS_CC;
 //clone Flappy Bird
@@ -75,7 +77,7 @@ static CCString ScreenShoot()
 
 	return pathToSave.c_str();
 }
-
+	
 #if(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 #include <jni.h>
 #include "android/log.h"
@@ -83,12 +85,24 @@ static CCString ScreenShoot()
 #define  JAVA_PACKAGE_NAME "com/qgame/myflappybird/FlappyBird"
 extern "C"{
 
-	void Share()
+
+	JNIEXPORT void JNICALL Java_com_qgame_myflappybird_FlappyBird_nativeShareReturn(JNIEnv* env, jobject thiz,jint result)
+	{
+		CCString *strresult = CCString::createWithFormat("%d",(unsigned int)result);
+		//CCMessageBox(strresult->getCString(),strresult->getCString());
+		if(((unsigned int)result)==0)
+		{
+			//CCMessageBox(strresult->getCString(),strresult->getCString());
+			MobClickCpp::event("SNS_SHARE_OK");
+		}
+	}
+
+	void Feedback()
 	{
 		// CCMessageBox("function Share() in !", "function Share() in!");
 		bool hasMethod;
 		JniMethodInfo jni_methodInfo;
-		hasMethod = JniHelper::getStaticMethodInfo(jni_methodInfo, JAVA_PACKAGE_NAME, "Share", "()V");
+		hasMethod = JniHelper::getStaticMethodInfo(jni_methodInfo, JAVA_PACKAGE_NAME, "Feedback", "()V");
 		if(hasMethod){
 			//CCMessageBox("function Share() was found!", "function Share() was found!");
 			// CCLog("function Share() was found");
@@ -170,6 +184,10 @@ bool HelloWorld::init()
 	{
 		return false;
 	}
+	mbirdstr.push_back("birdblue");
+	mbirdstr.push_back("birdred");
+	mbirdstr.push_back("birdyellow");
+	mbirdclolor=rand()%100%3;
 	EFFECT_PLAY(true,MUSIC_SWOOSHING);
 	//播放背景音乐
 	// CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic(MUSIC_JUMP, true);
@@ -302,8 +320,8 @@ void HelloWorld::stopGame(){
 
 	//scheduleOnce(schedule_selector(HelloWorld::MoveStart), 2.5);
 	//scheduleOnce(schedule_selector(HelloWorld::MoveTop), 2.5);
-	scheduleOnce(schedule_selector(HelloWorld::MoveScoreAdd), 1);
-	scheduleOnce(schedule_selector(HelloWorld::MoveScore), 2);
+	scheduleOnce(schedule_selector(HelloWorld::MoveScore), 1);
+	//scheduleOnce(schedule_selector(HelloWorld::MoveScoreAdd), 2);
 
 	m_istatus=GAMEOVER;
 
@@ -357,7 +375,7 @@ void HelloWorld::MoveScoreAdd(float dt)
 	}
 	if (testnum>=10)
 	{
-		m_emitter = CCParticleFlower::createWithTotalParticles(3);
+		m_emitter = CCParticleFlower::createWithTotalParticles(10);
 		m_emitter->retain();
 		m_pScore->addChild(m_emitter);
 		m_emitter->setTexture( CCTextureCache::sharedTextureCache()->addImage("stars.png") );
@@ -367,7 +385,7 @@ void HelloWorld::MoveScoreAdd(float dt)
 
 void HelloWorld::MoveScore(float dt)  
 {  
-	schedule(schedule_selector(HelloWorld::ScoreSchedule),0.1);
+	
 	msnn->f_ShowNumber(0);
 	float fmovetime=0.2;
 	m_pScore->setPosition(ccp(scoreX,0));
@@ -375,7 +393,8 @@ void HelloWorld::MoveScore(float dt)
 	EFFECT_PLAY(true,MUSIC_SWOOSHING);
 	m_pScore->runAction(actionTo);
 	m_pScore->setVisible(true);
-
+	MoveScoreAdd(0);
+	schedule(schedule_selector(HelloWorld::ScoreSchedule),0.1);
 }
 
 void HelloWorld::MoveStart(float dt)  
@@ -500,11 +519,12 @@ void HelloWorld::logic(float dt)
 //number png http://i.pku.edu.cn/trac/bazinga/changeset/117/
 void HelloWorld::initAction()
 {
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("bird.plist");
+	string strplist=mbirdstr[mbirdclolor]+".plist";
+	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(strplist.c_str());
 	CCArray *animFrames = CCArray::create();
 	for (int i = 1; i < 4; i++)
 	{
-		CCString *name = CCString::createWithFormat("bird%d.png",i);
+		CCString *name = CCString::createWithFormat("%s%d.png",mbirdstr[mbirdclolor].c_str(),i);
 		CCSpriteFrame *frame = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(name->getCString());
 		if(i == 1)
 		{
@@ -644,7 +664,12 @@ void HelloWorld::addTop() {
 	//xpos-=rcBounding.size.width/2.;
 	m_pTop->setPosition(ccp(topX,  topY));    // 设置在屏幕中间  
 	this->addChild(m_pTop, SPRITE_TAG_CHAR);    // CHILD_ORDER_BACKGROUND精灵的层级，这里是 = 1  
+	CCMenuItemImage *pMenuItemTop = CCMenuItemImage::create("top.png", "top.png", this, menu_selector(HelloWorld::FeedbackCallback) );
+	pMenuItemTop->setPosition(ccp( m_pTop->getContentSize().width/2,  m_pTop->getContentSize().height/2));
+	CCMenu* pMenu1 =CCMenu::create(pMenuItemTop, NULL);
 
+	pMenu1->setPosition( CCPointZero );
+	m_pTop->addChild(pMenu1);
 
 }
 
@@ -753,7 +778,8 @@ void HelloWorld::addRightTap() {
 //不规则碰撞
 //http://codingnow.cn/cocos2d-x/1424.html
 void HelloWorld::addBird(){
-	mBird = B2Sprite::create("bird.png");
+	string strplist=mbirdstr[mbirdclolor]+".png";
+	mBird = B2Sprite::create(strplist.c_str());
 
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
@@ -1177,8 +1203,25 @@ void HelloWorld::ccTouchesBegan(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEve
 
 }
 
+
+	//  按钮的回调函数
+void HelloWorld::FeedbackCallback(CCObject * pSender)
+{
+#if(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+	//CCMessageBox("openUmengShare!", "openUmengShare!");
+	//return;
+	//  调用jni方法
+	//Share();
+	//ShareWeixin();
+	Feedback();
+#endif
+	//ScreenShoot();
+}
 void HelloWorld::menuCloseCallback(CCObject* pSender)
 {
+	#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS) || (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+		MobClickCpp::end();
+	#endif
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT) || (CC_TARGET_PLATFORM == CC_PLATFORM_WP8)
 	CCMessageBox("You pressed the close button. Windows Store Apps do not implement a close button.","Alert");
 #else

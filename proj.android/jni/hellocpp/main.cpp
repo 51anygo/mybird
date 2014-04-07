@@ -5,6 +5,7 @@
 #include <jni.h>
 #include <android/log.h>
 
+#include "MobClickCpp.h"
 #define  LOG_TAG    "main"
 #define  LOGD(...)  __android_log_print(ANDROID_LOG_DEBUG,LOG_TAG,__VA_ARGS__)
 
@@ -15,8 +16,9 @@ extern "C"
     
 jint JNI_OnLoad(JavaVM *vm, void *reserved)
 {
-    JniHelper::setJavaVM(vm);
 
+    JniHelper::setJavaVM(vm);
+	MobClickCpp::initJniForCocos2dx2((void*)vm, "com.qgame.myflappybird.FlappyBird");
     return JNI_VERSION_1_4;
 }
 

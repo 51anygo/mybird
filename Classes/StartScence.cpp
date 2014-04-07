@@ -39,9 +39,12 @@ bool Start::init()
 		pGround[i]->setPosition(ccp(groundSize.width*(i*2+1) / 2, groundSize.height / 2));    
 		this->addChild(pGround[i],1);   
 	}
-
-
-	tbBird = CCSprite::create("bird.png");
+	mbirdstr.push_back("birdblue");
+	mbirdstr.push_back("birdred");
+	mbirdstr.push_back("birdyellow");
+	mbirdclolor=rand()%100%3;
+	string strplist=mbirdstr[mbirdclolor]+".png";
+	tbBird = CCSprite::create(strplist.c_str());
 	tbBird->setPosition(ccp(mScreenSize.width/2,mScreenSize.height/2+10.));
 	addChild(tbBird,0);
 	initAction();
@@ -112,19 +115,20 @@ void Start::tbtopCallback(CCObject * pSender)
 
 void Start::initAction()
 {
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("bird.plist");
-    CCArray *animFrames = CCArray::create();
-    for (int i = 1; i < 4; i++)
-    {
-        CCString *name = CCString::createWithFormat("bird%d.png",i);
-        CCSpriteFrame *frame = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(name->getCString());
+	string strplist=mbirdstr[mbirdclolor]+".plist";
+	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(strplist.c_str());
+	CCArray *animFrames = CCArray::create();
+	for (int i = 1; i < 4; i++)
+	{
+		CCString *name = CCString::createWithFormat("%s%d.png",mbirdstr[mbirdclolor].c_str(),i);
+		CCSpriteFrame *frame = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(name->getCString());
 		if(i == 1)
 		{
 			CCSprite *pSprite = CCSprite::createWithSpriteFrame(frame);
 			this->addChild(pSprite);
 		}
-        animFrames->addObject(frame);
-    }    
+		animFrames->addObject(frame);
+	}    
     CCAnimation *animation = CCAnimation::createWithSpriteFrames(animFrames, 0.1);
 	CCAnimate* pAnimate = CCAnimate::create(animation);
 	CCActionInterval* seq = (CCActionInterval *)(CCSequence::create(pAnimate, NULL));    // ¥¥Ω®À≥–Ú÷¥––action

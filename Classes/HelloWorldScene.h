@@ -78,6 +78,7 @@ public:
     // a selector callback
     void menuCloseCallback(CCObject* pSender);
     void openUmengShare(CCObject * pSender);
+	void FeedbackCallback(CCObject * pSender);
     // implement the "static node()" method manually
     CREATE_FUNC(HelloWorld);
 
@@ -109,6 +110,7 @@ public:
 	float       mFPS;
 	float       mfac;
 	float		mfax;
+
     CCSprite    *mBarContainer;         //
 	vector<B2Sprite*> m_pGroundVec;
     CCSprite    *m_pBackGround[GBACKGROUNDNUM];
@@ -125,6 +127,8 @@ public:
     void ScoreSchedule(float dt);
 private:
 	ShowNumberNode * msnn;
+	vector<string> mbirdstr;
+	int mbirdclolor;
 	void initAction();
 	void logic(float dt);
 	void addNew();
@@ -132,6 +136,7 @@ private:
 	//void addScoreNum(int num);
 	void MoveScore(float dt);
 	void MoveStart(float dt);
+
 	void MoveTop(float dt);
 	void MoveScoreAdd(float dt);
 	void MoveGameOver(float dt);

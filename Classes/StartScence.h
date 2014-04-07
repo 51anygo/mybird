@@ -28,7 +28,7 @@
 #define __START_SCENCE_H__
 
 #include "cocos2d.h"
-
+using namespace std;
 #define ggroundNum 25
 #define gbackgroundNum 3
 
@@ -53,6 +53,8 @@ public:
 	void tbtopCallback(CCObject * pSender);
 
 private:
+	vector<string> mbirdstr;
+	int mbirdclolor;
 	CCSize mScreenSize;
 	CCSprite *tbBird;
 	CCSprite *pGround[ggroundNum];

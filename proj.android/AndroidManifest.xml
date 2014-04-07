@@ -30,6 +30,15 @@
         </activity>
           <!-- ###################注册SDK使用的Activity###################### -->
         <!--分享编辑页-->
+        <service
+	    android:name="com.umeng.common.net.DownloadingService"
+	    android:process=":DownloadingService" >
+		</service>
+		<activity 
+		    android:name="com.umeng.update.UpdateDialogActivity"
+		    android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+		</activity>
+        
         <activity
             android:name="com.umeng.socialize.view.ShareActivity"
             android:configChanges="orientation|keyboard"
@@ -59,6 +68,9 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:screenOrientation="portrait">
         </activity>
+         <activity android:name="com.umeng.fb.ConversationActivity"/>
+        <activity android:name="com.umeng.fb.ContactActivity"/>
+        
         <activity
 		   android:name="com.qgame.myflappybird.WXEntryActivity"
 		   android:theme="@android:style/Theme.Translucent.NoTitleBar"
@@ -71,6 +83,9 @@
             android:name="UMENG_APPKEY"
             android:value="533b87db56240bc09007f000" >
         </meta-data>
+        <!--<meta-data android:value="umengchn001" android:name="UMENG_CHANNEL"/> -->
+        <!--<meta-data android:value="ZHZHANGTEST001" android:name="UMENG_CHANNEL"/>-->
+        
     </application>
     <supports-screens android:largeScreens="true"
                       android:smallScreens="true"
@@ -88,5 +103,6 @@
     <uses-permission android:name="android.permission.INTERNET" />              <!-- 允许应用程序联网，以便向我们的服务器端发送数据。 -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />  <!-- 用于评论模块分享位置信息 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /><!-- 用于评论模块分享位置信息 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
 </manifest> 

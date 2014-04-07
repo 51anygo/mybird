@@ -36,7 +36,6 @@ import java.util.Stack;
 import org.cocos2dx.lib.Cocos2dxActivity;
 import org.cocos2dx.lib.Cocos2dxGLSurfaceView;
 
-import com.qgame.myflappybird.R;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.bean.SocializeEntity;
 import com.umeng.socialize.controller.RequestType;
@@ -50,6 +49,7 @@ import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.sso.QZoneSsoHandler;
 import com.umeng.socialize.sso.SinaSsoHandler;
 import com.umeng.socialize.sso.TencentWBSsoHandler;
+import com.umeng.update.UmengUpdateAgent;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -60,6 +60,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.TextUtils;
 import android.text.format.Time;
 import android.widget.Toast;
 
@@ -68,19 +69,23 @@ import android.widget.TextView;
 import android.view.Gravity;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+
 import com.baidu.mobads.IconsAd;
 
 
 import com.baidu.mobads.AdSettings;
 import com.baidu.mobads.AdView;
 import com.baidu.mobads.AdViewListener;
+
 import android.util.Log;
+
 import org.json.JSONObject;
 
 
 
 public class FlappyBird extends Cocos2dxActivity{
 	 private static String mTmpPath = null;
+	 public static Context STATIC_REF = null;
 	 /**
      * Handler, 用于包装友盟的openShare方法，保证openShare方法在UI线程执行
      */
@@ -140,8 +145,56 @@ public class FlappyBird extends Cocos2dxActivity{
         return ret;  
     }  
     
+    public static Context getContext(){
+        return STATIC_REF;
+    }
+    
+
+
+    
+public static String getDeviceInfo(Context context) {
+    try{
+      org.json.JSONObject json = new org.json.JSONObject();
+      android.telephony.TelephonyManager tm = (android.telephony.TelephonyManager) context
+          .getSystemService(Context.TELEPHONY_SERVICE);
+  
+      String device_id = tm.getDeviceId();
+      
+      android.net.wifi.WifiManager wifi = (android.net.wifi.WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+          
+      String mac = wifi.getConnectionInfo().getMacAddress();
+      json.put("mac", mac);
+      
+      if( TextUtils.isEmpty(device_id) ){
+        device_id = mac;
+      }
+      
+      if( TextUtils.isEmpty(device_id) ){
+        device_id = android.provider.Settings.Secure.getString(context.getContentResolver(),android.provider.Settings.Secure.ANDROID_ID);
+      }
+      
+      json.put("device_id", device_id);
+      
+      return json.toString();
+    }catch(Exception e){
+      e.printStackTrace();
+    }
+  return null;
+}
+                  
+
+    
     protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);	
+		UmengUpdateAgent.setUpdateOnlyWifi(false);
+		UmengUpdateAgent.update(this);
+		String strdevinfo=getDeviceInfo(this);
+		Log.w("", strdevinfo);
+		///FeedbackAgent agent = new FeedbackAgent(this);
+		STATIC_REF = this;
+	    //agent.startFeedbackActivity();
+
+		///agent.sync();
 		mActivity = this;
 		mTmpPath=Environment.getExternalStorageDirectory()+"/flappybirdtmp/";
 		File f = new File(mTmpPath);
@@ -263,7 +316,7 @@ public class FlappyBird extends Cocos2dxActivity{
 			}
     }
     
-    private static native void shareReturn(final int result);
+    public static native void nativeShareReturn(final int result);
     /**
      * @Title:  openShareBoard
      * @Description:
@@ -335,10 +388,10 @@ public class FlappyBird extends Cocos2dxActivity{
 	                         public void onComplete(SHARE_MEDIA platform,int eCode, SocializeEntity entity) {
 	                             if(eCode == 200){
 	                                 Toast.makeText(mActivity, "分享成功",Toast.LENGTH_SHORT).show();
-	                                 //shareReturn(1);
+	                                 nativeShareReturn(0);
 	                             }else{
 	                                 Toast.makeText(mActivity, "分享失败",Toast.LENGTH_SHORT).show();
-	                                 //shareReturn(0);
+	                                 nativeShareReturn(1);
 	                             }
 	                         }
 	                    };
@@ -474,35 +527,9 @@ public class FlappyBird extends Cocos2dxActivity{
 }
 
     
-    public static void Share() {
-    	// wx967daebe835fbeac是你在微信开发平台注册应用的AppID, 这里需要替换成你注册的AppID
-    	String appID = "wx967daebe835fbeac";
-    	// 微信图文分享必须设置一个url 
-    	String contentUrl = "http://www.umeng.com/social";
-    	// 添加微信平台，参数1为当前Activity, 参数2为用户申请的AppID, 参数3为点击分享内容跳转到的目标url
-    	UMWXHandler wxHandler = mController.getConfig().supportWXPlatform(mActivity,appID, contentUrl);
-    	wxHandler.setWXTitle("友盟社会化组件还不错...");
-    	// 支持微信朋友圈
-    	UMWXHandler circleHandler = mController.getConfig().supportWXCirclePlatform(mActivity,appID, contentUrl) ;
-    	circleHandler.setCircleTitle("友盟社会化组件还不错...");
-    	return;
-    	/*
-    	  new Thread(new Runnable() {
-
-    	   public void run() {
-    		   
-    	    Intent intent = new Intent("android.intent.action.SEND");
-    	    intent.setType("image/*");
-    	    intent.putExtra(Intent.EXTRA_SUBJECT, "我的分享");
-    	    intent.putExtra(Intent.EXTRA_TEXT, "拍手庆祝吧!!!");
-    	    intent.putExtra(
-    	      Intent.EXTRA_STREAM,
-    	      Uri.parse("file:////data/data/" + mActivity.getApplicationInfo().packageName + "/share.png"));
-    	    System.out.println("/data/data/" + mActivity.getApplicationInfo().packageName + "/share.png");
-    	    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-    	    mActivity.startActivity(Intent.createChooser(intent, "分享"));
-    	   }
-    	  }).start();*/
+    public static void Feedback() {
+    	//FeedbackAgent agent = new FeedbackAgent(mActivity);
+	    // agent.startFeedbackActivity();
     	 }
     public Cocos2dxGLSurfaceView onCreateView() {
     	Cocos2dxGLSurfaceView glSurfaceView = new Cocos2dxGLSurfaceView(this);

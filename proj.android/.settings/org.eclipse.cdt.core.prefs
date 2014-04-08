@@ -1,4 +1,7 @@
 eclipse.preferences.version=1
+environment/project/0.756827735/NDK_ROOT/delimiter=;
+environment/project/0.756827735/NDK_ROOT/operation=replace
+environment/project/0.756827735/NDK_ROOT/value=/cygdrive/d/tool/android-ndk-r9d/
 environment/project/0.756827735/PATH/delimiter=;
 environment/project/0.756827735/PATH/operation=append
 environment/project/0.756827735/PATH/value=d\:\\cygwin\\bin

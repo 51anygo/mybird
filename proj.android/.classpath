@@ -9,11 +9,11 @@
 	<classpathentry exported="true" kind="lib" path="libs/SocialSDK_QQZone_2.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/SocialSDK_tencentWB_1.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/SocialSDK_tencentWB_2.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/SocialSDK_WeiXin.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/umeng_social_sdk.jar"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry exported="true" kind="lib" path="libs/Baidu_MobAds_SDK.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/umeng_sdk.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/SocialSDK_WeiXin.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

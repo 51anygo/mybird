@@ -353,7 +353,7 @@ public static String getDeviceInfo(Context context) {
                     String strurl="http://url.cn/KzKcUd";
                     String strcontent="我擦,小鸟又掉了,想砸手机,一起来玩吧! "+strurl;
                  // wx967daebe835fbeac是你在微信开发平台注册应用的AppID, 这里需要替换成你注册的AppID
-                    String appID = "wx4f9303de03f14ad3";
+                    String appID = "wx5681647928891dc6";
                     // 微信图文分享必须设置一个url 
                     String contentUrl = strurl;
                     mController.getConfig().supportQQPlatform(mActivity, contentUrl);
@@ -401,6 +401,7 @@ public static String getDeviceInfo(Context context) {
                    }
                    catch(Exception ex){
                 	   ex.printStackTrace();
+                	   Toast.makeText(mActivity, ex.getMessage(),Toast.LENGTH_SHORT).show();
                    }
                 }
                 }

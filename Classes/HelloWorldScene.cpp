@@ -962,7 +962,7 @@ void HelloWorld::update(float dt){
 	}
 	//最后一个柱子离屏幕右边大于固定距离时放出来
 	if(m_pDownBarVec.size()>0 && (mScreenSize.width-m_pDownBarVec.back()->getPositionX())
-	>mScreenSize.width*(0.38))
+	>(mScreenSize.width*0.4))
 	{
 		addBar(0);
 	}
@@ -1156,12 +1156,13 @@ void HelloWorld::BeginContact(b2Contact *contact){
 		pScheduler->setTimeScale(0.f);//实现减速效果
 		//scheduleOnce(schedule_selector(HelloWorld::ResumeSpeed), 1);
 		long now=millisecondNow();
-		do{
+
+		while(false){
 			if((millisecondNow()-now)>1000)
 			{
 				break;
 			}
-		}while(true);
+		};
 		CCDirector::sharedDirector()->getScheduler()->setTimeScale(1.f);
 		//CCDirector::sharedDirector()->getScheduler()->setTimeScale(0.2f);
 		//mBird->getB2Body()->SetLinearVelocity(b2Vec2(0, -5));

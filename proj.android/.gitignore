@@ -1,4 +1,5 @@
 /assets/*
 /gen/*
 /obj/*
+/.settings/*
 

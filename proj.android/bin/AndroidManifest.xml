@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="com.qgame.myflappybird"
+      android:versionCode="1"
+      android:versionName="1.0">
+
+    <uses-sdk android:minSdkVersion="8"
+        android:maxSdkVersion="12"/>
+    <uses-feature android:glEsVersion="0x00020000" />
+
+    <application android:label="@string/app_name"
+        android:icon="@drawable/icon">
+		<!-- ###################百度使用的Activity###################### -->
+		<meta-data android:name="BaiduMobAd_APP_ID" android:value="c5774731" /> 
+		<meta-data android:name="BaiduMobAd_APP_SEC" android:value="c5774731" />
+		<activity android:name="com.baidu.mobads.AppActivity" 
+		    android:configChanges="keyboard|keyboardHidden|orientation" />
+		<!-- ###################百度使用的Activity###################### -->
+               <!--  landscape  portrait-->
+        <activity android:name="com.qgame.myflappybird.FlappyBird"
+                  android:label="@string/app_name"
+  
+                  android:screenOrientation="portrait"
+                  android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+                  android:configChanges="orientation">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+          <!-- ###################注册SDK使用的Activity###################### -->
+        <!--分享编辑页-->
+        <service
+	    android:name="com.umeng.common.net.DownloadingService"
+	    android:process=":DownloadingService" >
+		</service>
+		
+		<!--BEGIN 添加 adview -->
+		<service android:name="com.kyview.DownloadService" />
+		<activity android:name="com.kyview.AdviewWebView" />
+		<!--END　添加 adview -->
+		
+		<!--BEGIN 添加 GDT -->
+		<service android:name="com.qq.e.comm.DownloadService" android:exported="false"></service>
+		<activity android:name="com.qq.e.ads.AdActivity" android:theme="@android:style/Theme.Translucent">
+		</activity>
+		<!--END 添加 GDT -->
+		
+		<!--BEGIN 添加 ADMOB -->
+		<activity
+            android:name="com.google.ads.AdActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
+		<!--END 添加 ADMOB -->
+		
+		<!--BEGIN 添加 DOMOB -->
+		<activity
+            android:name="cn.domob.android.ads.DomobActivity"
+			android:theme="@android:style/Theme.Translucent" />
+		<!--END 添加 DOMOB -->
+		
+		<activity 
+		    android:name="com.umeng.update.UpdateDialogActivity"
+		    android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+		</activity>
+        
+        <activity
+            android:name="com.umeng.socialize.view.ShareActivity"
+            android:configChanges="orientation|keyboard"
+            android:launchMode="singleTask"
+            android:noHistory="true"
+            android:theme="@style/Theme.UMDialog"
+            android:windowSoftInputMode="stateVisible|adjustResize" >
+        </activity>
+
+        <!-- ############ QQ空间和QQ SSO授权的Activity注册 ############ -->
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- 100424468，如果你使用的公用账号，则不需要修改；否则修改成你在QQ开放平台申请的 APP ID-->
+                <data android:scheme="tencent100424468" /> 
+            </intent-filter>
+        </activity>
+
+        <activity android:name="com.tencent.plus.ImageActivity" />
+        <activity android:name="com.tencent.connect.common.AssistActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:screenOrientation="portrait">
+        </activity>
+         <activity android:name="com.umeng.fb.ConversationActivity"/>
+        <activity android:name="com.umeng.fb.ContactActivity"/>
+        
+        <activity
+		   android:name="ccom.qgame.myflappybird.wxapi.WXEntryActivity"
+		   android:theme="@android:style/Theme.Translucent.NoTitleBar"
+		   android:configChanges="keyboardHidden|orientation|screenSize"
+		   android:exported="true"
+		   android:screenOrientation="portrait" />
+    
+<!-- ###################添加UmengAppkey###################### -->
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="533b87db56240bc09007f000" >
+        </meta-data>
+        <!--<meta-data android:value="umengchn001" android:name="UMENG_CHANNEL"/> -->
+        <!--<meta-data android:value="ZHZHANGTEST001" android:name="UMENG_CHANNEL"/>-->
+        
+    </application>
+    <supports-screens android:largeScreens="true"
+                      android:smallScreens="true"
+                      android:anyDensity="true"
+                      android:normalScreens="true"/>
+                         
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+
+    <!-- ###################声明SDK使用的相关权限###################### -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />  <!-- 检测网络状态 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />     <!-- 获取mac地址作为用户的备用唯一标识 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />      <!-- 获取用户手机的IMEI，用来唯一的标识用户。 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /><!-- 缓存资源优先存入SDcard -->
+    <uses-permission android:name="android.permission.INTERNET" />              <!-- 允许应用程序联网，以便向我们的服务器端发送数据。 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />  <!-- 用于评论模块分享位置信息 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /><!-- 用于评论模块分享位置信息 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+</manifest> 

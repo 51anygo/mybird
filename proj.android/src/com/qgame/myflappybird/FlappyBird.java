@@ -70,6 +70,22 @@ import com.umeng.socialize.sso.QZoneSsoHandler;
 import com.umeng.socialize.sso.TencentWBSsoHandler;
 import com.umeng.update.UmengUpdateAgent;
 
+import com.qgame.myflappybird.AdvertConfig;
+
+import com.kuaiyou.adrtb.AdViewRTBView;
+import com.qq.e.ads.AdSize;
+import com.qq.e.ads.AdRequest;
+import com.qq.e.ads.AdListener;
+
+
+import cn.domob.android.ads.DomobAdView;
+import cn.domob.android.ads.DomobAdEventListener;
+import cn.domob.android.ads.DomobAdManager.ErrorCode;
+import android.view.ViewGroup.LayoutParams;
+
+
+
+
 
 
 public class FlappyBird extends Cocos2dxActivity{
@@ -190,81 +206,175 @@ public static String getDeviceInfo(Context context) {
 		mTmpPath=Environment.getExternalStorageDirectory()+"/flappybirdtmp/";
 		File f = new File(mTmpPath);
 		    //先清理再创建
-			if(f.exists()){
-				      delFileUnRoot(f);
-		              f.delete();
-		     }
-           if(!f.exists()){
-                   f.mkdir();
-           }
-           if(true){
-	           AdView adView = new AdView(this);
-	   			// 设置监听器
-	   			adView.setListener(new AdViewListener() {
-	   			public void onAdSwitch() {
-	   				Log.w("", "onAdSwitch");
-	   			}
-	   			public void onAdShow(JSONObject info) {
-	   				Log.w("", "onAdShow " + info.toString());
-	   			}
-	   			public void onAdReady(AdView adView) {
-	   				Log.w("", "onAdReady " + adView);
-	   			}
-	   			public void onAdFailed(String reason) {
-	   				Log.w("", "onAdFailed " + reason);
-	   			}
-	   			public void onAdClick(JSONObject info) {
-	   				Log.w("", "onAdClick " + info.toString());
-	   			}
-	   			public void onVideoStart() {
-	   				Log.w("", "onVideoStart");
-	   			}
-	   			public void onVideoFinish() {
-	   				Log.w("", "onVideoFinish");
-	   			}
-	   			@Override
-	   			public void onVideoClickAd() {
-	   				Log.w("", "onVideoFinish");
-	   			}
-	   			@Override
-	   			public void onVideoClickClose() {
-	   				Log.w("", "onVideoFinish");
-	   			}
-	   			@Override
-	   			public void onVideoClickReplay() {
-	   				Log.w("", "onVideoFinish");
-	   			}
-	   			@Override
-	   			public void onVideoError() {
-	   				Log.w("", "onVideoFinish");
-	   			}
-	   		});
-	   		//rlMain.addView(adView);
-	   		//setContentView(rlMain);
-	   			
-			FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(  
-	        FrameLayout.LayoutParams.WRAP_CONTENT,  
-	        FrameLayout.LayoutParams.WRAP_CONTENT);
+		if(f.exists()){
+			      delFileUnRoot(f);
+	              f.delete();
+	     }
+	   if(!f.exists()){
+	           f.mkdir();
+	   }
+	   FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(  
+	    FrameLayout.LayoutParams.WRAP_CONTENT,  
+	    FrameLayout.LayoutParams.WRAP_CONTENT);
+	
+	    // 设置广告出现的位置(悬浮于顶部)  
+	    params.topMargin = 0;  
+	    params.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
+	   
+	   if(AdvertConfig.Baidu_Config){
+	       AdView adView = new AdView(this);
+			// 设置监听器
+			adView.setListener(new AdViewListener() {
+			public void onAdSwitch() {
+				Log.w("", "onAdSwitch");
+			}
+			public void onAdShow(JSONObject info) {
+				Log.w("", "onAdShow " + info.toString());
+			}
+			public void onAdReady(AdView adView) {
+				Log.w("", "onAdReady " + adView);
+			}
+			public void onAdFailed(String reason) {
+				Log.w("", "onAdFailed " + reason);
+			}
+			public void onAdClick(JSONObject info) {
+				Log.w("", "onAdClick " + info.toString());
+			}
+			public void onVideoStart() {
+				Log.w("", "onVideoStart");
+			}
+			public void onVideoFinish() {
+				Log.w("", "onVideoFinish");
+			}
+			@Override
+			public void onVideoClickAd() {
+				Log.w("", "onVideoFinish");
+			}
+			@Override
+			public void onVideoClickClose() {
+				Log.w("", "onVideoFinish");
+			}
+			@Override
+			public void onVideoClickReplay() {
+				Log.w("", "onVideoFinish");
+			}
+			@Override
+			public void onVideoError() {
+				Log.w("", "onVideoFinish");
+			}
+		});
 		
-	        // 设置广告出现的位置(悬浮于顶部)  
-	        params.topMargin = 0;  
-	        params.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
-	   			       
+		//setContentView(rlMain);
+	
+	    RelativeLayout layout = new RelativeLayout(this); 
+	    layout.addView(adView);
+	    addContentView(layout, params); 
+		
+	    //IconsAd iconsAd=new IconsAd(this,new int[]{R.drawable.mp_icon, R.drawable.mp_close });
+		//iconsAd.loadAd(this);   
+	   } 
+	else 
+		   if(AdvertConfig.Adview_Config)
+	   {
+		   AdViewRTBView adViewRTBView = new AdViewRTBView(this, "RTB201423021104373g1r9u0c4egdh47", AdViewRTBView.BANNER_AUTO, false);
+		   adViewRTBView.setShowCloseBtn(false);
+		   adViewRTBView.setReFreshTime(8);
+		   adViewRTBView.setOpenAnim(true);   			       
 	        RelativeLayout layout = new RelativeLayout(this); 
-	        layout.addView(adView);
+	        layout.addView(adViewRTBView);
 	        addContentView(layout, params); 
+	   }
+	else    
+	   if(AdvertConfig.GDT_Config)
+	   {
+		   com.qq.e.ads.AdView adv = new com.qq.e.ads.AdView(this, AdSize.BANNER, "1101325153","9079537216195012173");
+		   RelativeLayout layout = new RelativeLayout(this); 
+	        layout.addView(adv);
+	        
+	        AdRequest adr = new AdRequest();
+	        adr.setTestAd(false);
+	        /* 设置广告刷新时间，为30~120之间的数字，单位为s*/
+	        adr.setRefresh(31);
+	        
+	        adv.setAdListener(new AdListener() {
+				@Override
+				public void onNoAd() {
+					Log.i("no ad cb:","no");
+				}
+					@Override
+				public void onAdReceiv() {
+					Log.i("ad recv cb:","revc");
+				}
+				
+					@Override
+				public void onBannerClosed() {
+					Log.i("ad recv cb:","closed");
+				}
+			});
 			
-	        IconsAd iconsAd=new IconsAd(this,new int[]{R.drawable.mp_icon, R.drawable.mp_close });
-			iconsAd.loadAd(this);   
-           }
-		/*
-		RelativeLayout rlMain=new RelativeLayout(this);
-		setContentView(iconsAd,params);
-		IconsAd iconsAd=new IconsAd(this,new int[]{R.drawable.mp_icon, R.drawable.mp_close });
-		iconsAd.loadAd(this);
-		*/
-		//shareTxtToTimeLine();
-	}
+	        adv.fetchAd(adr);
+	        addContentView(layout, params);
+		   
+	   } 
+	else       
+		if(AdvertConfig.ADMOB_Config)
+	   {
+		   com.google.ads.AdView adView = new com.google.ads.AdView(this, com.google.ads.AdSize.BANNER, "dd");
+		   RelativeLayout layout = new RelativeLayout(this); 
+	       layout.addView(adView);
+	       com.google.ads.AdRequest adRequest = new com.google.ads.AdRequest();
+	       adView.loadAd(adRequest);
+	       addContentView(layout, params);
+	   }
+	else
+	   if(AdvertConfig.DOMOB_Config)
+	   {
+		   DomobAdView mAdview320x50 = new DomobAdView(this, 
+				   "56OJwgCIuNEYAXog7/", "16TLufLoAp1zYNUkjjuP2rAz", DomobAdView.INLINE_SIZE_320X50);
+	
+	   		mAdview320x50.setAdEventListener(new DomobAdEventListener() {
+				
+				@Override
+				public void onDomobAdReturned(DomobAdView adView) {
+					Log.i("DomobSDKDemo", "onDomobAdReturned");				
+				}
+	
+				@Override
+				public void onDomobAdOverlayPresented(DomobAdView adView) {
+					Log.i("DomobSDKDemo", "overlayPresented");
+				}
+	
+				@Override
+				public void onDomobAdOverlayDismissed(DomobAdView adView) {
+					Log.i("DomobSDKDemo", "Overrided be dismissed");				
+				}
+	
+				@Override
+				public void onDomobAdClicked(DomobAdView arg0) {
+					Log.i("DomobSDKDemo", "onDomobAdClicked");				
+				}
+	
+				@Override
+				public void onDomobAdFailed(DomobAdView arg0, ErrorCode arg1) {
+					Log.i("DomobSDKDemo", "onDomobAdFailed");				
+				}
+	
+				@Override
+				public void onDomobLeaveApplication(DomobAdView arg0) {
+					Log.i("DomobSDKDemo", "onDomobLeaveApplication");				
+				}
+	
+				@Override
+				public Context onDomobAdRequiresCurrentContext() {
+					return FlappyBird.this;
+				}
+			});
+	   		
+	   		RelativeLayout layout = new RelativeLayout(this); 
+		    layout.addView(mAdview320x50);
+		    addContentView(layout, params);
+	   }
+    }	       
 
     @Override
     protected void onDestroy() {

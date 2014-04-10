@@ -34,6 +34,30 @@
 	    android:name="com.umeng.common.net.DownloadingService"
 	    android:process=":DownloadingService" >
 		</service>
+		
+		<!--BEGIN 添加 adview -->
+		<service android:name="com.kyview.DownloadService" />
+		<activity android:name="com.kyview.AdviewWebView" />
+		<!--END　添加 adview -->
+		
+		<!--BEGIN 添加 GDT -->
+		<service android:name="com.qq.e.comm.DownloadService" android:exported="false"></service>
+		<activity android:name="com.qq.e.ads.AdActivity" android:theme="@android:style/Theme.Translucent">
+		</activity>
+		<!--END 添加 GDT -->
+		
+		<!--BEGIN 添加 ADMOB -->
+		<activity
+            android:name="com.google.ads.AdActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
+		<!--END 添加 ADMOB -->
+		
+		<!--BEGIN 添加 DOMOB -->
+		<activity
+            android:name="cn.domob.android.ads.DomobActivity"
+			android:theme="@android:style/Theme.Translucent" />
+		<!--END 添加 DOMOB -->
+		
 		<activity 
 		    android:name="com.umeng.update.UpdateDialogActivity"
 		    android:theme="@android:style/Theme.Translucent.NoTitleBar" >

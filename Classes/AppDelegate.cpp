@@ -41,8 +41,9 @@ AppDelegate::~AppDelegate()
 bool AppDelegate::applicationDidFinishLaunching() {
     // initialize director
 	#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS) || (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-	//MobClickCpp::startWithAppkey("533b87db56240bc09007f000","TTKYDEVELOP001");
-	MobClickCpp::startWithAppkey("533b87db56240bc09007f000","ZHZHANGTEST003");
+	MobClickCpp::startWithAppkey("533b87db56240bc09007f000","TTKYDEVELOP001");
+	//MobClickCpp::startWithAppkey("533b87db56240bc09007f000","ZHZHANGTEST003");
+	//MobClickCpp::startWithAppkey("533b87db56240bc09007f000","ANZHUOMARKETP001");
 	#endif
     CCDirector* pDirector = CCDirector::sharedDirector();
     CCEGLView* pEGLView = CCEGLView::sharedOpenGLView();

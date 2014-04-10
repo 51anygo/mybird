@@ -29,27 +29,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Stack;
 
 import org.cocos2dx.lib.Cocos2dxActivity;
 import org.cocos2dx.lib.Cocos2dxGLSurfaceView;
-
-import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.bean.SocializeEntity;
-import com.umeng.socialize.controller.RequestType;
-import com.umeng.socialize.controller.UMServiceFactory;
-import com.umeng.socialize.controller.UMSocialService;
-import com.umeng.socialize.controller.UMWXHandler;
-import com.umeng.socialize.controller.listener.SocializeListeners;
-import com.umeng.socialize.controller.listener.SocializeListeners.SnsPostListener;
-import com.umeng.socialize.media.CircleShareContent;
-import com.umeng.socialize.media.UMImage;
-import com.umeng.socialize.sso.QZoneSsoHandler;
-import com.umeng.socialize.sso.SinaSsoHandler;
-import com.umeng.socialize.sso.TencentWBSsoHandler;
-import com.umeng.update.UmengUpdateAgent;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -62,30 +47,36 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 import android.text.format.Time;
-import android.widget.Toast;
-
-
-import android.widget.TextView;
+import android.util.Log;
 import android.view.Gravity;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
-import com.baidu.mobads.IconsAd;
-
-
-import com.baidu.mobads.AdSettings;
 import com.baidu.mobads.AdView;
 import com.baidu.mobads.AdViewListener;
-
-import android.util.Log;
-
-import org.json.JSONObject;
+import com.baidu.mobads.IconsAd;
+import com.qgame.myflappybird1.R;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.bean.SocializeEntity;
+import com.umeng.socialize.controller.RequestType;
+import com.umeng.socialize.controller.UMServiceFactory;
+import com.umeng.socialize.controller.UMSocialService;
+import com.umeng.socialize.controller.UMWXHandler;
+import com.umeng.socialize.controller.listener.SocializeListeners.SnsPostListener;
+import com.umeng.socialize.media.CircleShareContent;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.sso.QZoneSsoHandler;
+import com.umeng.socialize.sso.TencentWBSsoHandler;
+import com.umeng.update.UmengUpdateAgent;
 
 
 
 public class FlappyBird extends Cocos2dxActivity{
 	 private static String mTmpPath = null;
 	 public static Context STATIC_REF = null;
+	 //weixin签名ID
+	 private static String appID = "wx5681647928891dc6";
 	 /**
      * Handler, 用于包装友盟的openShare方法，保证openShare方法在UI线程执行
      */
@@ -294,7 +285,7 @@ public static String getDeviceInfo(Context context) {
     /*****************************************************************
      * ** 友盟分享回调
      *****************************************************************/
-    public class UmengSnsPostListener implements SnsPostListener {
+    public static class UmengSnsPostListener implements SnsPostListener {
             @Override
             public void onStart() {
                     Toast.makeText(mActivity, "开始分享.", Toast.LENGTH_SHORT).show();
@@ -353,7 +344,7 @@ public static String getDeviceInfo(Context context) {
                     String strurl="http://url.cn/KzKcUd";
                     String strcontent="我擦,小鸟又掉了,想砸手机,一起来玩吧! "+strurl;
                  // wx967daebe835fbeac是你在微信开发平台注册应用的AppID, 这里需要替换成你注册的AppID
-                    String appID = "wx5681647928891dc6";
+                   
                     // 微信图文分享必须设置一个url 
                     String contentUrl = strurl;
                     mController.getConfig().supportQQPlatform(mActivity, contentUrl);
@@ -378,23 +369,7 @@ public static String getDeviceInfo(Context context) {
                     circleMedia.setShareContent(strcontent);
                     mController.setShareMedia(circleMedia);                  
 
-	                    SnsPostListener listener = new SnsPostListener(){
-	                         @Override
-	                         public void onStart() {
-	                             Toast.makeText(mActivity, "分享开始",Toast.LENGTH_SHORT).show();
-	                         }
-	             
-	                         @Override
-	                         public void onComplete(SHARE_MEDIA platform,int eCode, SocializeEntity entity) {
-	                             if(eCode == 200){
-	                                 Toast.makeText(mActivity, "分享成功",Toast.LENGTH_SHORT).show();
-	                                 nativeShareReturn(0);
-	                             }else{
-	                                 Toast.makeText(mActivity, "分享失败",Toast.LENGTH_SHORT).show();
-	                                 nativeShareReturn(1);
-	                             }
-	                         }
-	                    };
+	                    SnsPostListener listener = new UmengSnsPostListener();
 	                    mController.registerListener(listener);	              
 	                    // 打开友盟的分享平台选择面板
 	                    mController.openShare(mActivity, false);

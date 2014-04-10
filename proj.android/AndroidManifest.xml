@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="com.qgame.myflappybird"
+      package="com.qgame.myflappybird1"
       android:versionCode="1"
       android:versionName="1.0">
 
@@ -72,7 +72,7 @@
         <activity android:name="com.umeng.fb.ContactActivity"/>
         
         <activity
-		   android:name="com.qgame.myflappybird.wxapi.WXEntryActivity"
+		   android:name="ccom.qgame.myflappybird.wxapi.WXEntryActivity"
 		   android:theme="@android:style/Theme.Translucent.NoTitleBar"
 		   android:configChanges="keyboardHidden|orientation|screenSize"
 		   android:exported="true"

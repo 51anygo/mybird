@@ -56,7 +56,7 @@ import android.widget.Toast;
 import com.baidu.mobads.AdView;
 import com.baidu.mobads.AdViewListener;
 import com.baidu.mobads.IconsAd;
-import com.qgame.myflappybird1.R;
+import com.qgame.myflappybird.R;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.bean.SocializeEntity;
 import com.umeng.socialize.controller.RequestType;
